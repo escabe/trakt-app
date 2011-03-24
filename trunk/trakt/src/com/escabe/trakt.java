@@ -300,4 +300,14 @@ public class trakt extends Activity {
 
     }
     
+    public void buttonSearchSeriesOnClick(View view) {
+    	vf.showNext();
+    	TextView tv = (TextView)findViewById(R.id.textTitle);
+    	tv.setText("Search Results");
+    	MovieList.clear();
+    	MovieList.addAll(TvdbUtils.Search("chuck"));
+    	ma.notifyDataSetChanged();
+    	
+    }
+    
 }
