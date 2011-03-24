@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_gravity="center_horizontal" android:layout_height="wrap_content" android:layout_width="wrap_content">
+        <ImageView android:padding="1px" android:src="@drawable/logotv" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/imageView1"></ImageView>
+        <TextView android:text="trakt" android:textSize="26px" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+    </LinearLayout>
+    <ViewFlipper android:id="@+id/viewFlipper1" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <FrameLayout android:id="@+id/frameLayout1" android:layout_height="fill_parent" android:layout_width="fill_parent">
+            <LinearLayout android:id="@+id/linearLayout2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_gravity="center_vertical|center_horizontal">
+                <LinearLayout android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:layout_width="match_parent">
+                    <ImageButton android:src="@drawable/icon" android:layout_height="wrap_content" android:layout_width="wrap_content" android:onClick="buttonTrendingTVOnClick" android:id="@+id/buttonTrendingShows"></ImageButton>
+                    <ImageButton android:src="@drawable/icon" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/buttonTrendingMovies" android:onClick="buttonTrendingMoviesOnClick"></ImageButton>
+                </LinearLayout>
+                <LinearLayout android:id="@+id/linearLayout4" android:layout_height="wrap_content" android:layout_width="match_parent">
+                    <ImageButton android:src="@drawable/icon" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/buttonWatched" android:onClick="buttonWatchedOnClick"></ImageButton>
+                    <ImageButton android:src="@drawable/icon" android:id="@+id/imageButton4" android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageButton>
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+        <LinearLayout android:id="@+id/linearLayout5" android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
+            <TextView android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textSize="20px" android:layout_gravity="center_horizontal" android:id="@+id/textTitle"></TextView>
+            <ListView android:layout_width="match_parent" android:id="@+id/listView1" android:layout_height="wrap_content"></ListView>
+        </LinearLayout>
+    </ViewFlipper>
+</LinearLayout>
