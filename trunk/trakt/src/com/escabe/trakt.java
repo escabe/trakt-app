@@ -43,7 +43,6 @@ public class trakt extends Activity {
 	private ArrayList<Movie> MovieList = new ArrayList<Movie>();
 	private MovieAdapter ma;
 	private DrawableManager dm = new DrawableManager();
-	
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class trakt extends Activity {
         // Save some "handles" to important GUI elements
         vf = (ViewFlipper) findViewById(R.id.viewFlipper1);
         // Configure the ListView
-        lv = (ListView)findViewById(R.id.listView1);
+        lv = (ListView)findViewById(R.id.listMainList);
         ma = new MovieAdapter(this,R.layout.row,MovieList);
         lv.setAdapter(ma);
     }
@@ -70,9 +69,6 @@ public class trakt extends Activity {
 	    return super.onKeyDown(keyCode, event);
 	}
 	
-	// Class to hold information about a movie
-
-		
 	// Adapter to show current List of Movies in the ListView
 	private class MovieAdapter extends ArrayAdapter<Movie> {
 		private ArrayList<Movie> items;
@@ -109,73 +105,11 @@ public class trakt extends Activity {
         }
 
 	}
-		
-	public class DrawableManager {
-	    private final Map<String, Drawable> drawableMap;
-
-	    public DrawableManager() {
-	        drawableMap = new HashMap<String, Drawable>();
-	    }
-
-	    public Drawable fetchDrawable(String urlString) {
-	        if (drawableMap.containsKey(urlString)) {
-	            return drawableMap.get(urlString);
-	        }
-
-	        Log.d(this.getClass().getSimpleName(), "image url:" + urlString);
-	        try {
-	            InputStream is = fetch(urlString);
-	            Drawable drawable = Drawable.createFromStream(is, "src");
-	            drawableMap.put(urlString, drawable);
-	            return drawable;
-	        } catch (MalformedURLException e) {
-	            Log.e(this.getClass().getSimpleName(), "fetchDrawable failed", e);
-	            return null;
-	        } catch (IOException e) {
-	            Log.e(this.getClass().getSimpleName(), "fetchDrawable failed", e);
-	            return null;
-	        }
-	    }
-
-	    public void fetchDrawableOnThread(final String urlString, final ImageView imageView) {
-	        if (drawableMap.containsKey(urlString)) {
-	            imageView.setImageDrawable(drawableMap.get(urlString));
-	            return;
-	        }
-	        imageView.setImageResource(R.drawable.emptyposter);
-
-	        final Handler handler = new Handler() {
-	            @Override
-	            public void handleMessage(Message message) {
-	                imageView.setImageDrawable((Drawable) message.obj);
-	            }
-	        };
-
-	        Thread thread = new Thread() {
-	            @Override
-	            public void run() {
-	                Drawable drawable = fetchDrawable(urlString);
-	                Message message = handler.obtainMessage(1, drawable);
-	                handler.sendMessage(message);
-	            }
-	        };
-	        thread.start();
-	    }
-
-	    private InputStream fetch(String urlString) throws MalformedURLException, IOException {
-	        DefaultHttpClient httpClient = new DefaultHttpClient();
-	        HttpGet request = new HttpGet(urlString);
-	        HttpResponse response = httpClient.execute(request);
-	        return response.getEntity().getContent();
-	    }
-
-	}
 	
 	private boolean watchedStatus(String type, String id) {
 		JSONObject arr = getDataObjectFromJSON(baseurl + "/" + type + "/summary.json/" + apikey + "/" + id,true);
 		return arr.optBoolean("watched");
 	}
-	
 	
 	private Object getDataFromJSON(String url, boolean login,String type)  {
 		HttpClient httpclient = new DefaultHttpClient();
@@ -239,7 +173,6 @@ public class trakt extends Activity {
     private JSONObject getDataObjectFromJSON(String url, boolean login) {
     	return (JSONObject) getDataFromJSON(url,login,"object");
 	}
-    
 
     private void showList(String url,boolean login) {
     	JSONArray arr = null;
@@ -289,7 +222,6 @@ public class trakt extends Activity {
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText("Trending Movies");
     	showList(baseurl + "movies/trending.json/" + apikey,false);
-
     }
     
     public void buttonWatchedOnClick(View view) {
@@ -297,7 +229,6 @@ public class trakt extends Activity {
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText("All Watched Movies By" + Testing.username);
     	showList(baseurl + "user/library/movies/all.json/" + apikey + "/" + Testing.username,true);
-
     }
     
     public void buttonSearchSeriesOnClick(View view) {
