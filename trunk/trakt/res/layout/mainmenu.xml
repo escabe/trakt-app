@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/frameLayout1" android:layout_height="fill_parent" android:layout_width="fill_parent">
+    <LinearLayout android:id="@+id/linearLayout2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_gravity="center_vertical|center_horizontal">
+        <LinearLayout android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <ImageButton android:src="@drawable/icon" android:layout_height="wrap_content" android:layout_width="wrap_content" android:onClick="buttonTrendingTVOnClick" android:id="@+id/buttonTrendingShows"></ImageButton>
+            <ImageButton android:src="@drawable/icon" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/buttonTrendingMovies" android:onClick="buttonTrendingMoviesOnClick"></ImageButton>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/linearLayout4" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <ImageButton android:src="@drawable/icon" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/buttonWatched" android:onClick="buttonWatchedOnClick"></ImageButton>
+            <ImageButton android:src="@drawable/icon" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/buttonSearchSeries" android:onClick="buttonSearchSeriesOnClick"></ImageButton>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
+

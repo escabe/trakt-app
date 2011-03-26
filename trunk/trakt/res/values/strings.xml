@@ -2,4 +2,8 @@
 <resources>
     <string name="hello">Hello World, trakt!</string>
     <string name="app_name">trakt</string>
+    <string-array name="movies_shows">
+        <item>Movies</item>
+        <item>Shows</item>
+    </string-array>
 </resources>
