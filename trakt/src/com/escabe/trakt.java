@@ -15,45 +15,17 @@
  ******************************************************************************/
 package com.escabe;
 
-import java.io.*;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.*;
-
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class trakt extends Activity {
-    private String apikey = "682912f6e62d666428d261544d619d7c";
-	private String baseurl = "http://api.trakt.tv/";
-	
     /** Called when the activity is first created. */
-    private ViewFlipper vf;
+    public ViewFlipper vf;
     private TraktList traktlist;
     private Search search;
     
@@ -88,21 +60,21 @@ public class trakt extends Activity {
     	vf.showNext();
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText("Trending Shows");
-    	traktlist.showList(baseurl + "shows/trending.json/" + apikey,false,"trending");
+    	traktlist.showList("shows/trending.json/%k",false,"Shows");
     }
     
     public void buttonTrendingMoviesOnClick(View view) {
     	vf.showNext();
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText("Trending Movies");
-    	traktlist.showList(baseurl + "movies/trending.json/" + apikey,false,"trending");
+    	traktlist.showList("movies/trending.json/%k",false,"Movies");
     }
     
     public void buttonWatchedOnClick(View view) {
     	vf.showNext();
     	TextView tv = (TextView)findViewById(R.id.textTitle);
-    	tv.setText("All Watched Movies By" + Testing.username);
-    	traktlist.showList(baseurl + "user/library/movies/all.json/" + apikey + "/" + Testing.username,true,"user");
+    	tv.setText(Testing.username + " Watched Movies");
+    	traktlist.showList("user/library/movies/all.json/%k/" + Testing.username,true,"user");
     }
     
     public void buttonSearchSeriesOnClick(View view) {

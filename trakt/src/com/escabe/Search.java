@@ -26,7 +26,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,6 +38,7 @@ public class Search {
 	private ListView lv;
 	private MovieAdapter ma;
 	private Spinner sp;
+	private Details details;
 	
 	public Search(Activity activity) {
 		parentActivity = activity;
@@ -47,13 +47,24 @@ public class Search {
 		MovieList = new ArrayList<Movie>();
 		ma = new MovieAdapter(parentActivity,R.layout.searchrow,MovieList);
 		lv.setAdapter(ma);
-
+		lv.setOnItemClickListener(new lvOnItemClick());
+		
 		Button b = (Button)parentActivity.findViewById(R.id.buttonSearch);
 		
 		b.setOnClickListener(new buttonSearchOnClick());
 		
 		sp = (Spinner)parentActivity.findViewById(R.id.spinSearch);
-		sp.setOnItemSelectedListener(new spinOnItemSelected()) ;		
+		sp.setOnItemSelectedListener(new spinOnItemSelected()) ;	
+		
+		details = Details.getInstance(activity);
+	}
+	
+	private class lvOnItemClick implements AdapterView.OnItemClickListener {
+
+		public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+			Movie m = MovieList.get(pos);
+			details.showDetails(type, m.getID());
+		}
 	}
 	
 	private class spinOnItemSelected implements AdapterView.OnItemSelectedListener {
