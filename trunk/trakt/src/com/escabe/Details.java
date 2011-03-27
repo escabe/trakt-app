@@ -61,6 +61,23 @@ public class Details {
 			}
 			
 		} else {
+			try {
+				JSONObject data = TraktApi.getDataObjectFromJSON("movie/summary.json/%k/" + id, true);
+				title.setText(data.optString("title"));
+				JSONObject images = data.getJSONObject("images");
+				String p = images.getString("poster");
+				p = p.replace(".jpg", "-138.jpg");
+				dm.fetchDrawableOnThread("http://escabe.org/resize2.php?image=" + p, poster);
+				String d = String.format("Released: %1$tB %1$te, %1$tY\nRuntime: %2$d min\n",new Date(data.optLong("released")*1000),
+																													data.optInt("runtime"));
+				details.setText(d);
+				d = String.format("\"%s\"\n\n%s",data.optString("tagline"),data.optString("overview"));
+				overview.setText(d);
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		

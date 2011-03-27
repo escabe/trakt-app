@@ -60,21 +60,21 @@ public class trakt extends Activity {
     	vf.showNext();
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText("Trending Shows");
-    	traktlist.showList("shows/trending.json/%k",false,"Shows");
+    	traktlist.showList("shows/trending.json/%k",false,"Shows",true);
     }
     
     public void buttonTrendingMoviesOnClick(View view) {
     	vf.showNext();
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText("Trending Movies");
-    	traktlist.showList("movies/trending.json/%k",false,"Movies");
+    	traktlist.showList("movies/trending.json/%k",false,"Movies",true);
     }
     
     public void buttonWatchedOnClick(View view) {
     	vf.showNext();
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText(Testing.username + " Watched Movies");
-    	traktlist.showList("user/library/movies/all.json/%k/" + Testing.username,true,"user");
+    	traktlist.showList("user/library/movies/all.json/%k/" + Testing.username,true,"Movies",false);
     }
     
     public void buttonSearchSeriesOnClick(View view) {

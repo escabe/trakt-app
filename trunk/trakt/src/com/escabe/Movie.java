@@ -22,6 +22,8 @@ public class Movie {
 	private int watchers;
 	private String id;
 	private boolean watched = false;
+	private boolean loved = false;
+	private boolean hated = false;
 	
 	public String getTitle() {
 		return title;
@@ -52,5 +54,17 @@ public class Movie {
 	}
 	public void setWatched(boolean w){
 		watched = w;
+	}
+	public boolean getLoved() {
+		return loved;
+	}
+	public void setLoved(boolean l){
+		loved = l;
+	}
+	public boolean getHated() {
+		return hated;
+	}
+	public void setHated(boolean h){
+		hated = h;
 	}
 } 
