@@ -17,6 +17,8 @@ package com.escabe;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -32,10 +34,177 @@ import org.json.JSONObject;
 public class TraktApi {
     private static String apikey = "682912f6e62d666428d261544d619d7c";
 	private static String baseurl = "http://api.trakt.tv/";
+	public static class UserSeries {
+		private static Map<String,Movie> list=null;
+		
+		private static void init() {
+			list = new HashMap<String,Movie>();
+			JSONArray arr = getDataArrayFromJSON("user/library/shows/all.json/%k/%u",true);
+			for (int i=0;i<arr.length();i++) {
+				try {
+					JSONObject data = arr.getJSONObject(i);
+					Movie m = new Movie();
+					m.setID(data.getString("tvdb_id"));
+					list.put(m.getID(), m);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			arr = getDataArrayFromJSON("user/library/shows/loved.json/%k/%u",true);
+			for (int i=0;i<arr.length();i++) {
+				try {
+					JSONObject data = arr.getJSONObject(i);
+					String id = data.getString("tvdb_id");
+					Movie m = list.get(id);
+					if (m==null) {
+						m = new Movie();
+						m.setID(data.getString("tvdb_id"));						
+					}
+					m.setLoved(true);
+					list.put(id, m);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			arr = getDataArrayFromJSON("user/library/shows/hated.json/%k/%u",true);
+			for (int i=0;i<arr.length();i++) {
+				try {
+					JSONObject data = arr.getJSONObject(i);
+					String id = data.getString("tvdb_id");
+					Movie m = list.get(id);
+					if (m==null) {
+						m = new Movie();
+						m.setID(data.getString("tvdb_id"));						
+					}					
+					m.setHated(true);
+					list.put(id, m);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		public static boolean Loved(String id) {
+			if (list==null) 
+				init();
+			
+			Movie m=list.get(id);
+			if (m!=null) {
+				return m.getLoved();
+			}
+			return false;
+		}
+		
+		public static boolean Hated(String id) {
+			if (list==null) 
+				init();
+			
+			Movie m=list.get(id);
+			if (m!=null) {
+				return m.getHated();
+			}
+			return false;
+		}	
+
+	}
+	
+	public static class UserMovies {
+		private static Map<String,Movie> list=null;
+
+		private static void init() {
+			list = new HashMap<String,Movie>();
+			// User all movies or only last 100?
+			JSONArray arr = getDataArrayFromJSON("user/library/movies/all.json/%k/%u",true);
+			for (int i=0;i<arr.length();i++) {
+				try {
+					JSONObject data = arr.getJSONObject(i);
+					//data = data.getJSONObject("movie");
+					Movie m = new Movie();
+					m.setID(data.getString("tmdb_id"));
+					m.setWatched(true);
+					list.put(m.getID(), m);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			arr = getDataArrayFromJSON("user/library/movies/loved.json/%k/%u",true);
+			for (int i=0;i<arr.length();i++) {
+				try {
+					JSONObject data = arr.getJSONObject(i);
+					String id = data.getString("tmdb_id");
+					Movie m = list.get(id);
+					if (m==null) {
+						m = new Movie();
+						m.setID(data.getString("tmdb_id"));						
+					}
+					m.setLoved(true);
+					list.put(id, m);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			arr = getDataArrayFromJSON("user/library/movies/hated.json/%k/%u",true);
+			for (int i=0;i<arr.length();i++) {
+				try {
+					JSONObject data = arr.getJSONObject(i);
+					String id = data.getString("tmdb_id");
+					Movie m = list.get(id);
+					if (m==null) {
+						m = new Movie();
+						m.setID(data.getString("tmdb_id"));						
+					}					
+					m.setHated(true);
+					list.put(id, m);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		public static boolean Loved(String id) {
+			if (list==null) 
+				init();
+			
+			Movie m=list.get(id);
+			if (m!=null) {
+				return m.getLoved();
+			}
+			return false;
+		}
+		
+		public static boolean Hated(String id) {
+			if (list==null) 
+				init();
+			
+			Movie m=list.get(id);
+			if (m!=null) {
+				return m.getHated();
+			}
+			return false;
+		}	
+		
+		public static boolean Watched(String id) {
+			if (list==null) 
+				init();
+			
+			Movie m=list.get(id);
+			if (m!=null) {
+				return m.getWatched();
+			}
+			return false;
+		}	
+		
+	}
+
 	
 	private static Object getDataFromJSON(String url, boolean login,String type)  {
 		url = baseurl + url;
 		url = url.replaceAll("%k", apikey);
+		url = url.replaceAll("%u", Testing.username);
 		
 		HttpClient httpclient = new DefaultHttpClient();
 		if (login) {

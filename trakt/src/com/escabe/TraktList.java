@@ -42,6 +42,8 @@ public class TraktList {
 	private Details details;
 	private boolean showPosters = false;
 	
+	private boolean trending;
+	
 	private String type;
 	
 	public TraktList(Activity activity) {
@@ -81,24 +83,58 @@ public class TraktList {
                 Movie o = items.get(position);
                 if (o != null) {
                         TextView tt = (TextView) v.findViewById(R.id.textRowTitle);
-                        if (tt != null) {
-                              tt.setText(o.getTitle());                            
-                        }
+                        tt.setText(o.getTitle());                            
+
+                        
                         TextView ti = (TextView) v.findViewById(R.id.textRowInfo);
-                        if (ti!=null) {
-                        	ti.setText("Watchers: " + o.getWatchers() + (o.getWatched()?" watched":""));
-                        }
-                        
-                        ImageView iv = (ImageView) v.findViewById(R.id.imageRow);
-                        if (iv != null) {
-                        	if (showPosters) {
-                        		dm.fetchDrawableOnThread("http://escabe.org/resize.php?image=" + o.getPoster(), iv);
-                        	} else {
-                        		iv.setImageResource(R.drawable.emptyposter);
-                        	}
-                        	
-                        }
-                        
+                    	if (trending) {
+	                        String d = String.format("Watchers: %d", o.getWatchers());
+	                    	ti.setText(d);
+                    	} else {
+                    		ti.setText("");
+                    	}
+
+                    	ImageView iv = (ImageView) v.findViewById(R.id.imageRow);
+                    	if (showPosters) {
+                    		dm.fetchDrawableOnThread("http://escabe.org/resize.php?image=" + o.getPoster(), iv);
+                    	} else {
+                    		iv.setImageResource(R.drawable.emptyposter);
+                    	}
+                    	if (type=="Shows") {
+                    		// No Watched
+                    		((ImageView)v.findViewById(R.id.imageRowWatched)).setVisibility(View.GONE);
+                    		// Loved
+                    		if (TraktApi.UserSeries.Loved(o.getID())) {
+                    			((ImageView)v.findViewById(R.id.imageRowLoved)).setVisibility(View.VISIBLE);
+                    		} else {
+                    			((ImageView)v.findViewById(R.id.imageRowLoved)).setVisibility(View.GONE);
+                    		}
+                    		// Hated
+                    		if (TraktApi.UserSeries.Hated(o.getID())) {
+                    			((ImageView)v.findViewById(R.id.imageRowHated)).setVisibility(View.VISIBLE);
+                    		} else {
+                    			((ImageView)v.findViewById(R.id.imageRowHated)).setVisibility(View.GONE);
+                    		}
+                    	} else { // Movies
+                    		// Watched
+                    		if (TraktApi.UserMovies.Watched(o.getID())) {
+                    			((ImageView)v.findViewById(R.id.imageRowWatched)).setVisibility(View.VISIBLE);
+                    		} else {
+                    			((ImageView)v.findViewById(R.id.imageRowWatched)).setVisibility(View.GONE);
+                    		}                    		
+                    		// Loved
+                    		if (TraktApi.UserMovies.Loved(o.getID())) {
+                    			((ImageView)v.findViewById(R.id.imageRowLoved)).setVisibility(View.VISIBLE);
+                    		} else {
+                    			((ImageView)v.findViewById(R.id.imageRowLoved)).setVisibility(View.GONE);
+                    		}
+                    		// Hated
+                    		if (TraktApi.UserMovies.Hated(o.getID())) {
+                    			((ImageView)v.findViewById(R.id.imageRowHated)).setVisibility(View.VISIBLE);
+                    		} else {
+                    			((ImageView)v.findViewById(R.id.imageRowHated)).setVisibility(View.GONE);
+                    		}
+                    	}
                 }
                 return v;
         }
@@ -112,8 +148,9 @@ public class TraktList {
 	
 	
 
-    public void showList(String url,boolean login,String t) {
+    public void showList(String url,boolean login,String t,boolean trend) {
     	type = t;
+    	trending = trend;
     	JSONArray arr = null;
     	//Get list
    		arr = TraktApi.getDataArrayFromJSON(url,login);

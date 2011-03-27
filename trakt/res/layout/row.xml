@@ -18,8 +18,13 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" android:layout_height="?android:attr/listPreferredItemHeight">
     <ImageView android:src="@drawable/icon" android:layout_width="wrap_content" android:id="@+id/imageRow" android:layout_height="fill_parent"></ImageView>
-    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="wrap_content" android:orientation="vertical" android:layout_height="fill_parent">
+    <LinearLayout android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
         <TextView android:text="TextView" android:layout_height="wrap_content" android:textSize="18px" android:id="@+id/textRowTitle" android:layout_width="wrap_content"></TextView>
-        <TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textRowInfo"></TextView>
+        <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:layout_width="match_parent">
+            <TextView android:id="@+id/textRowInfo" android:layout_height="wrap_content" android:text="TextView" android:layout_width="wrap_content" android:layout_gravity="center_vertical" android:paddingRight="3px"></TextView>
+            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/imageRowWatched" android:src="@drawable/iconwatch" android:padding="1px" android:visibility="gone"></ImageView>
+            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/imageRowLoved" android:src="@drawable/iconlove" android:padding="1px" android:visibility="gone"></ImageView>
+            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/imageRowHated" android:src="@drawable/iconhate" android:visibility="gone" android:padding="1px"></ImageView>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
