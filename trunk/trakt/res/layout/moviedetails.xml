@@ -7,5 +7,12 @@
             <TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textDetails"></TextView>
         </LinearLayout>
     </LinearLayout>
-    <TextView android:text="TextView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/textDetailsOverview"></TextView>
+    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout4" android:layout_width="match_parent" android:padding="2px">
+        <ImageView android:id="@+id/imageDetailsWatched" android:visibility="visible" android:src="@drawable/buttonwatch" android:layout_height="25px" android:layout_width="34px" android:scaleType="center" android:layout_margin="2px"></ImageView>
+        <ImageView android:id="@+id/imageDetailsLoved" android:visibility="visible" android:src="@drawable/buttonlove" android:layout_width="34px" android:layout_height="25px" android:scaleType="center" android:layout_margin="2px"></ImageView>
+        <ImageView android:id="@+id/imageDetailsHated" android:visibility="visible" android:src="@drawable/buttonhate" android:layout_height="25px" android:layout_width="34px" android:scaleType="center" android:layout_margin="2px"></ImageView>
+    </LinearLayout>
+    <ScrollView android:id="@+id/scrollView1" android:layout_width="match_parent" android:layout_height="fill_parent">
+        <TextView android:id="@+id/textDetailsOverview" android:layout_height="fill_parent" android:text="TextView" android:layout_width="fill_parent"></TextView>
+    </ScrollView>
 </LinearLayout>
