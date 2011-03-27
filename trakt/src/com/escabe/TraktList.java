@@ -40,7 +40,7 @@ public class TraktList {
 	private DrawableManager dm = new DrawableManager();
 	private Activity parentActivity;
 	private Details details;
-	private boolean showPosters = false;
+	private boolean showPosters = true;
 	
 	private boolean trending;
 	

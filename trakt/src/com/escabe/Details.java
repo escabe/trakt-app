@@ -14,6 +14,9 @@ import android.widget.TextView;
 public class Details {
 	private String type;
 	private ImageView poster;
+	private ImageView watched;
+	private ImageView loved;
+	private ImageView hated;
 	private TextView title;
 	private TextView details;
 	private TextView overview;
@@ -27,6 +30,9 @@ public class Details {
 		details = (TextView) parentActivity.findViewById(R.id.textDetails);
 		overview = (TextView) parentActivity.findViewById(R.id.textDetailsOverview);
 		poster = (ImageView) parentActivity.findViewById(R.id.imageDetailsPoster);
+		watched = (ImageView) parentActivity.findViewById(R.id.imageDetailsWatched);
+		hated = (ImageView) parentActivity.findViewById(R.id.imageDetailsHated);
+		loved = (ImageView) parentActivity.findViewById(R.id.imageDetailsLoved);
 		dm = new DrawableManager();
 	}
 	
@@ -63,17 +69,38 @@ public class Details {
 		} else {
 			try {
 				JSONObject data = TraktApi.getDataObjectFromJSON("movie/summary.json/%k/" + id, true);
+				// Fill in title
 				title.setText(data.optString("title"));
+				// Load poster
 				JSONObject images = data.getJSONObject("images");
 				String p = images.getString("poster");
 				p = p.replace(".jpg", "-138.jpg");
 				dm.fetchDrawableOnThread("http://escabe.org/resize2.php?image=" + p, poster);
+				// Display details
 				String d = String.format("Released: %1$tB %1$te, %1$tY\nRuntime: %2$d min\n",new Date(data.optLong("released")*1000),
 																													data.optInt("runtime"));
 				details.setText(d);
+				// Get tagline and overview
 				d = String.format("\"%s\"\n\n%s",data.optString("tagline"),data.optString("overview"));
 				overview.setText(d);
+				// Set watched/loved/hated
+				if (TraktApi.UserMovies.Watched(id)) {
+					watched.setBackgroundResource(R.drawable.watchedactive);
+				} else {
+					watched.setBackgroundDrawable(null);
+				}
+				if (TraktApi.UserMovies.Loved(id)) {
+					loved.setBackgroundResource(R.drawable.lovedactive);
+				} else {
+					loved.setBackgroundDrawable(null);
+				}
+				if (TraktApi.UserMovies.Hated(id)) {
+					hated.setBackgroundResource(R.drawable.hatedactive);
+				} else {
+					hated.setBackgroundDrawable(null);
+				}
 
+				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
