@@ -27,6 +27,7 @@
         <include layout="@layout/mainmenu" android:id="@+id/frameLayout1_ref"  android:layout_width="fill_parent" android:layout_height="fill_parent"/>
         <include layout="@layout/traktlist" android:id="@+id/linearLayout5_ref"  android:layout_width="fill_parent" android:layout_height="fill_parent"/>
         <include layout="@layout/searchview" android:id="@+id/LinearLayout6_ref"  android:layout_width="fill_parent" android:layout_height="fill_parent"/>
-        <include layout="@layout/moviedetails" android:id="@+id/linearLayout2_ref"  android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <include layout="@layout/moviedetails" android:id="@+id/linearLayout2_ref"  android:layout_width="fill_parent" android:layout_height="fill_parent"/>
+        <include layout="@layout/settingsview" android:id="@+id/linearLayout2_ref"  android:layout_width="fill_parent" android:layout_height="fill_parent"/>
     </ViewFlipper>
 </LinearLayout>

@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.escabe.trakt.MyView;
+
 import android.app.Activity;
 import android.text.format.Formatter;
 import android.widget.ImageView;
@@ -45,7 +47,7 @@ public class Details {
 	
 	public void showDetails (String t, String id) {
 		type = t;
-		parentActivity.vf.setDisplayedChild(3);
+		parentActivity.myflipper.FlipTo(MyView.DETAILS);
 		
 		if (type=="Shows") {
 			try {

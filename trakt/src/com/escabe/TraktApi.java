@@ -34,8 +34,17 @@ import org.json.JSONObject;
 public class TraktApi {
     private static String apikey = "682912f6e62d666428d261544d619d7c";
 	private static String baseurl = "http://api.trakt.tv/";
+	private static String username;
+	private static String password;
+
+	public static void Login(String u, String p) {
+		username = u;
+		password = p;
+	}
+
 	public static class UserSeries {
 		private static Map<String,Movie> list=null;
+		
 		
 		private static void init() {
 			list = new HashMap<String,Movie>();
@@ -204,15 +213,15 @@ public class TraktApi {
 	private static Object getDataFromJSON(String url, boolean login,String type)  {
 		url = baseurl + url;
 		url = url.replaceAll("%k", apikey);
-		url = url.replaceAll("%u", Testing.username);
+		url = url.replaceAll("%u", username);
 		
 		HttpClient httpclient = new DefaultHttpClient();
 		if (login) {
 	        HttpPost httppost = new HttpPost(url); 
 	        JSONObject jsonpost = new JSONObject();
 	        try {
-				jsonpost.put("username",Testing.username);
-				jsonpost.put("password", Testing.password);
+				jsonpost.put("username",username);
+				jsonpost.put("password", password);
 				httppost.setEntity(new StringEntity(jsonpost.toString()));
 		        String response = httpclient.execute(httppost, new BasicResponseHandler());
 		        if (type=="array") {
