@@ -21,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.escabe.trakt.MyView;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class TraktList {
@@ -38,24 +41,26 @@ public class TraktList {
 	private ArrayList<Movie> MovieList = new ArrayList<Movie>();
 	private MovieAdapter ma;
 	private DrawableManager dm = new DrawableManager();
-	private Activity parentActivity;
+	//private Activity parentActivity;
 	private Details details;
 	private boolean showPosters = true;
-	
+	private Spinner spinner;
 	private boolean trending;
-	
 	private String type;
 	
+	
+	
 	public TraktList(Activity activity) {
-		parentActivity = activity;
+		//parentActivity = activity;
         details = Details.getInstance(activity);
         
-		lv = (ListView)parentActivity.findViewById(R.id.listMainList);
-        ma = new MovieAdapter(parentActivity,R.layout.row,MovieList);
+		lv = (ListView)trakt.instance.findViewById(R.id.listMainList);
+        ma = new MovieAdapter(trakt.instance,R.layout.row,MovieList);
         lv.setAdapter(ma);
         lv.setOnItemClickListener(new lvOnItemClick());
+        spinner = (Spinner) trakt.instance.findViewById(R.id.spinTrakt);
 	}
-	
+		
 	private class lvOnItemClick implements AdapterView.OnItemClickListener {
 
 		public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
@@ -77,7 +82,7 @@ public class TraktList {
         public View getView(int position, View convertView, ViewGroup parent) {
                 View v = convertView;
                 if (v == null) {
-                    LayoutInflater vi = (LayoutInflater)parentActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    LayoutInflater vi = (LayoutInflater)trakt.instance.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     v = vi.inflate(R.layout.row, null);
                 }
                 Movie o = items.get(position);
@@ -141,16 +146,24 @@ public class TraktList {
 
 	}
 	
-	private boolean watchedStatus(String type, String id) {
-		JSONObject arr = TraktApi.getDataObjectFromJSON(type + "/summary.json/%k/" + id,true);
-		return arr.optBoolean("watched");
+	public void ShowTrending(String t) {
+		type = t;
+		trending = true;
+		
+		if (t=="Movies") {
+	    	trakt.instance.myflipper.FlipTo(MyView.TRAKTLIST);
+	    	TextView tv = (TextView)trakt.instance.findViewById(R.id.textTitle);
+	    	tv.setText("Trending Movies");
+	    	ShowList("movies/trending.json/%k",false);
+		} else {
+	    	trakt.instance.myflipper.FlipTo(MyView.TRAKTLIST);
+	    	TextView tv = (TextView)trakt.instance.findViewById(R.id.textTitle);
+	    	tv.setText("Trending Shows");
+	    	ShowList("shows/trending.json/%k",false);
+		}
 	}
 	
-	
-
-    public void showList(String url,boolean login,String t,boolean trend) {
-    	type = t;
-    	trending = trend;
+    public void ShowList(String url,boolean login) {
     	JSONArray arr = null;
     	//Get list
    		arr = TraktApi.getDataArrayFromJSON(url,login);

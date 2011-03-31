@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -173,24 +174,18 @@ public class trakt extends Activity {
 	}
 	
     public void buttonTrendingTVOnClick(View view) {
-    	myflipper.FlipTo(MyView.TRAKTLIST);
-    	TextView tv = (TextView)findViewById(R.id.textTitle);
-    	tv.setText("Trending Shows");
-    	traktlist.showList("shows/trending.json/%k",false,"Shows",true);
+    	traktlist.ShowTrending("Shows");
     }
     
     public void buttonTrendingMoviesOnClick(View view) {
-    	myflipper.FlipTo(MyView.TRAKTLIST);
-    	TextView tv = (TextView)findViewById(R.id.textTitle);
-    	tv.setText("Trending Movies");
-    	traktlist.showList("movies/trending.json/%k",false,"Movies",true);
+    	traktlist.ShowTrending("Movies");
     }
     
     public void buttonWatchedOnClick(View view) {
     	myflipper.FlipTo(MyView.TRAKTLIST);;
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText(settings.getString("username","") + " Watched Movies");
-    	traktlist.showList("user/library/movies/all.json/%k/" + settings.getString("username",""),true,"Movies",false);
+    	traktlist.ShowList("user/library/movies/all.json/%k/" + settings.getString("username",""),true);
     }
     
     public void buttonSearchSeriesOnClick(View view) {
