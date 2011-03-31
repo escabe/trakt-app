@@ -16,6 +16,7 @@
 package com.escabe;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -30,7 +31,7 @@ public class TvdbUtils {
 			ArrayList<Movie> list = new ArrayList<Movie>(); 
 			try {
 				DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-				Document doc = db.parse("http://www.thetvdb.com/api/GetSeries.php?seriesname=" + title);
+				Document doc = db.parse("http://www.thetvdb.com/api/GetSeries.php?seriesname=" + URLEncoder.encode(title));
 				NodeList series = doc.getElementsByTagName("Series");
 				for (int i=0;i<series.getLength();i++) {
 					Movie m = new Movie();

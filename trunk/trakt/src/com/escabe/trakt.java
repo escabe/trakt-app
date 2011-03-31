@@ -21,6 +21,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Stack;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -37,7 +39,7 @@ public class trakt extends Activity {
 //    public ViewFlipper vf;
     private TraktList traktlist;
     private Search search;
-    
+    public static trakt instance;
     public MyFlipper myflipper;
     
     private SharedPreferences settings;
@@ -64,6 +66,8 @@ public class trakt extends Activity {
 
     	}
     	public void FlipTo(MyView v) {
+    		if (viewflipper.getDisplayedChild()==v.id())
+    			return;
     		viewstack.push(viewflipper.getDisplayedChild());
     		viewflipper.setDisplayedChild(v.id());
     		
@@ -82,11 +86,16 @@ public class trakt extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        instance = this;
+        
         setContentView(R.layout.main);
 
         // Read preferences
         settings = getPreferences(MODE_PRIVATE);
         TraktApi.Login(settings.getString("username",""),settings.getString("password",""));
+    	TextView un = (TextView)findViewById(R.id.editUsername);
+    	un.setText(settings.getString("username", ""));
         
         // Save some "handles" to important GUI elements
         ViewFlipper vf = (ViewFlipper) findViewById(R.id.viewFlipper1);
@@ -125,10 +134,8 @@ public class trakt extends Activity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
-	
 
 	public void buttonLoginOnClick(View view) {
-		SharedPreferences.Editor ed = settings.edit();
 		TextView un = (TextView)findViewById(R.id.editUsername);
 		TextView pa = (TextView)findViewById(R.id.editPassword);
 		String username = un.getText().toString();
@@ -148,10 +155,21 @@ public class trakt extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ed.putString("username", username);
-		ed.putString("password", password);
-		ed.commit();
-		TraktApi.Login(username,password);
+		if (TraktApi.Login(username,password)) {
+			SharedPreferences.Editor ed = settings.edit();
+			ed.putString("username", username);
+			ed.putString("password", password);
+			ed.commit();
+			AlertDialog.Builder alert = new AlertDialog.Builder(trakt.instance);
+			alert.setTitle("Trakt.tv");
+			alert.setMessage("Login Succesfull!");
+			alert.setIcon(android.R.drawable.ic_dialog_info);
+			alert.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface arg0, int arg1) {
+					trakt.instance.myflipper.FlipBack();
+				}});
+			alert.show();
+		}
 	}
 	
     public void buttonTrendingTVOnClick(View view) {

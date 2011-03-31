@@ -31,15 +31,36 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.escabe.trakt.MyView;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.widget.Toast;
+
 public class TraktApi {
     private static String apikey = "682912f6e62d666428d261544d619d7c";
 	private static String baseurl = "http://api.trakt.tv/";
 	private static String username;
 	private static String password;
 
-	public static void Login(String u, String p) {
+	public static boolean Login(String u, String p) {
 		username = u;
 		password = p;
+		JSONObject data = getDataObjectFromJSON("",true);
+		if (data==null) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(trakt.instance);
+			alert.setTitle("Trakt.tv");
+			alert.setMessage("Login Failed!\nPlease check login details.");
+			alert.setIcon(android.R.drawable.ic_dialog_alert);
+			alert.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface arg0, int arg1) {
+					trakt.instance.myflipper.FlipTo(MyView.SETTINGS);
+				}});
+			alert.show();
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public static class UserSeries {
