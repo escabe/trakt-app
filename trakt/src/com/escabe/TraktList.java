@@ -15,12 +15,18 @@
  ******************************************************************************/
 package com.escabe;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.commonsware.cwac.cache.AsyncCache;
+import com.commonsware.cwac.cache.SimpleWebImageCache;
+import com.commonsware.cwac.thumbnail.ThumbnailAdapter;
+import com.commonsware.cwac.thumbnail.ThumbnailBus;
+import com.commonsware.cwac.thumbnail.ThumbnailMessage;
 import com.escabe.trakt.MyView;
 
 import android.app.Activity;
@@ -40,23 +46,36 @@ public class TraktList {
 
 	private ArrayList<Movie> MovieList = new ArrayList<Movie>();
 	private MovieAdapter ma;
-	private DrawableManager dm = new DrawableManager();
-	//private Activity parentActivity;
+	private ThumbnailAdapter ta;
 	private Details details;
 	private boolean showPosters = true;
 	private Spinner spinner;
 	private boolean trending;
 	private String type;
 	
+	private AsyncCache.DiskCachePolicy policy=new AsyncCache.DiskCachePolicy() {
+		public boolean eject(File file) {
+			return(System.currentTimeMillis()-file.lastModified()>1000*60*60*24*7);
+		}
+	};
+	
+	private ThumbnailBus bus=new ThumbnailBus();
+	private SimpleWebImageCache<ThumbnailBus, ThumbnailMessage> cache=
+							new SimpleWebImageCache<ThumbnailBus, ThumbnailMessage>(trakt.instance.getCacheDir(), policy, 101, bus);
+
+	private static final int[] IMAGE_IDS={R.id.imageRow};
 	
 	
-	public TraktList(Activity activity) {
+  	public TraktList(Activity activity) {
 		//parentActivity = activity;
         details = Details.getInstance(activity);
         
 		lv = (ListView)trakt.instance.findViewById(R.id.listMainList);
         ma = new MovieAdapter(trakt.instance,R.layout.row,MovieList);
-        lv.setAdapter(ma);
+        
+        ta = new ThumbnailAdapter(trakt.instance, ma,cache,IMAGE_IDS);
+        lv.setAdapter(ta);
+        
         lv.setOnItemClickListener(new lvOnItemClick());
         spinner = (Spinner) trakt.instance.findViewById(R.id.spinTrakt);
 	}
@@ -100,11 +119,11 @@ public class TraktList {
                     	}
 
                     	ImageView iv = (ImageView) v.findViewById(R.id.imageRow);
-                    	if (showPosters) {
-                    		dm.fetchDrawableOnThread("http://escabe.org/resize.php?image=" + o.getPoster(), iv);
-                    	} else {
-                    		iv.setImageResource(R.drawable.emptyposter);
-                    	}
+                    	iv.setImageResource(R.drawable.emptyposter);
+                    	if (o.getPoster()!="") {
+                    		iv.setTag("http://escabe.org/resize.php?image=" + o.getPoster());
+                    	}	
+                    	
                     	if (type=="Shows") {
                     		// No Watched
                     		((ImageView)v.findViewById(R.id.imageRowWatched)).setVisibility(View.GONE);
@@ -170,7 +189,7 @@ public class TraktList {
     	// Clear current Movie Array
     	MovieList.clear();
     	// Notify ListView adapter of change
-    	ma.notifyDataSetInvalidated();
+    	ta.notifyDataSetInvalidated();
 
     	//Re-Fill the Movie Array
     	try {
@@ -202,6 +221,6 @@ public class TraktList {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        ma.notifyDataSetChanged();
+        ta.notifyDataSetChanged();
 	}
 }
