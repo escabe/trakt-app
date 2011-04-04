@@ -1,15 +1,17 @@
 package com.escabe;
 
+import java.io.File;
 import java.util.Date;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.commonsware.cwac.bus.SimpleBus;
+import com.commonsware.cwac.cache.AsyncCache;
+import com.commonsware.cwac.cache.WebImageCache;
 import com.escabe.trakt.MyView;
 
 import android.app.Activity;
-import android.text.format.Formatter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +26,15 @@ public class Details {
 	private TextView overview;
 	private static Details d=null;
 	private trakt parentActivity;
-	private DrawableManager dm;
+	
+		private AsyncCache.DiskCachePolicy policy=new AsyncCache.DiskCachePolicy() {
+		public boolean eject(File file) {
+			return(System.currentTimeMillis()-file.lastModified()>1000*60*60*24*7);
+		}
+	};
+	
+	private SimpleBus bus = new SimpleBus();
+	private WebImageCache cache = new WebImageCache(trakt.instance.getCacheDir(), bus, policy, 101,trakt.instance.getResources().getDrawable(R.drawable.emptyposter));
 	
 	public Details(Activity parent) {
 		parentActivity = (trakt) parent;
@@ -35,7 +45,6 @@ public class Details {
 		watched = (ImageView) parentActivity.findViewById(R.id.imageDetailsWatched);
 		hated = (ImageView) parentActivity.findViewById(R.id.imageDetailsHated);
 		loved = (ImageView) parentActivity.findViewById(R.id.imageDetailsLoved);
-		dm = new DrawableManager();
 	}
 	
 	public static Details getInstance(Activity parent) {
@@ -56,7 +65,8 @@ public class Details {
 				JSONObject images = data.getJSONObject("images");
 				String p = images.getString("poster");
 				p = p.replace(".jpg", "-138.jpg");
-				dm.fetchDrawableOnThread("http://escabe.org/resize2.php?image=" + p, poster);
+
+				cache.handleImageView(poster,"http://escabe.org/resize2.php?image=" + p , "myposter");
 				String d = String.format("First Aired: %1$tB %1$te, %1$tY\nCountry: %2$s\nRuntime: %3$d min\n",new Date(data.optLong("first_aired")*1000),
 																													data.optString("country"),
 																													data.optInt("runtime"));
@@ -64,6 +74,9 @@ public class Details {
 				overview.setText(data.optString("overview"));
 
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -77,7 +90,7 @@ public class Details {
 				JSONObject images = data.getJSONObject("images");
 				String p = images.getString("poster");
 				p = p.replace(".jpg", "-138.jpg");
-				dm.fetchDrawableOnThread("http://escabe.org/resize2.php?image=" + p, poster);
+				cache.handleImageView(poster,"http://escabe.org/resize2.php?image=" + p , "myposter");
 				// Display details
 				String d = String.format("Released: %1$tB %1$te, %1$tY\nRuntime: %2$d min\n",new Date(data.optLong("released")*1000),
 																													data.optInt("runtime"));
@@ -104,6 +117,9 @@ public class Details {
 
 				
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

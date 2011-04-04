@@ -35,7 +35,6 @@ import com.escabe.trakt.MyView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.widget.Toast;
 
 public class TraktApi {
     private static String apikey = "682912f6e62d666428d261544d619d7c";
