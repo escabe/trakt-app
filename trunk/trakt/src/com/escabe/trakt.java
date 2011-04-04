@@ -31,7 +31,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -182,10 +181,11 @@ public class trakt extends Activity {
     }
     
     public void buttonWatchedOnClick(View view) {
-    	myflipper.FlipTo(MyView.TRAKTLIST);;
+    	/*myflipper.FlipTo(MyView.TRAKTLIST);;
     	TextView tv = (TextView)findViewById(R.id.textTitle);
     	tv.setText(settings.getString("username","") + " Watched Movies");
-    	traktlist.ShowList("user/library/movies/all.json/%k/" + settings.getString("username",""),true);
+    	traktlist.ShowList("user/library/movies/all.json/%k/" + settings.getString("username",""),true);*/
+    	traktlist.ShowUserList("Movies","all");
     }
     
     public void buttonSearchSeriesOnClick(View view) {

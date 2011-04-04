@@ -182,6 +182,23 @@ public class TraktList {
 		}
 	}
 	
+	public void ShowUserList(String t,String l) {
+		type = t;
+		trending = false;
+		if (t=="Movies") {
+	    	trakt.instance.myflipper.FlipTo(MyView.TRAKTLIST);
+	    	TextView tv = (TextView)trakt.instance.findViewById(R.id.textTitle);
+	    	tv.setText(l + "/" + t);
+	    	ShowList("user/library/movies/" + l + ".json/%k/%u",true);
+		} else {
+	    	trakt.instance.myflipper.FlipTo(MyView.TRAKTLIST);
+	    	TextView tv = (TextView)trakt.instance.findViewById(R.id.textTitle);
+	    	tv.setText(l + "/" + t);
+	    	ShowList("user/library/shows/" + l + ".json/%k/%u",true);
+		}		
+	
+	}
+	
     public void ShowList(String url,boolean login) {
     	JSONArray arr = null;
     	//Get list
@@ -222,5 +239,6 @@ public class TraktList {
             e.printStackTrace();
         }
         ta.notifyDataSetChanged();
+        lv.setSelection(0);
 	}
 }
