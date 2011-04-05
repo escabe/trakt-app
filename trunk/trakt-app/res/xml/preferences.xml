@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="trakt.tv Login Information"><EditTextPreference android:summary="Your trakt.tv username" android:title="User Name" android:dialogTitle="Enter your trakt.tv user name" android:key="user" android:singleLine="true"></EditTextPreference><EditTextPreference android:summary="Your trakt.tv password" android:title="Password" android:dialogTitle="Enter your trakt.tv password" android:key="password" android:password="true" android:singleLine="true"></EditTextPreference></PreferenceCategory>
+    
+    
+    <PreferenceCategory android:title="Trakt App Preferences">
+        <CheckBoxPreference android:title="Display Posters in Lists" android:key="posters_list" android:summary="Enable downloading posters in lists" android:defaultValue="true"></CheckBoxPreference>
+        <CheckBoxPreference android:key="posters_details" android:title="Show Posters in Details" android:summary="Enalbe downloading posters in details" android:defaultValue="true"></CheckBoxPreference>
+    </PreferenceCategory>
+</PreferenceScreen>
