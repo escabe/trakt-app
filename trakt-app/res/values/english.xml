@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TraktApp</string>
+    <string name="trending_movies">Trending Movies</string>
+    <string name="trending_shows">Trending Shows</string>
+</resources>
