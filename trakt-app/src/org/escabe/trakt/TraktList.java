@@ -1,28 +1,24 @@
 package org.escabe.trakt;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.commonsware.cwac.cache.AsyncCache;
-import com.commonsware.cwac.cache.SimpleWebImageCache;
 import com.commonsware.cwac.thumbnail.ThumbnailAdapter;
-import com.commonsware.cwac.thumbnail.ThumbnailBus;
-import com.commonsware.cwac.thumbnail.ThumbnailMessage;
-
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class TraktList extends ListActivity {
@@ -44,6 +40,17 @@ public class TraktList extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.trakt_list);
+
+	    traktapi = new TraktAPI(this);
+		data=(ArrayList<MovieShowInformation>)getLastNonConfigurationInstance();
+		if (data==null) {
+			data = new ArrayList<MovieShowInformation>();
+			thumbs = new ThumbnailAdapter(this, new MovieShowAdapter(), ((Application)getApplication()).getCache(),IMAGE_IDS);
+			setListAdapter(thumbs);
+		}
+		HandleIntent(getIntent());
+
+	
 	}
 
 	private Runnable UpdateComplete = new Runnable() {
@@ -58,14 +65,6 @@ public class TraktList extends ListActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		traktapi = new TraktAPI(this);
-		data=(ArrayList<MovieShowInformation>)getLastNonConfigurationInstance();
-		if (data==null) {
-			data = new ArrayList<MovieShowInformation>();
-			thumbs = new ThumbnailAdapter(this, new MovieShowAdapter(), ((Application)getApplication()).getCache(),IMAGE_IDS);
-			setListAdapter(thumbs);
-		}
-		HandleIntent(getIntent());
 	}
 
     private void HandleIntent(Intent intent) {
@@ -115,7 +114,15 @@ public class TraktList extends ListActivity {
 		return(data);
 	}
 	
-	    	
+	@Override
+	public void onListItemClick (ListView l, View v, int position, long id) {
+		MovieShowInformation info = data.get(position);
+		if (showmovie == ShowMovie.Movie) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + info.getId()),this,TraktDetails.class));
+		} else {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + info.getId()),this,TraktDetails.class));
+		}
+	}
 
 	private void ShowList(String url,boolean login) {
     	JSONArray arr = null;
@@ -133,20 +140,20 @@ public class TraktList extends ListActivity {
 	    		JSONObject obj = arr.getJSONObject(i);
 	    		// Get poster
 	    		JSONObject picts = obj.getJSONObject("images");
-	    		String p = picts.getString("poster");
+	    		String p = picts.optString("poster");
 	    		p = p.replace(".jpg", "-138.jpg");
 	    		info.setPoster(p);
 	    		// Get title
-	    		info.setTitle(obj.getString("title"));
+	    		info.setTitle(obj.optString("title"));
 	    		// Get number of watchers
 	    		if (usertrending==UserTrending.Trending) {
-	    			info.setWatchers(obj.getInt("watchers"));
+	    			info.setWatchers(obj.optInt("watchers"));
 	    		}
 	    		// Save ID
 	    		if (showmovie == ShowMovie.Movie) {
-	    			info.setId(obj.getString("tmdb_id"));
+	    			info.setId(obj.optString("tmdb_id"));
 	    		} else {
-	    			info.setId(obj.getString("tvdb_id"));
+	    			info.setId(obj.optString("tvdb_id"));
 	    		}
 	    		data.add(info);
 	    	}

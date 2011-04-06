@@ -1,13 +1,5 @@
 package org.escabe.trakt;
 
-import java.io.File;
-import java.net.URI;
-
-import com.commonsware.cwac.cache.AsyncCache;
-import com.commonsware.cwac.cache.SimpleWebImageCache;
-import com.commonsware.cwac.thumbnail.ThumbnailBus;
-import com.commonsware.cwac.thumbnail.ThumbnailMessage;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
