@@ -1,6 +1,7 @@
 package org.escabe.trakt;
 
 import java.io.File;
+import java.net.URI;
 
 import com.commonsware.cwac.cache.AsyncCache;
 import com.commonsware.cwac.cache.SimpleWebImageCache;
@@ -10,6 +11,7 @@ import com.commonsware.cwac.thumbnail.ThumbnailMessage;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -36,6 +38,8 @@ public class TraktMain extends Activity {
 		}
     }
     
+
+    
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
@@ -55,7 +59,23 @@ public class TraktMain extends Activity {
 	    }
 	}
 	
-    public void buttonTrendingMoviesOnClick(View view) {
-    	startActivity(new Intent(this,TraktList.class));
+    public void buttonTrendingClick(View view) {
+    	switch (view.getId()) {
+    	case R.id.buttonTrendingMovies:
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://movies/trending"),this,TraktList.class));
+    		break;
+    	case R.id.buttonTrendingShows:
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://shows/trending"),this,TraktList.class));
+    		break;
+    	case R.id.buttonUserMovies:
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://user/library/movies/all"),this,TraktList.class));
+    		break;
+    	case R.id.buttonUserShows:
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://user/library/shows/all"),this,TraktList.class));
+    		break;
+
+    	}
     }
+
+    
 }

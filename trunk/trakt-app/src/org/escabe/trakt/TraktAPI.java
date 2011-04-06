@@ -2,6 +2,8 @@ package org.escabe.trakt;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -14,12 +16,46 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 public class TraktAPI {
-	private static String apikey = "682912f6e62d666428d261544d619d7c";
-	private static String baseurl = "http://api.trakt.tv/";
-	private static String username;
-	private static String password;
-	private static Object getDataFromJSON(String url, boolean login,String type)  {
+	private String apikey = "682912f6e62d666428d261544d619d7c";
+	private String baseurl = "http://api.trakt.tv/";
+	private String username;
+	private String password;
+	private SharedPreferences prefs;
+	
+	public TraktAPI(Context c) {
+		prefs = PreferenceManager.getDefaultSharedPreferences(c);
+		username = prefs.getString("user", "");
+		password = EncodePassword(prefs.getString("password", ""));
+	}
+	
+	private String EncodePassword(String p) {
+		MessageDigest sha;
+		try {
+			sha = MessageDigest.getInstance("SHA-1");
+			sha.update(p.getBytes("iso-8859-1"));
+			byte[] hash = sha.digest();
+			p = "";
+			for (int i=0;i<hash.length;i++) {
+				p += Integer.toHexString(hash[i] & 0xFF);
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	private Object getDataFromJSON(String url, boolean login,String type)  {
+		
+		
 		url = baseurl + url;
 		url = url.replaceAll("%k", apikey);
 		url = url.replaceAll("%u", username);
@@ -74,15 +110,15 @@ public class TraktAPI {
         return null;
 	
 	}
-	public static JSONArray getDataArrayFromJSON(String url) {
+	public JSONArray getDataArrayFromJSON(String url) {
 		return (JSONArray) getDataFromJSON(url,false,"array");
 		
 	}
-	public static JSONArray getDataArrayFromJSON(String url, boolean login) {
+	public JSONArray getDataArrayFromJSON(String url, boolean login) {
     	return (JSONArray) getDataFromJSON(url,login,"array");
 	}
     
-	public static JSONObject getDataObjectFromJSON(String url, boolean login) {
+	public JSONObject getDataObjectFromJSON(String url, boolean login) {
     	return (JSONObject) getDataFromJSON(url,login,"object");
 	}
 }

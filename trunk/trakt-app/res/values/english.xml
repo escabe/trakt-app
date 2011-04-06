@@ -3,4 +3,6 @@
     <string name="app_name">TraktApp</string>
     <string name="trending_movies">Trending Movies</string>
     <string name="trending_shows">Trending Shows</string>
+    <string name="user_movies">User Movies</string>
+    <string name="user_shows">User Shows</string>
 </resources>
