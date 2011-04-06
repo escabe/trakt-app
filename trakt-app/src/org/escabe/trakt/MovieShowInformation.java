@@ -5,6 +5,7 @@ public class MovieShowInformation {
 	private String poster=null;
 	private String id=null;
 	private boolean viewed=false;
+	private int watchers = 0;
 	
 	public void setTitle(String title) {
 		this.title = title;
@@ -36,6 +37,14 @@ public class MovieShowInformation {
 
 	public String getId() {
 		return id;
+	}
+
+	public void setWatchers(int watchers) {
+		this.watchers = watchers;
+	}
+
+	public int getWatchers() {
+		return watchers;
 	}
 	
 	

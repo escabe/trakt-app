@@ -16,6 +16,7 @@ import com.commonsware.cwac.thumbnail.ThumbnailMessage;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,12 @@ public class TraktList extends ListActivity {
 	private ThumbnailAdapter thumbs=null;
 	private Runnable fillList;
 	private ProgressDialog progressdialog;
+	private TraktAPI traktapi=null;
+	private enum ShowMovie {Show, Movie}
+	private ShowMovie showmovie;
+	
+	private enum UserTrending { User, Trending}
+	private UserTrending usertrending;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -51,29 +58,58 @@ public class TraktList extends ListActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		
+		traktapi = new TraktAPI(this);
 		data=(ArrayList<MovieShowInformation>)getLastNonConfigurationInstance();
-		
 		if (data==null) {
 			data = new ArrayList<MovieShowInformation>();
 			thumbs = new ThumbnailAdapter(this, new MovieShowAdapter(), ((Application)getApplication()).getCache(),IMAGE_IDS);
 			setListAdapter(thumbs);
-			
-			fillList = new Runnable() {
-				public void run() {
-					ShowList("movies/trending.json/%k",false);
-				}};
-			
-			thumbs.notifyDataSetInvalidated();
-			
-			Thread thread =  new Thread(null, fillList);
-	        thread.start();
-	        
-	        progressdialog = ProgressDialog.show(this,    
-	              "Please wait...", "Retrieving data ...", true);
 		}
+		HandleIntent(getIntent());
 	}
 
+    private void HandleIntent(Intent intent) {
+    	if (intent.getAction().equals(Intent.ACTION_VIEW)) {
+    		HandleUri(intent.getDataString());
+    	}
+    
+    }
+    
+    private void HandleUri(String uri) {
+		if (uri.equals("trakt://movies/trending")) {
+			showmovie = ShowMovie.Movie;
+			usertrending = UserTrending.Trending;
+			SwitchList("movies/trending.json/%k",false);
+		} else if (uri.equals("trakt://shows/trending")) {
+			showmovie = ShowMovie.Show;
+			usertrending = UserTrending.Trending;
+			SwitchList("shows/trending.json/%k",false);
+		} else if (uri.equals("trakt://user/library/shows/all")) {
+			showmovie = ShowMovie.Show;
+			usertrending = UserTrending.User;
+			SwitchList("user/library/shows/all.json/%k/%u",true);
+		}else if (uri.equals("trakt://user/library/movies/all")) {
+			showmovie = ShowMovie.Movie;
+			usertrending = UserTrending.User;
+			SwitchList("user/library/movies/all.json/%k/%u",true);
+		}
+    }
+    
+	private void SwitchList(final String url,final boolean login) {
+		fillList = new Runnable() {
+			public void run() {
+				ShowList(url,login);
+			}};
+		
+		thumbs.notifyDataSetInvalidated();
+		
+		Thread thread =  new Thread(null, fillList);
+        thread.start();
+        
+        progressdialog = ProgressDialog.show(this,"", "Retrieving data ...", true);
+
+	}
+	
 	@Override
 	public Object onRetainNonConfigurationInstance() {
 		return(data);
@@ -84,13 +120,11 @@ public class TraktList extends ListActivity {
 	private void ShowList(String url,boolean login) {
     	JSONArray arr = null;
     	//Get list
-   		arr = TraktAPI.getDataArrayFromJSON(url,login);
-    	// Clear current Movie Array
+   		arr = traktapi.getDataArrayFromJSON(url,login);
+    	// Clear current data Array
     	data.clear();
-    	// Notify ListView adapter of change
-    	
 
-    	//Re-Fill the Movie Array
+    	//Re-Fill the data Array
     	try {
     		//For all items
 	    	for (int i=0;i<arr.length();i++) {
@@ -105,10 +139,15 @@ public class TraktList extends ListActivity {
 	    		// Get title
 	    		info.setTitle(obj.getString("title"));
 	    		// Get number of watchers
-
+	    		if (usertrending==UserTrending.Trending) {
+	    			info.setWatchers(obj.getInt("watchers"));
+	    		}
 	    		// Save ID
-    			info.setId(obj.getString("tmdb_id"));
-	    		
+	    		if (showmovie == ShowMovie.Movie) {
+	    			info.setId(obj.getString("tmdb_id"));
+	    		} else {
+	    			info.setId(obj.getString("tvdb_id"));
+	    		}
 	    		data.add(info);
 	    	}
         } catch (JSONException e) {
@@ -134,8 +173,14 @@ public class TraktList extends ListActivity {
             if (info != null) {
             	TextView title = (TextView)row.findViewById(R.id.textTitle);
             	title.setText(info.getTitle());
+
             	ImageView poster = (ImageView)row.findViewById(R.id.imagePoster);
+            	poster.setImageResource(R.drawable.emptyposter);
             	poster.setTag(info.getPoster());
+            	
+            	TextView details = (TextView)row.findViewById(R.id.textDetails);
+            	String d = String.format("Watchers: %d", info.getWatchers());
+            	details.setText(d);
             }
             return(row);
 		}
