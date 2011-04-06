@@ -20,5 +20,6 @@
 		
 		<activity android:name=".TraktList">
 		</activity>
+		<activity android:name=".TraktDetails"></activity>
     </application>
 </manifest>
