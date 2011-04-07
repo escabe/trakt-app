@@ -1,6 +1,7 @@
 package org.escabe.trakt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +44,8 @@ public class TraktList extends ListActivity {
 	private enum UserTrending { User, Trending}
 	private UserTrending usertrending;
 	
+	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,7 @@ public class TraktList extends ListActivity {
 			thumbs.notifyDataSetChanged();
 	        // Scroll to first item
 			setSelection(0);
-	        // Hide progess dialoh
+	        // Hide progress dialog
 			progressdialog.dismiss();
 		}
 	};
@@ -214,7 +217,7 @@ public class TraktList extends ListActivity {
 		
 		@Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row = convertView;
+			View row = convertView;
             if (row == null) { //Create new row when needed
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 row = vi.inflate(R.layout.trak_list_row, null);
@@ -239,8 +242,31 @@ public class TraktList extends ListActivity {
             	} else {
             		details.setText("");
             	}
+            	// Display Loved, Hated and Watched icons
+            	if (lovedhatedwatched==null)
+            		lovedhatedwatched=((Application)getApplication()).getLovedHatedWatched();
             	
-            	// TODO Show Loved/Hated/Watched Images Posted to trakt Google group to see if we can get this information easily
+            	ImageView loved = (ImageView) row.findViewById(R.id.imageLoved);
+            	ImageView hated = (ImageView) row.findViewById(R.id.imageHated);
+            	ImageView watched = (ImageView) row.findViewById(R.id.imageWatched);
+            	
+            	// Check if Thread has already retrieved all info
+            	if(lovedhatedwatched!=null) {
+            		LovedHatedWatched lhw = lovedhatedwatched.get(info.getId());
+            		if (lhw!=null) {
+            			loved.setVisibility( lhw.isLoved() ? View.VISIBLE:View.GONE );
+            			hated.setVisibility( lhw.isHated() ? View.VISIBLE:View.GONE );
+            			watched.setVisibility( lhw.isWatched() ? View.VISIBLE:View.GONE );
+            		} else {
+            			loved.setVisibility(View.GONE);
+            			hated.setVisibility(View.GONE);
+            			watched.setVisibility(View.GONE);
+            		}
+            	} else {
+        			loved.setVisibility(View.GONE);
+        			hated.setVisibility(View.GONE);
+        			watched.setVisibility(View.GONE);
+            	}
             }
             return(row);
 		}
