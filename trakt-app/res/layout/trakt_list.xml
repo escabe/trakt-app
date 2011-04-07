@@ -3,6 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:orientation="vertical">
+    <!-- Spinner which should allow selecting different lists without leaving this TraktList Activity -->
     <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/spinnerTraktList"></Spinner>
     <ListView android:id="@android:id/list" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
 </LinearLayout>

@@ -1,4 +1,7 @@
 package org.escabe.trakt;
+/**
+ * Main menu Activity
+ */
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,10 +27,12 @@ public class TraktMain extends Activity {
 		
 		String user=prefs.getString("user", null);
 		String password=prefs.getString("password", null);
-		
+
+		// If username and passsword are not defined show preferences screen 
 		if (user==null || password==null) {
 			startActivity(new Intent(this, TraktPrefs.class));
 		}
+		// TODO Check if login details are actually correct
     }
     
 
@@ -50,9 +55,15 @@ public class TraktMain extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-	
+
+	/**
+	 * Handles all buttons
+	 * @param view
+	 */
     public void buttonTrendingClick(View view) {
+    	//Based on which button was pressed call other acitivities
     	switch (view.getId()) {
+    	// The following buttons lead to showing the TraktList activity
     	case R.id.buttonTrendingMovies:
     		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://movies/trending"),this,TraktList.class));
     		break;
@@ -68,6 +79,4 @@ public class TraktMain extends Activity {
 
     	}
     }
-
-    
 }
