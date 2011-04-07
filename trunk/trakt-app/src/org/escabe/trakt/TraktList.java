@@ -45,7 +45,7 @@ public class TraktList extends ListActivity {
 		data=(ArrayList<MovieShowInformation>)getLastNonConfigurationInstance();
 		if (data==null) {
 			data = new ArrayList<MovieShowInformation>();
-			thumbs = new ThumbnailAdapter(this, new MovieShowAdapter(), ((Application)getApplication()).getCache(),IMAGE_IDS);
+			thumbs = new ThumbnailAdapter(this, new MovieShowAdapter(), ((Application)getApplication()).getThumbsCache(),IMAGE_IDS);
 			setListAdapter(thumbs);
 		}
 		HandleIntent(getIntent());

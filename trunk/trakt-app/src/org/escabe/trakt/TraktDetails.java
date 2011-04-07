@@ -25,12 +25,6 @@ public class TraktDetails extends Activity {
 	private enum ShowMovie {Show, Movie}
 	private ShowMovie showmovie;
 	
-	private AsyncCache.DiskCachePolicy policy=new AsyncCache.DiskCachePolicy() {
-		public boolean eject(File file) {
-			return(System.currentTimeMillis()-file.lastModified()>1000*60*60*24*7);
-		}
-	};
-	private SimpleBus bus = new SimpleBus();
 	private WebImageCache cache = null;
 	
 	JSONObject data;
@@ -41,7 +35,7 @@ public class TraktDetails extends Activity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.trakt_details);
 	    
-		cache = new WebImageCache(getCacheDir(), bus, policy, 101,getResources().getDrawable(R.drawable.emptyposter));
+		cache = ((Application)getApplication()).getCache();
 		traktapi = new TraktAPI(this);
 		HandleIntent(getIntent());
 	}
