@@ -36,10 +36,11 @@ public class Application extends android.app.Application {
 	public Application() {
 		super();
 	}
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+		// Make sure the loved hated watched list gets filled
 		traktapi = new TraktAPI(this);
 		Thread thread =  new Thread(null, retrieveLovedHatedWatched);
         thread.start();
@@ -68,12 +69,16 @@ public class Application extends android.app.Application {
 	}
 	
 	public HashMap<String,LovedHatedWatched> getLovedHatedWatched() {
+		// Only return the list of the Thread as finished filling it.
 		if (lhwloaded)
 			return lovedhatedwatched;
 		else
 			return null;
 	}
-
+	/**
+	 * To be run as separate Thread. Calls trakt API multiple times to retrieve a full list of
+	 * loved, hated and watched movies and shows for the user.
+	 */
 	private Runnable retrieveLovedHatedWatched = new Runnable() {
 		public void run() {
 			lovedhatedwatched = new HashMap<String,LovedHatedWatched>();
