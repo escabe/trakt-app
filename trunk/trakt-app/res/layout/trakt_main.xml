@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
+    <!-- Currently uses standard ugly buttons with text, should be replaced with cool image buttons -->
     <LinearLayout android:id="@+id/linearLayout1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_vertical|center_horizontal" android:orientation="vertical">
         <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/linearLayout2">
             <Button android:text="@string/trending_movies" android:id="@+id/buttonTrendingMovies" android:layout_width="wrap_content" android:layout_height="wrap_content" android:onClick="buttonTrendingClick"></Button>

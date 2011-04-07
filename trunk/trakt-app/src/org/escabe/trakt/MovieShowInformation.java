@@ -1,5 +1,10 @@
 package org.escabe.trakt;
 
+/**
+ * Class to hold information about a Movie or Show
+ * @author escabe
+ *
+ */
 public class MovieShowInformation {
 	private String title=null;
 	private String poster=null;
