@@ -5,4 +5,7 @@
     <string name="trending_shows">Trending Shows</string>
     <string name="user_movies">User Movies</string>
     <string name="user_shows">User Shows</string>
+    <string name="loading_details">Loading Details...</string>
+    <string name="loading_title">Loading Title...</string>
+    <string name="loading_summary">Loading Summary...</string>
 </resources>

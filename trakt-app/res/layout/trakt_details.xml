@@ -3,11 +3,18 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
     <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout1" android:layout_height="wrap_content">
-        <ImageView android:layout_width="71px" android:layout_height="103px" android:padding="2px" android:id="@+id/imageDetailsPoster" android:src="@drawable/emptyposter"></ImageView>
+        <ImageView android:id="@+id/imageDetailsPoster" android:src="@drawable/emptyposter" android:layout_margin="2px" android:layout_height="100px" android:layout_width="70px"></ImageView>
         <LinearLayout android:id="@+id/linearLayout2" android:layout_height="match_parent" android:layout_width="fill_parent" android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="16px" android:id="@+id/textDetailsTitle"></TextView>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textDetailsDetails"></TextView>
+            <TextView android:layout_height="wrap_content" android:textSize="16px" android:id="@+id/textDetailsTitle" android:text="@string/loading_details" android:layout_width="fill_parent"></TextView>
+            <TextView android:id="@+id/textDetailsDetails" android:text="@string/loading_details" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+            <FrameLayout android:layout_width="fill_parent" android:id="@+id/frameLayout1" android:layout_height="fill_parent">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout3" android:layout_gravity="bottom">
+                    <ImageView android:layout_width="34px" android:scaleType="center" android:layout_height="25px" android:id="@+id/imageDetailsWatched" android:src="@drawable/buttonwatch" android:layout_margin="4px"></ImageView>
+                    <ImageView android:layout_height="25px" android:layout_width="34px" android:id="@+id/imageDetailsLoved" android:scaleType="center" android:src="@drawable/buttonlove" android:layout_margin="4px"></ImageView>
+                    <ImageView android:layout_width="34px" android:scaleType="center" android:layout_height="25px" android:id="@+id/imageDetailsHated" android:src="@drawable/buttonhate" android:layout_margin="4px"></ImageView>
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
-    <TextView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/textDetailsSummary"></TextView>
+    <TextView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/textDetailsSummary" android:text="@string/loading_summary"></TextView>
 </LinearLayout>
