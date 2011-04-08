@@ -2,6 +2,7 @@ package org.escabe.trakt;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,9 +33,11 @@ public class TraktDetails extends Activity {
 	private TraktAPI traktapi;
 	private enum ShowMovie {Show, Movie} //Consider making this (more) public as more classes may need this
 	private ShowMovie showmovie;
-	
+	private String id;
 	private WebImageCache cache = null;
 
+	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
+	
 	// Holds the data for current Movie/Show in JSON form
 	JSONObject data;
 	
@@ -76,11 +79,11 @@ public class TraktDetails extends Activity {
     private void HandleUri(Uri uri) {
 		if (uri.getScheme().equals("tmdb")) {
 			showmovie = ShowMovie.Movie;
-			String id = uri.getSchemeSpecificPart();
+			id = uri.getSchemeSpecificPart();
 			GetData("movie/summary.json/%k/" + id);
 		} else if (uri.getScheme().equals("tvdb")) {
 			showmovie = ShowMovie.Show;
-			String id = uri.getSchemeSpecificPart();
+			id = uri.getSchemeSpecificPart();
 			GetData("show/summary.json/%k/" + id);
 		}
     }
@@ -124,19 +127,36 @@ public class TraktDetails extends Activity {
 
 			// Details vary depending on whether displaying Movie or Show
 			if (showmovie==ShowMovie.Movie) {
-				String d = String.format("Released: %1$tB %1$te, %1$tY\nRuntime: %2$d min\n",new Date(data.optLong("released")*1000),data.optInt("runtime"));
+				String d = String.format("Released: %1$tB %1$te, %1$tY\nRuntime: %2$d min",new Date(data.optLong("released")*1000),data.optInt("runtime"));
 				details.setText(d);
 				d = String.format("\"%s\"\n\n%s",data.optString("tagline"),data.optString("overview"));
 				overview.setText(d);
 			} else {
-				String d = String.format("First Aired: %1$tB %1$te, %1$tY\nCountry: %2$s\nRuntime: %3$d min\n",
+				String d = String.format("First Aired: %1$tB %1$te, %1$tY\nCountry: %2$s\nRuntime: %3$d min",
 						new Date(data.optLong("first_aired")*1000),
 						data.optString("country"),
 						data.optInt("runtime"));
 				details.setText(d);
 				overview.setText(data.optString("overview"));
 			}
-			// Close the progess dialog
+			
+			// Marked Watched/Loved/Hated
+        	if (lovedhatedwatched==null)
+        		lovedhatedwatched=((Application)getApplication()).getLovedHatedWatched();
+        	
+        	// Check if Thread has already retrieved all info
+        	if(lovedhatedwatched!=null) {
+        		LovedHatedWatched lhw = lovedhatedwatched.get(id);
+        		if (lhw!=null) {
+		    		ImageView loved = (ImageView) findViewById(R.id.imageDetailsLoved);
+		        	ImageView hated = (ImageView) findViewById(R.id.imageDetailsHated);
+		        	ImageView watched = (ImageView) findViewById(R.id.imageDetailsWatched);
+		        	if (lhw.isLoved()) loved.setBackgroundResource(R.drawable.lovedactive);
+		        	if (lhw.isHated()) hated.setBackgroundResource(R.drawable.hatedactive);
+		        	if (lhw.isWatched()) watched.setBackgroundResource(R.drawable.watchedactive);
+        		}
+        	}
+			// Close the progress dialog
 	        progressdialog.dismiss();
 		}
 	};

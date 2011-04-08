@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.widget.Toast;
+
 import com.commonsware.cwac.bus.SimpleBus;
 import com.commonsware.cwac.cache.AsyncCache;
 import com.commonsware.cwac.cache.SimpleWebImageCache;
@@ -75,6 +77,8 @@ public class Application extends android.app.Application {
 		else
 			return null;
 	}
+	
+
 	/**
 	 * To be run as separate Thread. Calls trakt API multiple times to retrieve a full list of
 	 * loved, hated and watched movies and shows for the user.
@@ -170,7 +174,6 @@ public class Application extends android.app.Application {
 					e.printStackTrace();
 				}
 			}
-
 			lhwloaded = true;
 		}
 	};

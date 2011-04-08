@@ -2,14 +2,14 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent" android:layout_height="wrap_content">
-    <ImageView android:layout_height="48px" android:layout_width="32px" android:src="@drawable/emptyposter" android:id="@+id/imagePoster"></ImageView>
+    <ImageView android:layout_height="48px" android:layout_width="32px" android:src="@drawable/emptyposter" android:id="@+id/imagePoster" android:layout_margin="1px"></ImageView>
     <LinearLayout android:layout_height="match_parent" android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_width="match_parent" android:paddingLeft="2px">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:textSize="16px" android:id="@+id/textTitle"></TextView>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout2">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textDetails"></TextView>
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconwatch" android:paddingLeft="4px" android:id="@+id/imageWatched"></ImageView>
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconlove" android:id="@+id/imageLoved" android:paddingLeft="4px"></ImageView>
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconhate" android:id="@+id/imageHated" android:paddingLeft="4px"></ImageView>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconwatch" android:id="@+id/imageWatched" android:layout_margin="2px"></ImageView>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconlove" android:id="@+id/imageLoved" android:layout_margin="2px"></ImageView>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconhate" android:id="@+id/imageHated" android:layout_margin="2px"></ImageView>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
