@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.Toast;
 
 import com.commonsware.cwac.bus.SimpleBus;
@@ -77,8 +80,16 @@ public class Application extends android.app.Application {
 		else
 			return null;
 	}
-	
 
+
+	Handler retrieveLovedHatedWatchedDone = new Handler() { 
+        @Override
+        public void handleMessage(Message msg) { 
+           Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
+        }
+    };	
+	
+	
 	/**
 	 * To be run as separate Thread. Calls trakt API multiple times to retrieve a full list of
 	 * loved, hated and watched movies and shows for the user.
@@ -175,6 +186,9 @@ public class Application extends android.app.Application {
 				}
 			}
 			lhwloaded = true;
+			Message m = new Message();
+			m.obj = "Done Loading Watched/Loved/Hated information.";
+			retrieveLovedHatedWatchedDone.sendMessage(m);
 		}
 	};
 	
