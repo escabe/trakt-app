@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" android:orientation="vertical">
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@+id/imageView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/emptyposter" android:layout_margin="2px"></ImageView>
+        <LinearLayout android:id="@+id/linearLayout2" android:layout_height="match_parent" android:orientation="vertical" android:layout_width="fill_parent">
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="TextView" android:id="@+id/textEpisodeListTitle" android:textSize="16px"></TextView>
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="TextView" android:id="@+id/textEpisodeListDetails"></TextView>
+        </LinearLayout>
+    </LinearLayout>
+    <ExpandableListView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@id/android:list" android:divider="#000000" android:dividerHeight="1px"></ExpandableListView>
+</LinearLayout>
