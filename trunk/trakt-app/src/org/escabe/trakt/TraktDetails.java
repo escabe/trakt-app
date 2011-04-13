@@ -12,6 +12,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 /**
@@ -64,7 +65,7 @@ public class TraktDetails extends Activity {
 		if (intent.getAction().equals(Intent.ACTION_VIEW)) {
     		HandleUri(intent.getData());
     	} 
-		// Consider implementing when called incorrecly, but is currently only accessible internally anyway
+		// Consider implementing when called incorrectly, but is currently only accessible internally anyway
     
     }
     
@@ -156,5 +157,11 @@ public class TraktDetails extends Activity {
 	        progressdialog.dismiss();
 		}
 	};
+	
+	public void imageDetailsPosterOnClick(View view) {
+		if (showmovie==ShowMovie.Show) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + id),this,EpisodeList.class));
+		}
+	}
 	
 }
