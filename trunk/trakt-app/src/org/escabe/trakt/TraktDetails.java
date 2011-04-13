@@ -1,14 +1,10 @@
 package org.escabe.trakt;
 
-import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.commonsware.cwac.bus.SimpleBus;
-import com.commonsware.cwac.cache.AsyncCache;
 import com.commonsware.cwac.cache.WebImageCache;
 
 import android.app.Activity;
