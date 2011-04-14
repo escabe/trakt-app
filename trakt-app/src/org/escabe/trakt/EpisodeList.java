@@ -250,12 +250,13 @@ public class EpisodeList extends ExpandableListActivity {
 		public View getChildView(int groupPosition, int childPosition,
 				boolean isLastChild, View row, ViewGroup parent) {
 			Episode e = (Episode) getChild(groupPosition,childPosition);
+			Season s = (Season) getGroup(groupPosition);
 			if (row==null) {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 row = vi.inflate(R.layout.trakt_episode_episode, null);
 			}
 			TextView title = (TextView) row.findViewById(R.id.textEpisodeListEpisodeTitle);
-			title.setText(String.format("%d: %s",e.getNumber(),e.getTitle()));
+			title.setText(String.format("%02dx%02d: %s",s.getNumber(),e.getNumber(),e.getTitle()));
 			
 			ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListEpisodePoster);
 			String url = "http://escabe.org/resize3.php?image=" + e.getPoster();
@@ -281,6 +282,10 @@ public class EpisodeList extends ExpandableListActivity {
 			}
 			TextView title = (TextView)row.findViewById(R.id.textEpisodeListSeasonTitle);
 			title.setText(String.format("Season %d",s.getNumber()));
+			
+			TextView details = (TextView)row.findViewById(R.id.textEpisodeListSeasonDetails);
+			details.setText(String.format("Episodes: %d",s.getEpisodes()));
+
 			
 			ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListSeasonPoster);
 			String url = "http://escabe.org/resize.php?image=" + s.getPoster();
