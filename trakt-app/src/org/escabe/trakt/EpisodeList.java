@@ -19,12 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 public class EpisodeList extends ExpandableListActivity {
 	private String id;
+	private String showname;
 	
 	private ArrayList<Season> seasons=null;
 	private ArrayList<ArrayList<Episode>> episodes = null;
@@ -140,6 +142,9 @@ public class EpisodeList extends ExpandableListActivity {
 	 * Actual method in which the data is retrieved
 	 */
 	private void ShowList() {
+
+		//TODO Change to use show/summary.json/%k/title/extended
+		
 		// Get overview of Seasons
 		JSONArray data = traktapi.getDataArrayFromJSON("show/seasons.json/%k/" + id);
 		for (int i=0;i<data.length();i++) { // For each Season
@@ -202,6 +207,20 @@ public class EpisodeList extends ExpandableListActivity {
 		
 	    HandleIntent(getIntent());
 		
+	}
+	
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+		Episode e = episodes.get(groupPosition).get(childPosition);
+		Season s = seasons.get(groupPosition);
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("episode:" + this.id +"/" + s.getNumber() + "/" + e.getNumber() ),this,TraktEpisodeDetails.class);
+		
+		intent.putExtra("showname", showname);
+		intent.putExtra("title",e.getTitle());
+		intent.putExtra("overview", e.getOverview());
+		intent.putExtra("poster", e.getPoster());
+		startActivity(intent);
+		return false;
 	}
 	
 	/**

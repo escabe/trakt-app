@@ -22,5 +22,6 @@
 		</activity>
 		<activity android:name=".TraktDetails"></activity>
 		<activity android:name=".EpisodeList"></activity>
+		<activity android:name=".TraktEpisodeDetails"></activity>
     </application>
 </manifest>
