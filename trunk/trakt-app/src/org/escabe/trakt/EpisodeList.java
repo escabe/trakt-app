@@ -43,6 +43,8 @@ public class EpisodeList extends ExpandableListActivity {
 		private int number=0;
 		private String title;
 		private String poster;
+		private long firstaired;
+		private String overview;
 		
 		public void setNumber(int number) {
 			this.number = number;
@@ -61,6 +63,18 @@ public class EpisodeList extends ExpandableListActivity {
 		}
 		public String getPoster() {
 			return poster;
+		}
+		public void setFirstaired(long firstaired) {
+			this.firstaired = firstaired;
+		}
+		public long getFirstaired() {
+			return firstaired;
+		}
+		public void setOverview(String overview) {
+			this.overview = overview;
+		}
+		public String getOverview() {
+			return overview;
 		}
 		
 	}
@@ -151,7 +165,9 @@ public class EpisodeList extends ExpandableListActivity {
 					Episode e = new Episode();
 					e.setNumber(sd.optInt("episode"));
 					e.setTitle(sd.optString("title"));
-
+					e.setFirstaired(sd.optLong("first_aired"));
+					e.setOverview(sd.optString("overview"));
+					
 					images = sd.getJSONObject("images");
 		    		p = images.optString("screen");
 		    		p = p.replace(".jpg", "-218.jpg");
@@ -257,6 +273,9 @@ public class EpisodeList extends ExpandableListActivity {
 			}
 			TextView title = (TextView) row.findViewById(R.id.textEpisodeListEpisodeTitle);
 			title.setText(String.format("%02dx%02d: %s",s.getNumber(),e.getNumber(),e.getTitle()));
+
+			TextView details = (TextView) row.findViewById(R.id.textEpisodeListEpisodeDetails);
+			details.setText(String.format("First Aired: %1$tB %1$te, %1$tY",e.getFirstaired()*1000));
 			
 			ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListEpisodePoster);
 			String url = "http://escabe.org/resize3.php?image=" + e.getPoster();
