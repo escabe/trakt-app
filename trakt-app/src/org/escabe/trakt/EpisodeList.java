@@ -20,11 +20,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 public class EpisodeList extends ExpandableListActivity {
@@ -53,6 +51,7 @@ public class EpisodeList extends ExpandableListActivity {
 		private String poster;
 		private long firstaired;
 		private String overview;
+		private boolean watched;
 		
 		public void setNumber(int number) {
 			this.number = number;
@@ -83,6 +82,12 @@ public class EpisodeList extends ExpandableListActivity {
 		}
 		public String getOverview() {
 			return overview;
+		}
+		public void setWatched(boolean watched) {
+			this.watched = watched;
+		}
+		public boolean isWatched() {
+			return watched;
 		}
 		
 	}
@@ -175,7 +180,7 @@ public class EpisodeList extends ExpandableListActivity {
 					e.setTitle(dddd.optString("title"));
 					e.setFirstaired(dddd.optLong("first_aired"));
 					e.setOverview(dddd.optString("overview"));
-					
+					e.setWatched(dddd.optBoolean("watched"));
 					images = dddd.getJSONObject("images");
 		    		p = images.optString("screen");
 		    		p = p.replace(".jpg", "-218.jpg");
@@ -354,6 +359,8 @@ public class EpisodeList extends ExpandableListActivity {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
+			((ImageView)row.findViewById(R.id.imageEpisodeWatched)).setVisibility(e.isWatched() ? View.VISIBLE:View.GONE);
 			
 			return row;
 		}
