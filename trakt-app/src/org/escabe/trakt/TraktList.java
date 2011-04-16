@@ -200,7 +200,9 @@ public class TraktList extends ListActivity {
 		if (showmovie == ShowMovie.Movie) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + info.getId()),this,TraktDetails.class));
 		} else {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + info.getId()),this,TraktDetails.class));
+			// Changed to display episode list instead of Details view
+			//startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + info.getId()),this,TraktDetails.class));
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + info.getId()),this,EpisodeList.class));
 		}
 	}
 

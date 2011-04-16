@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.commonsware.cwac.bus.SimpleBus;
@@ -20,6 +21,7 @@ import com.commonsware.cwac.thumbnail.ThumbnailBus;
 import com.commonsware.cwac.thumbnail.ThumbnailMessage;
 
 public class Application extends android.app.Application {
+	private String TAG="TraktAPP";
 	private ThumbnailBus thumbbus=new ThumbnailBus();
 	private AsyncCache.DiskCachePolicy policy=new AsyncCache.DiskCachePolicy() {
 		public boolean eject(File file) {
@@ -106,7 +108,7 @@ public class Application extends android.app.Application {
 					lovedhatedwatched.put(d.optString("tmdb_id"), lhw);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.e(TAG,e.toString());
 				}
 			}
 			
@@ -122,7 +124,7 @@ public class Application extends android.app.Application {
 					lovedhatedwatched.put(d.optString("tmdb_id"), lhw);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.e(TAG,e.toString());
 				}
 			}
 			
@@ -138,7 +140,7 @@ public class Application extends android.app.Application {
 					lovedhatedwatched.put(d.optString("tmdb_id"), lhw);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.e(TAG,e.toString());
 				}
 			}
 			
@@ -150,7 +152,7 @@ public class Application extends android.app.Application {
 					lovedhatedwatched.put(d.optString("tvdb_id"), lhw);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.e(TAG,e.toString());
 				}
 			}
 			
@@ -166,7 +168,7 @@ public class Application extends android.app.Application {
 					lovedhatedwatched.put(d.optString("tvdb_id"), lhw);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.e(TAG,e.toString());
 				}
 			}
 
@@ -182,7 +184,7 @@ public class Application extends android.app.Application {
 					lovedhatedwatched.put(d.optString("tvdb_id"), lhw);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.e(TAG,e.toString());
 				}
 			}
 			lhwloaded = true;
