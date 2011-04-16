@@ -8,8 +8,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,6 +37,7 @@ public class Application extends android.app.Application {
 	private WebImageCache cache = null;
 	private TraktAPI traktapi = null;
 	
+
 	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
 	private boolean lhwloaded = false;
 	
@@ -47,11 +51,21 @@ public class Application extends android.app.Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		// Make sure the loved hated watched list gets filled
+		
+		
 		traktapi = new TraktAPI(this);
-		Thread thread =  new Thread(null, retrieveLovedHatedWatched);
-        thread.start();
 	}
+
+	/**
+	 * Only to be called after login details are known
+	 */
+	public void GetUserData() {
+		if (lovedhatedwatched==null) {
+			Thread thread =  new Thread(null, retrieveLovedHatedWatched);
+	        thread.start();
+		}
+	}
+	
 	
 	/**
 	 * Get SimpleWebImageCache which can be used for displaying images in ListViews.
@@ -91,6 +105,11 @@ public class Application extends android.app.Application {
         }
     };	
 	
+    
+    public boolean ValidateLogin() {
+    	
+    	return true;
+    }
 	
 	/**
 	 * To be run as separate Thread. Calls trakt API multiple times to retrieve a full list of
@@ -98,6 +117,9 @@ public class Application extends android.app.Application {
 	 */
 	private Runnable retrieveLovedHatedWatched = new Runnable() {
 		public void run() {
+			if (!ValidateLogin()) {
+				return;
+			}
 			lovedhatedwatched = new HashMap<String,LovedHatedWatched>();
 			
 			JSONArray data = traktapi.getDataArrayFromJSON("user/library/movies/all.json/%k/%u", true);

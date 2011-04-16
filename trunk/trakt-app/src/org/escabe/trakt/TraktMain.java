@@ -31,11 +31,17 @@ public class TraktMain extends Activity {
 		// If username and passsword are not defined show preferences screen 
 		if (user==null || password==null) {
 			startActivity(new Intent(this, TraktPrefs.class));
+		} else {
+			((Application)getApplication()).GetUserData();
 		}
-		// TODO Check if login details are actually correct
+        
+        // TODO Check if login details are actually correct
     }
     
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
     
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
