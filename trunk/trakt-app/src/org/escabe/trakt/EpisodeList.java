@@ -1,6 +1,8 @@
 package org.escabe.trakt;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +28,12 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 public class EpisodeList extends ExpandableListActivity {
+	private String TAG="EpisodeList";
 	private String id;
 	private String showname;
+	private JSONObject data;
 	
+	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
 	private ArrayList<Season> seasons=null;
 	private ArrayList<ArrayList<Episode>> episodes = null;
 	
@@ -142,50 +148,47 @@ public class EpisodeList extends ExpandableListActivity {
 	 * Actual method in which the data is retrieved
 	 */
 	private void ShowList() {
-
-		//TODO Change to use show/summary.json/%k/title/extended
-		
-		// Get overview of Seasons
-		JSONArray data = traktapi.getDataArrayFromJSON("show/seasons.json/%k/" + id);
-		for (int i=0;i<data.length();i++) { // For each Season
-			try {
-				// Season info
-				JSONObject d = data.getJSONObject(i);
+		data = traktapi.getDataObjectFromJSON("show/summary.json/%k/" + id + "/extended",true);
+		showname = data.optString("title");
+		try {
+			JSONArray d = data.getJSONArray("seasons");
+			for (int i=0;i<d.length();i++) {
+				JSONObject dd = d.getJSONObject(i);
 				Season s = new Season();
-				s.setEpisodes(d.optInt("episodes"));
-				s.setNumber(d.optInt("season"));
-
-				JSONObject images = d.getJSONObject("images");
+				s.setEpisodes(dd.optInt("episodes"));
+				s.setNumber(dd.optInt("season"));
+	
+				JSONObject images = dd.getJSONObject("images");
 	    		String p = images.optString("poster");
 	    		p = p.replace(".jpg", "-138.jpg");
 	    		s.setPoster(p);
+	
+	    		JSONArray ddd = dd.getJSONArray("episodes");
 
-	    		seasons.add(s);
-
-	    		// Episode info per season
-				ArrayList<Episode> el = new ArrayList<Episode>();
-				JSONArray sdata = traktapi.getDataArrayFromJSON("show/season.json/%k/" + id + "/" + s.getNumber());
-				for (int j=0;j<sdata.length();j++) { // For each episode in a season
-					JSONObject sd = sdata.getJSONObject(j);
+	    		s.setEpisodes(ddd.length());
+	    		
+	    		ArrayList<Episode> el = new ArrayList<Episode>();
+	    		for (int j=0;j<ddd.length();j++) {
+					JSONObject dddd = ddd.getJSONObject(j);
 					Episode e = new Episode();
-					e.setNumber(sd.optInt("episode"));
-					e.setTitle(sd.optString("title"));
-					e.setFirstaired(sd.optLong("first_aired"));
-					e.setOverview(sd.optString("overview"));
+					e.setNumber(dddd.optInt("episode"));
+					e.setTitle(dddd.optString("title"));
+					e.setFirstaired(dddd.optLong("first_aired"));
+					e.setOverview(dddd.optString("overview"));
 					
-					images = sd.getJSONObject("images");
+					images = dddd.getJSONObject("images");
 		    		p = images.optString("screen");
 		    		p = p.replace(".jpg", "-218.jpg");
 		    		e.setPoster(p);
-
-		    		el.add(e);
-				}
-				episodes.add(el);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	
+		    		el.add(e);    			
+	    		}
+	    		seasons.add(s);
+	    		episodes.add(el);
 			}
-			
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			Log.e(TAG,e1.toString());
 		}
 		runOnUiThread(UpdateComplete);
 	}
@@ -213,12 +216,13 @@ public class EpisodeList extends ExpandableListActivity {
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		Episode e = episodes.get(groupPosition).get(childPosition);
 		Season s = seasons.get(groupPosition);
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("episode:" + this.id +"/" + s.getNumber() + "/" + e.getNumber() ),this,TraktEpisodeDetails.class);
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("episode://tvdb/" + this.id +"/" + s.getNumber() + "/" + e.getNumber() ),this,TraktEpisodeDetails.class);
 		
 		intent.putExtra("showname", showname);
 		intent.putExtra("title",e.getTitle());
 		intent.putExtra("overview", e.getOverview());
 		intent.putExtra("poster", e.getPoster());
+		intent.putExtra("firstaired", e.getFirstaired());
 		startActivity(intent);
 		return false;
 	}
@@ -242,10 +246,52 @@ public class EpisodeList extends ExpandableListActivity {
 	 * @param uri	URI from Intent 
 	 */
     private void HandleUri(Uri uri) {
-		if (uri.getScheme().equals("tmdb")) {
+		if (uri.getScheme().equals("tvdb")) {
 			id = uri.getSchemeSpecificPart();
 			SwitchList();
 		}
+    }
+    
+    private void FillInDetails() {
+		TextView title = (TextView) findViewById(R.id.textEpisodeDetailsTitle);
+		title.setText(data.optString("title"));
+		try {
+			JSONObject images = data.getJSONObject("images");
+			String p = images.optString("poster");
+			p = p.replace(".jpg", "-138.jpg");
+			ImageView poster = (ImageView) findViewById(R.id.imageEpisodeDetailsPoster);
+			// Use CWAC Cache to retrieve the poster. Poster currently are pulled through a PHP script to resize
+			cache.handleImageView(poster,"http://escabe.org/resize2.php?image=" + p , "myposter");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		TextView details = (TextView) findViewById(R.id.textEpisodeDetailsDetails);
+		TextView overview = (TextView) findViewById(R.id.textEpisodeDetailsSummary);
+
+		String d = String.format("First Aired: %1$tB %1$te, %1$tY\nCountry: %2$s\nRuntime: %3$d min",
+				new Date(data.optLong("first_aired")*1000),
+				data.optString("country"),
+				data.optInt("runtime"));
+		details.setText(d);
+		overview.setText(data.optString("overview"));
+
+		
+		// Marked Watched/Loved/Hated
+    	if (lovedhatedwatched==null)
+    		lovedhatedwatched=((Application)getApplication()).getLovedHatedWatched();
+    	
+    	// Check if Thread has already retrieved all info
+    	if(lovedhatedwatched!=null) {
+    		LovedHatedWatched lhw = lovedhatedwatched.get(id);
+    		if (lhw!=null) {
+	    		ImageView loved = (ImageView) findViewById(R.id.imageEpisodeDetailsLoved);
+	        	ImageView hated = (ImageView) findViewById(R.id.imageEpisodeDetailsHated);
+	        	if (lhw.isLoved()) loved.setBackgroundResource(R.drawable.lovedactive);
+	        	if (lhw.isHated()) hated.setBackgroundResource(R.drawable.hatedactive);
+    		}
+    	}
+
     }
     
 	/**
@@ -254,9 +300,13 @@ public class EpisodeList extends ExpandableListActivity {
 	private Runnable UpdateComplete = new Runnable() {
 
 		public void run() {
+			// Fill in details
+			FillInDetails();
+			
 			// Notify list that data has been retrieved
 			adapter.notifyDataSetChanged();
-	        // Scroll to first item
+
+			
 	        // Hide progress dialog
 			progressdialog.dismiss();
 		}

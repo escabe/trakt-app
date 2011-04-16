@@ -160,7 +160,7 @@ public class TraktDetails extends Activity {
 	
 	public void imageDetailsPosterOnClick(View view) {
 		if (showmovie==ShowMovie.Show) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + id),this,EpisodeList.class));
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + id),this,EpisodeList.class));
 		}
 	}
 	
