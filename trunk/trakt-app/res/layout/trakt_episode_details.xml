@@ -9,6 +9,12 @@
         <ImageView android:layout_width="wrap_content" android:id="@+id/imageEpisodeDetailsPoster" android:layout_height="wrap_content" android:src="@drawable/emptyposter" android:layout_margin="2px"></ImageView>
         <TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsDetails"></TextView>
     </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="center_horizontal">
+        <ImageView android:layout_width="34px" android:scaleType="center" android:layout_height="25px" android:src="@drawable/buttonwatch" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsWatched"></ImageView>
+        <ImageView android:layout_height="25px" android:layout_width="34px" android:scaleType="center" android:src="@drawable/buttonlove" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsLoved"></ImageView>
+        <ImageView android:layout_width="34px" android:scaleType="center" android:layout_height="25px" android:src="@drawable/buttonhate" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsHated"></ImageView>
+    </LinearLayout>
+    
     <ScrollView android:id="@+id/scrollView1" android:layout_height="fill_parent" android:layout_width="fill_parent">
         <TextView android:text="TextView" android:id="@+id/textEpisodeDetailsOverview" android:layout_height="fill_parent" android:layout_width="fill_parent"></TextView>
     </ScrollView>
