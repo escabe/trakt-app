@@ -3,17 +3,22 @@ package org.escabe.trakt;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.escabe.trakt.TraktAPI.ShowMovie;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.commonsware.cwac.thumbnail.ThumbnailAdapter;
+
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 /**
  * Activity to Display lists of Shows or Movies
  * @author escabe
@@ -39,7 +45,7 @@ public class TraktList extends ListActivity {
 	private TraktAPI traktapi=null;
 
 	// To hold information about what we are currently looking at
-	private enum ShowMovie {Show, Movie}
+	
 	private ShowMovie showmovie;
 	private enum UserTrending { User, Trending}
 	private UserTrending usertrending;
@@ -86,6 +92,8 @@ public class TraktList extends ListActivity {
 		}
 	};
 	
+
+
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -108,11 +116,11 @@ public class TraktList extends ListActivity {
     	if (uri.equals("trakt://movies/trending")) { //Trending Movies
 			showmovie = ShowMovie.Movie;
 			usertrending = UserTrending.Trending;
-			SwitchList("movies/trending.json/%k",false);
+			SwitchList("movies/trending.json/%k",true);
 		} else if (uri.equals("trakt://shows/trending")) { //Trending Shows
 			showmovie = ShowMovie.Show;
 			usertrending = UserTrending.Trending;
-			SwitchList("shows/trending.json/%k",false);
+			SwitchList("shows/trending.json/%k",true);
 		} else if (uri.equals("trakt://user/library/shows/all")) { //User Shows Library
 			showmovie = ShowMovie.Show;
 			usertrending = UserTrending.User;
@@ -206,7 +214,7 @@ public class TraktList extends ListActivity {
 		}
 	}
 
-
+	
 	/**
 	 * Adaptor for the List    	
 	 * @author escabe
