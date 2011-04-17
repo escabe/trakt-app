@@ -3,6 +3,8 @@ package org.escabe.trakt;
  * Main menu Activity
  */
 
+import java.net.URLEncoder;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 public class TraktMain extends Activity {
     private SharedPreferences prefs=null;
@@ -62,6 +65,19 @@ public class TraktMain extends Activity {
 	    }
 	}
 
+	
+	public void buttonSearchOnClick(View view) {
+		EditText query = (EditText)findViewById(R.id.editSearch);
+		switch (view.getId()) {
+		case R.id.buttonSearchMovies:
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://search/movies/" + URLEncoder.encode(query.getText().toString()) ),this,TraktList.class));
+			break;
+		case R.id.buttonSearchShows:
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://search/shows/" + URLEncoder.encode(query.getText().toString()) ),this,TraktList.class));
+			break;
+		}
+	}
+	
 	/**
 	 * Handles all buttons
 	 * @param view
