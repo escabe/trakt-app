@@ -47,7 +47,7 @@ public class TraktList extends ListActivity {
 	// To hold information about what we are currently looking at
 	
 	private ShowMovie showmovie;
-	private enum UserTrending { User, Trending}
+	private enum UserTrending { User, Trending, Search}
 	private UserTrending usertrending;
 	
 	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
@@ -129,6 +129,16 @@ public class TraktList extends ListActivity {
 			showmovie = ShowMovie.Movie;
 			usertrending = UserTrending.User;
 			SwitchList("user/library/movies/all.json/%k/%u",true);
+		}else if (uri.startsWith("trakt://search/movies")) {
+			showmovie = ShowMovie.Movie;
+			usertrending = UserTrending.Search;
+			String[] s = uri.split("/");
+			SwitchList("search/movies.json/%k/" + s[s.length-1],true);
+		}else if (uri.startsWith("trakt://search/shows")) {
+			showmovie = ShowMovie.Show;
+			usertrending = UserTrending.Search;
+			String[] s = uri.split("/");
+			SwitchList("search/shows.json/%k/" + s[s.length-1],true);
 		}
     }
     /**

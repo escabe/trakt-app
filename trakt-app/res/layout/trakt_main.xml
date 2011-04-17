@@ -14,5 +14,10 @@
             <Button android:onClick="buttonTrendingClick" android:layout_height="wrap_content" android:id="@+id/buttonUserMovies" android:text="@string/user_movies" android:layout_width="wrap_content"></Button>
             <Button android:onClick="buttonTrendingClick" android:layout_height="wrap_content" android:id="@+id/buttonUserShows" android:text="@string/user_shows" android:layout_width="wrap_content"></Button>
         </LinearLayout>
+        <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/editSearch" android:hint="Search"></EditText>
+        <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout3" android:layout_height="wrap_content">
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Search Movies" android:id="@+id/buttonSearchMovies" android:onClick="buttonSearchOnClick"></Button>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Search Shows" android:id="@+id/buttonSearchShows" android:onClick="buttonSearchOnClick"></Button>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>
