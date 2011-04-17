@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -16,9 +17,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Class for interacting with the trakt.tv API
@@ -26,6 +35,9 @@ import android.preference.PreferenceManager;
  *
  */
 public class TraktAPI {
+	private String TAG = "TraktAPI";
+	public enum ShowMovie {Show, Movie};
+	public enum MarkMode {Watched, Unwatched, Loved, Unloved, Hated, Unhated};
 	// "Constants"
 	private String apikey = "682912f6e62d666428d261544d619d7c";
 	private String baseurl = "http://api.trakt.tv/";
@@ -34,6 +46,8 @@ public class TraktAPI {
 	private String password;
 	private SharedPreferences prefs;
 
+	private ProgressDialog progressdialog;
+	
 	/**
 	 * Constructor.
 	 * @param c	Context which is needed to be able to retrieve the Preferences.
@@ -43,6 +57,67 @@ public class TraktAPI {
 		prefs = PreferenceManager.getDefaultSharedPreferences(c);
 		username = prefs.getString("user", "");
 		password = EncodePassword(prefs.getString("password", ""));
+	}
+
+	Handler MarkComplete = new Handler() { 
+        @Override
+        public void handleMessage(Message msg) { 
+           Object[] o =  (Object[]) msg.obj;
+           ActivityWithUpdate parent = (ActivityWithUpdate) o[0];
+           progressdialog.dismiss();
+           Toast.makeText(parent.getApplicationContext(), (String) o[1], Toast.LENGTH_SHORT).show();
+           parent.DoUpdate();           
+        }
+    };	
+	
+	public void MarkAs(final Activity context, final MarkMode markmode , final ShowMovie showmovie, final String id, String title) {
+		progressdialog = ProgressDialog.show(context,"", String.format("Marking %s (%s) as watched...",title,id), true);
+		Runnable Marker = new Runnable() {
+			public void run() {
+				JSONObject data=null;
+				try {
+					JSONObject post = new JSONObject();
+					String url="";
+					if (showmovie == ShowMovie.Movie) {
+						JSONArray ms = new JSONArray();
+						JSONObject m = new JSONObject();
+						m.put("tmdb_id", id);
+						ms.put(m);
+						post.put("movies",ms);
+						url = "movie/";
+					} else { // Show
+						
+					}
+					switch(markmode) {
+						case Watched:
+							url += "seen/";
+							break;
+						case Unwatched:
+							url += "unseen/";
+							break;
+					}
+					url += "%k";
+					data = getDataObjectFromJSON(url,true,post);
+				} catch (Exception e) {
+					Log.e(TAG,e.toString());
+				}
+				Object[] d = new Object[2];
+				d[0] = context;
+				if (data!=null) {
+					d[1] = "Marking succeeded";
+				} else {
+					d[1] = "Marking Failed";
+				}
+					
+				Message m = new Message();
+				m.obj = d;
+				MarkComplete.sendMessage(m);
+
+			}
+		};
+		
+		Thread t = new Thread(null,Marker);
+		t.run();
 	}
 	
 	/**
@@ -70,6 +145,12 @@ public class TraktAPI {
 		return p;
 	}
 	
+	
+	
+	private Object getDataFromJSON(String url, boolean login,String type) {
+		return getDataFromJSON(url, login,type,null);	
+	}
+	
 	/**
 	 * Actually retrieve data from the server and encode as either JSONObject or JSONArray
 	 * @param url	API URL (baseurl part needs to be omitted).
@@ -77,7 +158,7 @@ public class TraktAPI {
 	 * @param type	"array" or "object" specifying return type.
 	 * @return		JSONObject or JSONArray which was returned by the server.
 	 */
-	private Object getDataFromJSON(String url, boolean login,String type)  {
+	private Object getDataFromJSON(String url, boolean login,String type,JSONObject postdata)  {
 		// Build URL. URLS may contain certain tags which will be replaced
 		url = baseurl + url;
 		url = url.replaceAll("%k", apikey);
@@ -88,7 +169,12 @@ public class TraktAPI {
 		if (login) {
 			// If login add login information to a JSONObject
 	        HttpPost httppost = new HttpPost(url); 
-	        JSONObject jsonpost = new JSONObject();
+	        JSONObject jsonpost;
+	        if (postdata==null) {
+	        	jsonpost = new JSONObject();
+	        } else {
+	        	jsonpost = postdata;
+	        }
 	        try {
 				jsonpost.put("username",username);
 				jsonpost.put("password", password);
@@ -166,4 +252,9 @@ public class TraktAPI {
 	public JSONObject getDataObjectFromJSON(String url, boolean login) {
     	return (JSONObject) getDataFromJSON(url,login,"object");
 	}
+	
+	public JSONObject getDataObjectFromJSON(String url, boolean login,JSONObject post) {
+    	return (JSONObject) getDataFromJSON(url,login,"object",post);
+	}
+
 }

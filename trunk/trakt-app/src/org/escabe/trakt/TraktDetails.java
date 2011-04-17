@@ -3,15 +3,22 @@ package org.escabe.trakt;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.escabe.trakt.TraktAPI.MarkMode;
+import org.escabe.trakt.TraktAPI.ShowMovie;
 import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +27,7 @@ import android.widget.TextView;
  * @author escabe
  *
  */
-public class TraktDetails extends Activity {
+public class TraktDetails extends ActivityWithUpdate {
 	/* Currently displays info for a Movie or Show, instead of Show might want to use this only for Episode and create
 	 * an ListActivity which displays episode list when selecting a Show
 	 */
@@ -28,7 +35,7 @@ public class TraktDetails extends Activity {
 	private ProgressDialog progressdialog;
 	private Runnable getdata;
 	private TraktAPI traktapi;
-	private enum ShowMovie {Show, Movie} //Consider making this (more) public as more classes may need this
+	
 	private ShowMovie showmovie;
 	private String id;
 	private WebImageCache cache = null;
@@ -55,6 +62,13 @@ public class TraktDetails extends Activity {
 	public void onStart() {
 		super.onStart();
 	}
+	
+	public BroadcastReceiver broadcastreceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			
+		}
+	};
 	
 	/**
 	 * Check with which Intent the Activity was started
@@ -83,6 +97,21 @@ public class TraktDetails extends Activity {
 			id = uri.getSchemeSpecificPart();
 			GetData("show/summary.json/%k/" + id);
 		}
+    }
+
+   
+    public void imageDetailsOnClick(View view) {
+    	MarkMode mm = null;
+    	switch(view.getId()) {
+	    	case R.id.imageDetailsWatched:
+	    		if (data.optBoolean("watched")) { // Mark as unwatched
+	    			mm = MarkMode.Unwatched;
+	    		} else { // Mark as watched
+	    			mm = MarkMode.Watched;
+	    		}
+	    		break;
+    	}
+    	traktapi.MarkAs(this, mm, showmovie, id, data.optString("title"));
     }
     
     /**
@@ -147,12 +176,18 @@ public class TraktDetails extends Activity {
         		if (lhw!=null) {
 		    		ImageView loved = (ImageView) findViewById(R.id.imageDetailsLoved);
 		        	ImageView hated = (ImageView) findViewById(R.id.imageDetailsHated);
-		        	ImageView watched = (ImageView) findViewById(R.id.imageDetailsWatched);
 		        	if (lhw.isLoved()) loved.setBackgroundResource(R.drawable.lovedactive);
 		        	if (lhw.isHated()) hated.setBackgroundResource(R.drawable.hatedactive);
-		        	if (lhw.isWatched()) watched.setBackgroundResource(R.drawable.watchedactive);
         		}
         	}
+
+        	// Moved watched here as info is available in data directly
+        	ImageView watched = (ImageView) findViewById(R.id.imageDetailsWatched);        	
+        	if (data.optBoolean("watched")) 
+        		watched.setBackgroundResource(R.drawable.watchedactive);
+        	else
+        		watched.setBackgroundColor(Color.BLACK);
+        	
 			// Close the progress dialog
 	        progressdialog.dismiss();
 		}
@@ -162,6 +197,15 @@ public class TraktDetails extends Activity {
 		if (showmovie==ShowMovie.Show) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + id),this,EpisodeList.class));
 		}
+	}
+
+	@Override
+	public void DoUpdate() {
+    	if (showmovie == ShowMovie.Movie) {
+    		GetData("movie/summary.json/%k/" + id);
+    	} else {
+    		GetData("show/summary.json/%k/" + id);	
+    	}
 	}
 	
 }
