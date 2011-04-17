@@ -228,6 +228,7 @@ public class EpisodeList extends ExpandableListActivity {
 		intent.putExtra("overview", e.getOverview());
 		intent.putExtra("poster", e.getPoster());
 		intent.putExtra("firstaired", e.getFirstaired());
+		intent.putExtra("watched", e.isWatched());
 		startActivity(intent);
 		return false;
 	}

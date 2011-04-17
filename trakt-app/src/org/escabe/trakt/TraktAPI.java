@@ -70,32 +70,66 @@ public class TraktAPI {
         }
     };	
 	
-	public void MarkAs(final Activity context, final MarkMode markmode , final ShowMovie showmovie, final String id, String title) {
+    
+	public void MarkEpisodeAsWatched(final Activity context, final MarkMode markmode , final String id, final int season, final int episode, String title) {
+		progressdialog = ProgressDialog.show(context,"", String.format("Marking %s %02dx%02d as watched...",title,season,episode), true);
+		Runnable Marker = new Runnable() {
+			public void run() {
+				JSONObject data=null;
+				try {
+					String url = "show/episode/";
+					JSONObject post = new JSONObject();
+					// Episodes Array
+					JSONArray es = new JSONArray();
+					// Episode Element
+					JSONObject e = new JSONObject();
+					e.put("season",season);
+					e.put("episode",episode);
+					es.put(e);
+					post.put("episodes",es);
+					post.put("tvdb_id", id);
+					url += (markmode==MarkMode.Watched?"seen/":"unseen/");
+					url += "%k";
+					data = getDataObjectFromJSON(url,true,post);
+				} catch (Exception e) {
+					Log.e(TAG,e.toString());
+				}
+				Object[] d = new Object[2];
+				d[0] = context;
+				if (data!=null) {
+					d[1] = "Marking succeeded";
+				} else {
+					d[1] = "Marking Failed";
+				}
+					
+				Message m = new Message();
+				m.obj = d;
+				MarkComplete.sendMessage(m);
+
+			}
+		};
+		
+		Thread t = new Thread(null,Marker);
+		t.run();
+	}
+
+    
+	public void MarkMovieAsWatched(final Activity context, final MarkMode markmode , final String id, String title) {
 		progressdialog = ProgressDialog.show(context,"", String.format("Marking %s (%s) as watched...",title,id), true);
 		Runnable Marker = new Runnable() {
 			public void run() {
 				JSONObject data=null;
 				try {
+					String url = "movie/";
 					JSONObject post = new JSONObject();
-					String url="";
-					if (showmovie == ShowMovie.Movie) {
-						JSONArray ms = new JSONArray();
-						JSONObject m = new JSONObject();
-						m.put("tmdb_id", id);
-						ms.put(m);
-						post.put("movies",ms);
-						url = "movie/";
-					} else { // Show
-						
-					}
-					switch(markmode) {
-						case Watched:
-							url += "seen/";
-							break;
-						case Unwatched:
-							url += "unseen/";
-							break;
-					}
+					// Movies Array
+					JSONArray ms = new JSONArray();
+					// Movie Element
+					JSONObject m = new JSONObject();
+					m.put("tmdb_id", id);
+					ms.put(m);
+					post.put("movies",ms);
+					url += (markmode==MarkMode.Watched?"seen/":"unseen/");
 					url += "%k";
 					data = getDataObjectFromJSON(url,true,post);
 				} catch (Exception e) {

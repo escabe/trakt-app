@@ -9,16 +9,11 @@ import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -63,13 +58,7 @@ public class TraktDetails extends ActivityWithUpdate {
 		super.onStart();
 	}
 	
-	public BroadcastReceiver broadcastreceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			
-		}
-	};
-	
+
 	/**
 	 * Check with which Intent the Activity was started
 	 * @param intent
@@ -99,7 +88,10 @@ public class TraktDetails extends ActivityWithUpdate {
 		}
     }
 
-   
+   /**
+    * (Un)mark movie as watched/loved/hated
+    * @param view
+    */
     public void imageDetailsOnClick(View view) {
     	MarkMode mm = null;
     	switch(view.getId()) {
@@ -111,7 +103,7 @@ public class TraktDetails extends ActivityWithUpdate {
 	    		}
 	    		break;
     	}
-    	traktapi.MarkAs(this, mm, showmovie, id, data.optString("title"));
+    	traktapi.MarkMovieAsWatched(this, mm, id, data.optString("title"));
     }
     
     /**
