@@ -10,15 +10,12 @@ import org.json.JSONObject;
 
 import com.commonsware.cwac.thumbnail.ThumbnailAdapter;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +23,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 /**
  * Activity to Display lists of Shows or Movies
  * @author escabe
@@ -252,7 +248,7 @@ public class TraktList extends ListActivity {
             	
             	// Posters are retrieved through CWAC Thumbnail so set image URL as Tag
             	poster.setImageResource(R.drawable.emptyposter);
-            	poster.setTag(info.getPoster());
+            	poster.setTag("http://escabe.org/resize.php?image=" + info.getPoster());
             	
             	TextView details = (TextView)row.findViewById(R.id.textDetails);
             	// Only show number of watchers when this information is available
