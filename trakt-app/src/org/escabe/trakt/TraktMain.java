@@ -5,6 +5,8 @@ package org.escabe.trakt;
 
 import java.net.URLEncoder;
 
+import org.escabe.trakt.TraktAPI.ShowMovie;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,6 +41,10 @@ public class TraktMain extends Activity {
 		}
         
         // TODO Check if login details are actually correct
+		
+		PosterView pv = (PosterView)findViewById(R.id.posterviewRecomShows);
+		pv.initPosterView(this, "movies/trending/%k",ShowMovie.Movie);
+		
     }
     
     @Override

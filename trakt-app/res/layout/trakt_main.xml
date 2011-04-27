@@ -19,5 +19,9 @@
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Search Movies" android:id="@+id/buttonSearchMovies" android:onClick="buttonSearchOnClick"></Button>
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Search Shows" android:id="@+id/buttonSearchShows" android:onClick="buttonSearchOnClick"></Button>
         </LinearLayout>
+    	<view
+  			class="org.escabe.trakt.PosterView" 
+  			android:layout_width="fill_parent"
+  			android:layout_height="wrap_content" android:id="@+id/posterviewRecomShows"/>
     </LinearLayout>
 </FrameLayout>

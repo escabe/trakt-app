@@ -99,7 +99,6 @@ public class EpisodeList extends ExpandableListActivity {
 	 */
 	private class Season {
 		private int number=0;
-		private int year=0;
 		private int episodes=0;
 		private String poster;
 		
@@ -109,12 +108,7 @@ public class EpisodeList extends ExpandableListActivity {
 		public int getNumber() {
 			return number;
 		}
-		public void setYear(int year) {
-			this.year = year;
-		}
-		public int getYear() {
-			return year;
-		}
+
 		public void setEpisodes(int episodes) {
 			this.episodes = episodes;
 		}
@@ -324,13 +318,10 @@ public class EpisodeList extends ExpandableListActivity {
 	 *
 	 */
 	class EpisodeListAdapter extends BaseExpandableListAdapter {
-		private Context context;
-	
 		private ArrayList<Season> seasons;
 		private ArrayList<ArrayList<Episode>> episodes;
 	
 	    public EpisodeListAdapter(Context context, ArrayList<Season> seasons, ArrayList<ArrayList<Episode>> episodes) {
-	        this.context = context;
 	        this.seasons = seasons;
 	        this.episodes = episodes;
 	    }
