@@ -17,9 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class TraktMain extends Activity {
     private SharedPreferences prefs=null;
@@ -35,7 +33,7 @@ public class TraktMain extends Activity {
 		String user=prefs.getString("user", null);
 		String password=prefs.getString("password", null);
 
-		// If username and passsword are not defined show preferences screen 
+		// If username and password are not defined show preferences screen 
 		if (user==null || password==null) {
 			startActivity(new Intent(this, TraktPrefs.class));
 		} else {
@@ -45,7 +43,7 @@ public class TraktMain extends Activity {
         // TODO Check if login details are actually correct
 		
 		PosterView pv = (PosterView)findViewById(R.id.posterviewRecomShows);
-		pv.initPosterView(this, "movies/trending/%k",ShowMovie.Movie);
+		pv.initPosterView(this, "recommendations/shows/%k",ShowMovie.Show);
     }
     
     @Override
