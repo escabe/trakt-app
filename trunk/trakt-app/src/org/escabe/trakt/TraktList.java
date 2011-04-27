@@ -1,7 +1,9 @@
 package org.escabe.trakt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.escabe.trakt.TraktAPI.ShowMovie;
 import org.json.JSONArray;
@@ -14,15 +16,22 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 /**
  * Activity to Display lists of Shows or Movies
  * @author escabe
@@ -34,10 +43,10 @@ public class TraktList extends ListActivity {
 	// For CWAC Thumbnail
 	private static final int[] IMAGE_IDS={R.id.imagePoster};
 	private ThumbnailAdapter thumbs=null;
-
+	private static boolean initial;
 	private Runnable fillList;
 	private ProgressDialog progressdialog;
-
+	private Spinner sp;
 	private TraktAPI traktapi=null;
 
 	// To hold information about what we are currently looking at
@@ -48,14 +57,24 @@ public class TraktList extends ListActivity {
 	
 	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
 	
+	// Strings for the spinner
+	private String[] strings = {"Trending Shows","Trending Movies",
+			"All Your Shows","All Your Movies"};
+	
+	private String[] uu = new String[] {"trakt://shows/trending","trakt://movies/trending",
+			"trakt://user/library/shows/all","trakt://user/library/movies/all"};
+	
+	private List<String> urls; 			
+			
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.trakt_list);
 	    // Initialize API
+	    
 	    traktapi = new TraktAPI(this);
-
+	    urls = Arrays.asList(uu);
 	    // Do the following here instead of in onStart such that this is not repeated when returning from Details Activity
 	    
 	    // Retrieve current list if was suspended
@@ -68,11 +87,83 @@ public class TraktList extends ListActivity {
 			// Assign the adaptor to the list
 			setListAdapter(thumbs);
 		}
+		
+		// Add Adapter to the spinner (to allow switching between lists)
+		initial = true;
+		sp = (Spinner)findViewById(R.id.spinnerTraktList);
+		sp.setAdapter(new SpinAdapter());
+		sp.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View v,int position, long id) {
+				if(!initial)
+					HandleUri(urls.get(position));
+				else
+					initial = false;
+			}
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}
+		});			
+
 		// Determine with which intent the Activity was started.
 		HandleIntent(getIntent());
-
-	
 	}
+	
+	/**
+	 * Adapter for the Spinner
+	 * @author escabe
+	 *
+	 */
+	class SpinAdapter implements SpinnerAdapter {
+		public int getCount() {
+			return strings.length;
+		}
+		public Object getItem(int position) {
+			return strings[position];
+		}
+		public long getItemId(int position) {
+			return position;
+		}
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View row = convertView;
+			if(row==null) {
+                LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                row = vi.inflate(android.R.layout.simple_spinner_item, null);
+			}
+			TextView t = (TextView) row.findViewById(android.R.id.text1);
+			t.setText(strings[position]);
+			return row;
+		}
+		public View getDropDownView(int position, View convertView,
+				ViewGroup parent) {
+			View row = convertView;
+			if(row==null) {
+                LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                row = vi.inflate(android.R.layout.simple_spinner_dropdown_item, null);
+			}
+			TextView t = (TextView) row.findViewById(android.R.id.text1);
+			t.setText(strings[position]);
+			return row;
+		}
+		public int getItemViewType(int position) {
+			return 0;
+		}
+		public int getViewTypeCount() {
+			return 1;
+		}
+		public boolean hasStableIds() {
+			return true;
+		}
+		public boolean isEmpty() {
+			return false;
+		}
+		public void registerDataSetObserver(DataSetObserver observer) {
+			// TODO Auto-generated method stub
+		}
+		public void unregisterDataSetObserver(DataSetObserver observer) {
+			// TODO Auto-generated method stub
+		}
+	}
+	
 	/**
 	 * Called by SwitchList on UiThread when data has been retrieved
 	 */
@@ -108,7 +199,11 @@ public class TraktList extends ListActivity {
      * @param uri
      */
     private void HandleUri(String uri) {
-		// Consider to make this more a parser which will automatically call SwitchList with correct URL
+
+    	// Set the Spinner correctly
+    	sp.setSelection(urls.indexOf(uri));
+    	
+    	// Consider to make this more a parser which will automatically call SwitchList with correct URL
     	if (uri.equals("trakt://movies/trending")) { //Trending Movies
 			showmovie = ShowMovie.Movie;
 			usertrending = UserTrending.Trending;
@@ -136,6 +231,7 @@ public class TraktList extends ListActivity {
 			String[] s = uri.split("/");
 			SwitchList("search/shows.json/%k/" + s[s.length-1],true);
 		}
+    	    	
     }
     /**
      * Switch data in the current list. Will be done on separate Thread.
