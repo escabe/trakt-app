@@ -17,7 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class TraktMain extends Activity {
     private SharedPreferences prefs=null;
@@ -44,7 +46,6 @@ public class TraktMain extends Activity {
 		
 		PosterView pv = (PosterView)findViewById(R.id.posterviewRecomShows);
 		pv.initPosterView(this, "movies/trending/%k",ShowMovie.Movie);
-		
     }
     
     @Override
