@@ -10,8 +10,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="470"
-   height="470"
+   width="72"
+   height="72"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.1 r9760"
@@ -147,6 +147,86 @@
        x2="145.16794"
        y2="281.18524"
        gradientTransform="translate(-460.17668,274.53158)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3824"
+       id="linearGradient8258"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-460.17668,274.53158)"
+       x1="-170.40067"
+       y1="596.29675"
+       x2="145.16794"
+       y2="281.18524" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3824"
+       id="linearGradient8260"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-291.73484,442.97343)"
+       x1="-687.86102"
+       y1="81.045685"
+       x2="-376.431"
+       y2="-240.23523" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3824"
+       id="linearGradient8262"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-121.27952,509.38804)"
+       x1="366.64285"
+       y1="529.98346"
+       x2="367.64285"
+       y2="92.840591" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3945"
+       id="linearGradient8264"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.99056602,0,0,1,-117.88329,507.38804)"
+       x1="367.14285"
+       y1="454.38367"
+       x2="367.14285"
+       y2="251.51155" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3953"
+       id="radialGradient8266"
+       gradientUnits="userSpaceOnUse"
+       cx="57.857143"
+       cy="168.79076"
+       fx="57.857143"
+       fy="168.79076"
+       r="13.571428" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3953"
+       id="radialGradient8268"
+       gradientUnits="userSpaceOnUse"
+       cx="57.857143"
+       cy="168.79076"
+       fx="57.857143"
+       fy="168.79076"
+       r="13.571428" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3953"
+       id="radialGradient8270"
+       gradientUnits="userSpaceOnUse"
+       cx="57.857143"
+       cy="168.79076"
+       fx="57.857143"
+       fy="168.79076"
+       r="13.571428" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3953"
+       id="radialGradient8272"
+       gradientUnits="userSpaceOnUse"
+       cx="57.857143"
+       cy="168.79076"
+       fx="57.857143"
+       fy="168.79076"
+       r="13.571428" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -155,15 +235,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.67968436"
-     inkscape:cx="280.59269"
-     inkscape:cy="467.61902"
+     inkscape:zoom="3.8448754"
+     inkscape:cx="75.996426"
+     inkscape:cy="3.2683262"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:window-width="1195"
      inkscape:window-height="1074"
-     inkscape:window-x="697"
+     inkscape:window-x="704"
      inkscape:window-y="68"
      inkscape:window-maximized="0"
      showguides="false"
@@ -193,7 +273,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -201,92 +281,96 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-582.36218)">
-    <rect
-       style="fill:url(#linearGradient4023);fill-opacity:1;stroke:#000000;stroke-width:1.28198922;stroke-linecap:butt;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3810"
-       width="18.314133"
-       height="177.64708"
-       x="-377.7366"
-       y="511.00101"
-       transform="matrix(0.72509705,-0.68864669,0.72509705,0.68864669,0,0)" />
-    <rect
-       transform="matrix(-0.72509705,-0.68864669,-0.72509705,0.68864669,0,0)"
-       y="181.77524"
-       x="-706.9621"
-       height="177.64708"
-       width="18.314133"
-       id="rect3814"
-       style="fill:url(#linearGradient4020);fill-opacity:1;stroke:#000000;stroke-width:1.28198922;stroke-linecap:butt;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none" />
-    <rect
-       style="fill:url(#linearGradient4017);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       id="rect3005"
-       width="360"
-       height="317.14285"
-       x="58.720474"
-       y="721.75024"
-       rx="50" />
-    <rect
-       style="fill:url(#linearGradient3951);fill-opacity:1"
-       id="rect3007"
-       width="300"
-       height="202.85715"
-       x="88.720474"
-       y="758.89307"
-       rx="49.528301"
-       inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
-       inkscape:export-xdpi="14.83"
-       inkscape:export-ydpi="14.83" />
-    <path
-       sodipodi:type="arc"
-       style="fill:url(#radialGradient3959);fill-opacity:1"
-       id="path3011"
-       sodipodi:cx="57.857143"
-       sodipodi:cy="168.79076"
-       sodipodi:rx="13.571428"
-       sodipodi:ry="13.571428"
-       d="m 71.428572,168.79076 a 13.571428,13.571428 0 1 1 -27.142857,0 13.571428,13.571428 0 1 1 27.142857,0 z"
-       transform="translate(67.291906,832.95947)"
-       inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
-       inkscape:export-xdpi="14.83"
-       inkscape:export-ydpi="14.83" />
-    <path
-       sodipodi:type="arc"
-       style="fill:url(#radialGradient3969);fill-opacity:1"
-       id="path3011-0"
-       sodipodi:cx="57.857143"
-       sodipodi:cy="168.79076"
-       sodipodi:rx="13.571428"
-       sodipodi:ry="13.571428"
-       d="m 71.428572,168.79076 a 13.571428,13.571428 0 1 1 -27.142857,0 13.571428,13.571428 0 1 1 27.142857,0 z"
-       transform="translate(107.29191,832.95947)"
-       inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
-       inkscape:export-xdpi="14.83"
-       inkscape:export-ydpi="14.83" />
-    <path
-       sodipodi:type="arc"
-       style="fill:url(#radialGradient3977);fill-opacity:1"
-       id="path3011-4"
-       sodipodi:cx="57.857143"
-       sodipodi:cy="168.79076"
-       sodipodi:rx="13.571428"
-       sodipodi:ry="13.571428"
-       d="m 71.428572,168.79076 a 13.571428,13.571428 0 1 1 -27.142857,0 13.571428,13.571428 0 1 1 27.142857,0 z"
-       transform="matrix(1.5789474,0,0,1.5789474,275.93852,735.2385)"
-       inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
-       inkscape:export-xdpi="14.83"
-       inkscape:export-ydpi="14.83" />
-    <path
-       transform="matrix(1.5789474,0,0,1.5789474,215.93852,735.2385)"
-       d="m 71.428572,168.79076 a 13.571428,13.571428 0 1 1 -27.142857,0 13.571428,13.571428 0 1 1 27.142857,0 z"
-       sodipodi:ry="13.571428"
-       sodipodi:rx="13.571428"
-       sodipodi:cy="168.79076"
-       sodipodi:cx="57.857143"
-       id="path3038"
-       style="fill:url(#radialGradient3985);fill-opacity:1"
-       sodipodi:type="arc"
-       inkscape:export-xdpi="14.83"
-       inkscape:export-ydpi="14.83" />
+     transform="translate(0,-980.36218)">
+    <g
+       id="g8248"
+       transform="matrix(0.14218956,0,0,0.14218956,3.2593799,899.92376)">
+      <rect
+         transform="matrix(0.72509705,-0.68864669,0.72509705,0.68864669,0,0)"
+         y="511.00101"
+         x="-377.7366"
+         height="177.64708"
+         width="18.314133"
+         id="rect3810"
+         style="fill:url(#linearGradient8258);fill-opacity:1;stroke:#000000;stroke-width:1.28198922;stroke-linecap:butt;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         style="fill:url(#linearGradient8260);fill-opacity:1;stroke:#000000;stroke-width:1.28198922;stroke-linecap:butt;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3814"
+         width="18.314133"
+         height="177.64708"
+         x="-706.9621"
+         y="181.77524"
+         transform="matrix(-0.72509705,-0.68864669,-0.72509705,0.68864669,0,0)" />
+      <rect
+         rx="50"
+         y="721.75024"
+         x="58.720474"
+         height="317.14285"
+         width="360"
+         id="rect3005"
+         style="fill:url(#linearGradient8262);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <rect
+         inkscape:export-ydpi="14.83"
+         inkscape:export-xdpi="14.83"
+         inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
+         rx="49.528301"
+         y="758.89307"
+         x="88.720474"
+         height="202.85715"
+         width="300"
+         id="rect3007"
+         style="fill:url(#linearGradient8264);fill-opacity:1" />
+      <path
+         inkscape:export-ydpi="14.83"
+         inkscape:export-xdpi="14.83"
+         inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
+         transform="translate(67.291906,832.95947)"
+         d="m 71.428572,168.79076 c 0,7.49529 -6.076136,13.57142 -13.571429,13.57142 -7.495292,0 -13.571428,-6.07613 -13.571428,-13.57142 0,-7.4953 6.076136,-13.57143 13.571428,-13.57143 7.495293,0 13.571429,6.07613 13.571429,13.57143 z"
+         sodipodi:ry="13.571428"
+         sodipodi:rx="13.571428"
+         sodipodi:cy="168.79076"
+         sodipodi:cx="57.857143"
+         id="path3011"
+         style="fill:url(#radialGradient8266);fill-opacity:1"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="14.83"
+         inkscape:export-xdpi="14.83"
+         inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
+         transform="translate(107.29191,832.95947)"
+         d="m 71.428572,168.79076 c 0,7.49529 -6.076136,13.57142 -13.571429,13.57142 -7.495292,0 -13.571428,-6.07613 -13.571428,-13.57142 0,-7.4953 6.076136,-13.57143 13.571428,-13.57143 7.495293,0 13.571429,6.07613 13.571429,13.57143 z"
+         sodipodi:ry="13.571428"
+         sodipodi:rx="13.571428"
+         sodipodi:cy="168.79076"
+         sodipodi:cx="57.857143"
+         id="path3011-0"
+         style="fill:url(#radialGradient8268);fill-opacity:1"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="14.83"
+         inkscape:export-xdpi="14.83"
+         inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
+         transform="matrix(1.5789474,0,0,1.5789474,275.93852,735.2385)"
+         d="m 71.428572,168.79076 c 0,7.49529 -6.076136,13.57142 -13.571429,13.57142 -7.495292,0 -13.571428,-6.07613 -13.571428,-13.57142 0,-7.4953 6.076136,-13.57143 13.571428,-13.57143 7.495293,0 13.571429,6.07613 13.571429,13.57143 z"
+         sodipodi:ry="13.571428"
+         sodipodi:rx="13.571428"
+         sodipodi:cy="168.79076"
+         sodipodi:cx="57.857143"
+         id="path3011-4"
+         style="fill:url(#radialGradient8270);fill-opacity:1"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="14.83"
+         inkscape:export-xdpi="14.83"
+         sodipodi:type="arc"
+         style="fill:url(#radialGradient8272);fill-opacity:1"
+         id="path3038"
+         sodipodi:cx="57.857143"
+         sodipodi:cy="168.79076"
+         sodipodi:rx="13.571428"
+         sodipodi:ry="13.571428"
+         d="m 71.428572,168.79076 c 0,7.49529 -6.076136,13.57142 -13.571429,13.57142 -7.495292,0 -13.571428,-6.07613 -13.571428,-13.57142 0,-7.4953 6.076136,-13.57143 13.571428,-13.57143 7.495293,0 13.571429,6.07613 13.571429,13.57143 z"
+         transform="matrix(1.5789474,0,0,1.5789474,215.93852,735.2385)" />
+    </g>
   </g>
 </svg>
