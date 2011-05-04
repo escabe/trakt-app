@@ -10,8 +10,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448819"
-   height="1052.3622047"
+   width="470"
+   height="470"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.1 r9760"
@@ -69,33 +69,6 @@
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3824"
-       id="linearGradient3939"
-       gradientUnits="userSpaceOnUse"
-       x1="-170.40067"
-       y1="596.29675"
-       x2="145.16794"
-       y2="281.18524" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3824"
-       id="linearGradient3941"
-       gradientUnits="userSpaceOnUse"
-       x1="366.64285"
-       y1="529.98346"
-       x2="367.64285"
-       y2="92.840591" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3824"
-       id="linearGradient3943"
-       gradientUnits="userSpaceOnUse"
-       x1="-687.86102"
-       y1="81.045685"
-       x2="-376.431"
-       y2="-240.23523" />
-    <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3945"
        id="linearGradient3951"
        x1="367.14285"
@@ -103,7 +76,7 @@
        x2="367.14285"
        y2="251.51155"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.99056602,0,0,1,-176.60377,-92)" />
+       gradientTransform="matrix(0.99056602,0,0,1,-117.88329,507.38804)" />
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3953"
@@ -153,7 +126,7 @@
        y1="529.98346"
        x2="367.64285"
        y2="92.840591"
-       gradientTransform="translate(-180,-90)" />
+       gradientTransform="translate(-121.27952,509.38804)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3824"
@@ -163,7 +136,7 @@
        y1="81.045685"
        x2="-376.431"
        y2="-240.23523"
-       gradientTransform="translate(183.94918,48.272278)" />
+       gradientTransform="translate(-291.73484,442.97343)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3824"
@@ -173,7 +146,7 @@
        y1="596.29675"
        x2="145.16794"
        y2="281.18524"
-       gradientTransform="translate(-65.475529,-201.15244)" />
+       gradientTransform="translate(-460.17668,274.53158)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -183,8 +156,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.67968436"
-     inkscape:cx="257.3318"
-     inkscape:cy="631.91705"
+     inkscape:cx="280.59269"
+     inkscape:cy="467.61902"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -227,19 +200,20 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(0,-582.36218)">
     <rect
        style="fill:url(#linearGradient4023);fill-opacity:1;stroke:#000000;stroke-width:1.28198922;stroke-linecap:butt;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none"
        id="rect3810"
        width="18.314133"
        height="177.64708"
-       x="16.964685"
-       y="35.316734"
+       x="-377.7366"
+       y="511.00101"
        transform="matrix(0.72509705,-0.68864669,0.72509705,0.68864669,0,0)" />
     <rect
        transform="matrix(-0.72509705,-0.68864669,-0.72509705,0.68864669,0,0)"
-       y="-212.9259"
-       x="-231.27794"
+       y="181.77524"
+       x="-706.9621"
        height="177.64708"
        width="18.314133"
        id="rect3814"
@@ -249,16 +223,16 @@
        id="rect3005"
        width="360"
        height="317.14285"
-       x="0"
-       y="122.36218"
+       x="58.720474"
+       y="721.75024"
        rx="50" />
     <rect
        style="fill:url(#linearGradient3951);fill-opacity:1"
        id="rect3007"
        width="300"
        height="202.85715"
-       x="30"
-       y="159.50504"
+       x="88.720474"
+       y="758.89307"
        rx="49.528301"
        inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
        inkscape:export-xdpi="14.83"
@@ -272,7 +246,7 @@
        sodipodi:rx="13.571428"
        sodipodi:ry="13.571428"
        d="m 71.428572,168.79076 a 13.571428,13.571428 0 1 1 -27.142857,0 13.571428,13.571428 0 1 1 27.142857,0 z"
-       transform="translate(8.5714283,233.57143)"
+       transform="translate(67.291906,832.95947)"
        inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
        inkscape:export-xdpi="14.83"
        inkscape:export-ydpi="14.83" />
@@ -285,7 +259,7 @@
        sodipodi:rx="13.571428"
        sodipodi:ry="13.571428"
        d="m 71.428572,168.79076 a 13.571428,13.571428 0 1 1 -27.142857,0 13.571428,13.571428 0 1 1 27.142857,0 z"
-       transform="translate(48.571428,233.57143)"
+       transform="translate(107.29191,832.95947)"
        inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
        inkscape:export-xdpi="14.83"
        inkscape:export-ydpi="14.83" />
@@ -298,12 +272,12 @@
        sodipodi:rx="13.571428"
        sodipodi:ry="13.571428"
        d="m 71.428572,168.79076 a 13.571428,13.571428 0 1 1 -27.142857,0 13.571428,13.571428 0 1 1 27.142857,0 z"
-       transform="matrix(1.5789474,0,0,1.5789474,217.21804,135.85046)"
+       transform="matrix(1.5789474,0,0,1.5789474,275.93852,735.2385)"
        inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/_production/path3038.png"
        inkscape:export-xdpi="14.83"
        inkscape:export-ydpi="14.83" />
     <path
-       transform="matrix(1.5789474,0,0,1.5789474,157.21804,135.85046)"
+       transform="matrix(1.5789474,0,0,1.5789474,215.93852,735.2385)"
        d="m 71.428572,168.79076 a 13.571428,13.571428 0 1 1 -27.142857,0 13.571428,13.571428 0 1 1 27.142857,0 z"
        sodipodi:ry="13.571428"
        sodipodi:rx="13.571428"
