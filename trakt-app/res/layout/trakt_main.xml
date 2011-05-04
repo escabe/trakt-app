@@ -5,10 +5,16 @@
     android:layout_height="fill_parent"
     >
     <!-- Currently uses standard ugly buttons with text, should be replaced with cool image buttons -->
-    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_vertical|center_horizontal" android:orientation="vertical">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/linearLayout2">
-            <Button android:text="@string/trending_movies" android:id="@+id/buttonTrendingMovies" android:layout_width="wrap_content" android:layout_height="wrap_content" android:onClick="buttonTrendingClick"></Button>
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/buttonTrendingShows" android:text="@string/trending_shows" android:onClick="buttonTrendingClick"></Button>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_gravity="center_vertical|center_horizontal" android:orientation="vertical" android:layout_width="fill_parent">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/linearLayout2" android:layout_gravity="center_horizontal">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="vertical" android:onClick="buttonTrendingClick" android:id="@+id/buttonTrendingMovies" android:layout_margin="5px">
+                <ImageView android:src="@drawable/ic_item_trending_movies" android:layout_width="72px" android:id="@+id/imageView1" android:layout_height="72px" android:layout_gravity="center_horizontal"></ImageView>
+                <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="Trending Movies"></TextView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="vertical" android:onClick="buttonTrendingClick" android:id="@+id/buttonTrendingShows" android:layout_margin="5px">
+                <ImageView android:layout_width="72px" android:id="@+id/imageView1" android:layout_height="72px" android:src="@drawable/ic_item_trending_shows" android:layout_gravity="center_horizontal"></ImageView>
+                <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="@string/trending_shows"></TextView>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="match_parent" android:layout_width="wrap_content">
             <Button android:onClick="buttonTrendingClick" android:layout_height="wrap_content" android:id="@+id/buttonUserMovies" android:text="@string/user_movies" android:layout_width="wrap_content"></Button>
