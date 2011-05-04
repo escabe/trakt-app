@@ -5,23 +5,32 @@
     android:layout_height="fill_parent"
     >
     <!-- Currently uses standard ugly buttons with text, should be replaced with cool image buttons -->
-    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_gravity="center_vertical|center_horizontal" android:orientation="vertical" android:layout_width="fill_parent">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/linearLayout2" android:layout_gravity="center_horizontal">
-            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="vertical" android:onClick="buttonTrendingClick" android:id="@+id/buttonTrendingMovies" android:layout_margin="5px">
-                <ImageView android:src="@drawable/ic_item_trending_movies" android:layout_width="72px" android:id="@+id/imageView1" android:layout_height="72px" android:layout_gravity="center_horizontal"></ImageView>
-                <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="Trending Movies"></TextView>
+    <LinearLayout android:layout_height="wrap_content" android:layout_gravity="center_vertical|center_horizontal" android:orientation="vertical" android:layout_width="fill_parent">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_gravity="center_horizontal">
+            <LinearLayout android:layout_height="match_parent" android:orientation="vertical" android:onClick="buttonTrendingClick" android:id="@+id/buttonTrendingMovies" android:layout_width="125px">
+                <ImageView android:src="@drawable/ic_item_trending_movies" android:layout_width="72px" android:layout_height="72px" android:layout_gravity="center_horizontal"></ImageView>
+                <TextView  android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="@string/trending_movies"></TextView>
             </LinearLayout>
-            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="vertical" android:onClick="buttonTrendingClick" android:id="@+id/buttonTrendingShows" android:layout_margin="5px">
-                <ImageView android:layout_width="72px" android:id="@+id/imageView1" android:layout_height="72px" android:src="@drawable/ic_item_trending_shows" android:layout_gravity="center_horizontal"></ImageView>
-                <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="@string/trending_shows"></TextView>
+            <LinearLayout android:layout_height="match_parent" android:orientation="vertical" android:onClick="buttonTrendingClick" android:id="@+id/buttonTrendingShows" android:layout_width="125px">
+                <ImageView android:layout_width="72px" android:layout_height="72px" android:src="@drawable/ic_item_trending_shows" android:layout_gravity="center_horizontal"></ImageView>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="@string/trending_shows"></TextView>
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="match_parent" android:layout_width="wrap_content">
-            <Button android:onClick="buttonTrendingClick" android:layout_height="wrap_content" android:id="@+id/buttonUserMovies" android:text="@string/user_movies" android:layout_width="wrap_content"></Button>
-            <Button android:onClick="buttonTrendingClick" android:layout_height="wrap_content" android:id="@+id/buttonUserShows" android:text="@string/user_shows" android:layout_width="wrap_content"></Button>
+        <LinearLayout android:layout_height="match_parent" android:layout_width="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="10px">
+            <LinearLayout android:layout_height="match_parent" android:orientation="vertical" android:onClick="buttonTrendingClick" android:id="@+id/buttonUserMovies" android:layout_width="125px">
+                <ImageView android:layout_width="72px" android:layout_height="72px" android:layout_gravity="center_horizontal" android:src="@drawable/ic_item_user_movies"></ImageView>
+                <TextView  android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="@string/user_movies"></TextView>
+            </LinearLayout>
+
+            <LinearLayout android:layout_height="match_parent" android:orientation="vertical" android:onClick="buttonTrendingClick" android:id="@+id/buttonUserShows" android:layout_width="125px">
+                <ImageView android:layout_width="72px" android:layout_height="72px" android:src="@drawable/ic_item_user_shows" android:layout_gravity="center_horizontal"></ImageView>
+                <TextView  android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="@string/user_shows"></TextView>
+            </LinearLayout>
+
+
         </LinearLayout>
         <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/editSearch" android:hint="Search"></EditText>
-        <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout3" android:layout_height="wrap_content">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Search Movies" android:id="@+id/buttonSearchMovies" android:onClick="buttonSearchOnClick"></Button>
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Search Shows" android:id="@+id/buttonSearchShows" android:onClick="buttonSearchOnClick"></Button>
         </LinearLayout>
