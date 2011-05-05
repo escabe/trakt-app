@@ -66,23 +66,14 @@ public class TraktMain extends Activity {
 	    case R.id.menuSettings:
 	    	startActivity(new Intent(this, TraktPrefs.class));
 	    	return true;	    	
+	    case R.id.menuSearch:
+	    	onSearchRequested();
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
 
-	
-	public void buttonSearchOnClick(View view) {
-		EditText query = (EditText)findViewById(R.id.editSearch);
-		switch (view.getId()) {
-		case R.id.buttonSearchMovies:
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://search/movies/" + URLEncoder.encode(query.getText().toString()) ),this,TraktList.class));
-			break;
-		case R.id.buttonSearchShows:
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://search/shows/" + URLEncoder.encode(query.getText().toString()) ),this,TraktList.class));
-			break;
-		}
-	}
 	
 	/**
 	 * Handles all buttons
@@ -104,7 +95,9 @@ public class TraktMain extends Activity {
     	case R.id.buttonUserShows:
     		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://user/library/shows/all"),this,TraktList.class));
     		break;
-
+    	case R.id.buttonSearch:
+    		onSearchRequested();
+    		break;
     	}
     }
 }

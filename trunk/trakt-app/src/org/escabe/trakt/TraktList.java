@@ -1,5 +1,6 @@
 package org.escabe.trakt;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import com.commonsware.cwac.thumbnail.ThumbnailAdapter;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
@@ -24,13 +26,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 /**
  * Activity to Display lists of Shows or Movies
@@ -51,7 +51,6 @@ public class TraktList extends ListActivity {
 
 	// To hold information about what we are currently looking at
 	
-	private ShowMovie showmovie;
 	private enum UserTrending { User, Trending, Search}
 	private UserTrending usertrending;
 	
@@ -59,10 +58,10 @@ public class TraktList extends ListActivity {
 	
 	// Strings for the spinner
 	private String[] strings = {"Trending Shows","Trending Movies",
-			"All Your Shows","All Your Movies"};
+			"All Your Shows","All Your Movies","Search"};
 	
 	private String[] uu = new String[] {"trakt://shows/trending","trakt://movies/trending",
-			"trakt://user/library/shows/all","trakt://user/library/movies/all"};
+			"trakt://user/library/shows/all","trakt://user/library/movies/all","SEARCH"};
 	
 	private List<String> urls; 			
 			
@@ -95,7 +94,11 @@ public class TraktList extends ListActivity {
 		sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View v,int position, long id) {
 				if(!initial)
-					HandleUri(urls.get(position));
+					if(urls.get(position).equals("SEARCH") ) {
+						onSearchRequested();
+					} else {
+						HandleUri(urls.get(position));
+					}
 				else
 					initial = false;
 			}
@@ -179,6 +182,11 @@ public class TraktList extends ListActivity {
 		}
 	};
 	
+	@Override
+	protected void onNewIntent(Intent intent) {
+	    setIntent(intent);
+	    HandleIntent(intent);
+	}
 
 
 	@Override
@@ -192,8 +200,56 @@ public class TraktList extends ListActivity {
     private void HandleIntent(Intent intent) {
     	if (intent.getAction().equals(Intent.ACTION_VIEW)) {
     		HandleUri(intent.getDataString());
+    	} else if (intent.getAction().equals(Intent.ACTION_SEARCH)) {
+    	      String query = intent.getStringExtra(SearchManager.QUERY);
+    	      DoSearch(query,ShowMovie.Movie);
     	}
     }
+    
+    /**
+     * Instantiate a search
+     * @param q
+     * @param sm
+     */
+    private void DoSearch(String q,ShowMovie sm) {
+		final String qq = URLEncoder.encode(q);
+		usertrending = UserTrending.Search;
+		sp.setSelection(urls.indexOf("SEARCH"));
+		
+		fillList = new Runnable() {
+			public void run() {
+				PerformSearch(qq);
+			}};
+		
+		thumbs.notifyDataSetInvalidated();
+		
+		Thread thread =  new Thread(null, fillList);
+        thread.start();
+        
+        progressdialog = ProgressDialog.show(this,"", "Searching...", true);
+		
+    }
+    
+    /**
+     * To be called from separate Thread to perform actual search
+     * @param q
+     */
+	private void PerformSearch(String q) {
+    	JSONArray arr = null;
+    	// Clear current data Array
+    	data.clear();
+    	
+    	//Search Shows
+   		arr = traktapi.getDataArrayFromJSON("search/shows.json/%k/" + q,true);
+    	ParseRespone(arr);
+
+    	//Search Movies
+    	arr = traktapi.getDataArrayFromJSON("search/movies.json/%k/" + q,true);
+    	ParseRespone(arr);
+
+    	runOnUiThread(UpdateComplete);
+	}
+    
     /**
      * Decode the URI to determine what to do.
      * @param uri
@@ -205,34 +261,31 @@ public class TraktList extends ListActivity {
     	
     	// Consider to make this more a parser which will automatically call SwitchList with correct URL
     	if (uri.equals("trakt://movies/trending")) { //Trending Movies
-			showmovie = ShowMovie.Movie;
+
 			usertrending = UserTrending.Trending;
 			SwitchList("movies/trending.json/%k",true);
 		} else if (uri.equals("trakt://shows/trending")) { //Trending Shows
-			showmovie = ShowMovie.Show;
+
 			usertrending = UserTrending.Trending;
 			SwitchList("shows/trending.json/%k",true);
 		} else if (uri.equals("trakt://user/library/shows/all")) { //User Shows Library
-			showmovie = ShowMovie.Show;
+
 			usertrending = UserTrending.User;
 			SwitchList("user/library/shows/all.json/%k/%u",true);
 		}else if (uri.equals("trakt://user/library/movies/all")) { //User Movies Library
-			showmovie = ShowMovie.Movie;
+
 			usertrending = UserTrending.User;
 			SwitchList("user/library/movies/all.json/%k/%u",true);
 		}else if (uri.startsWith("trakt://search/movies")) {
-			showmovie = ShowMovie.Movie;
-			usertrending = UserTrending.Search;
 			String[] s = uri.split("/");
-			SwitchList("search/movies.json/%k/" + s[s.length-1],true);
+			DoSearch(s[s.length-1],ShowMovie.Movie);
 		}else if (uri.startsWith("trakt://search/shows")) {
-			showmovie = ShowMovie.Show;
-			usertrending = UserTrending.Search;
 			String[] s = uri.split("/");
-			SwitchList("search/shows.json/%k/" + s[s.length-1],true);
+			DoSearch(s[s.length-1],ShowMovie.Show);
 		}
     	    	
     }
+    
     /**
      * Switch data in the current list. Will be done on separate Thread.
      * @param url
@@ -254,17 +307,10 @@ public class TraktList extends ListActivity {
 	}
 
 	/**
-	 * This should be run on a separate Thread. Retrieves the actual data from the server.
-	 * @param url
-	 * @param login
+	 * Parses JSONArray into MovieShowInformation data array.
+	 * @param arr
 	 */
-	private void ShowList(String url,boolean login) {
-    	JSONArray arr = null;
-    	//Get list
-   		arr = traktapi.getDataArrayFromJSON(url,login);
-    	// Clear current data Array
-    	data.clear();
-
+	private void ParseRespone(JSONArray arr) {
     	//Re-Fill the data Array
     	try {
     		//For all items
@@ -283,19 +329,42 @@ public class TraktList extends ListActivity {
 	    		if (usertrending==UserTrending.Trending) {
 	    			info.setWatchers(obj.optInt("watchers"));
 	    		}
-	    		// Save ID
-	    		if (showmovie == ShowMovie.Movie) {
-	    			info.setId(obj.optString("tmdb_id"));
+
+	    		// Check whether show or movie based on type of ID given
+	    		String id = obj.optString("tmdb_id");
+	    		if(id.length()>0) {
+	    			info.setShowmovie(ShowMovie.Movie);
 	    		} else {
-	    			info.setId(obj.optString("tvdb_id"));
+	    			info.setShowmovie(ShowMovie.Show);
+	    			id =obj.optString("tvdb_id"); 
 	    		}
-	    		data.add(info);
+	    		
+    			info.setId(id);
+
+    			data.add(info);
 	    	}
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        runOnUiThread(UpdateComplete);
+
+	}
+	
+	/**
+	 * This should be run on a separate Thread. Retrieves the actual data from the server.
+	 * @param url
+	 * @param login
+	 */
+	private void ShowList(String url,boolean login) {
+    	JSONArray arr = null;
+    	//Get list
+   		arr = traktapi.getDataArrayFromJSON(url,login);
+    	// Clear current data Array
+    	data.clear();
+    	// Parse the data
+    	ParseRespone(arr);
+        
+    	runOnUiThread(UpdateComplete);
 	}
 	
 	@Override
@@ -307,7 +376,7 @@ public class TraktList extends ListActivity {
 	public void onListItemClick (ListView l, View v, int position, long id) {
 		// Determine which item is selected then call TraktDetails Activity to show the details for this Show/Movie.
 		MovieShowInformation info = data.get(position);
-		if (showmovie == ShowMovie.Movie) {
+		if (info.getShowmovie() == ShowMovie.Movie) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + info.getId()),this,TraktDetails.class));
 		} else {
 			// Changed to display episode list instead of Details view

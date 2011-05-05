@@ -1,5 +1,7 @@
 package org.escabe.trakt;
 
+import org.escabe.trakt.TraktAPI.ShowMovie;
+
 /**
  * Class to hold information about a Movie or Show
  * @author escabe
@@ -11,6 +13,7 @@ public class MovieShowInformation {
 	private String id=null;
 	private boolean viewed=false;
 	private int watchers = 0;
+	private ShowMovie showmovie; 
 	
 	public void setTitle(String title) {
 		this.title = title;
@@ -50,6 +53,14 @@ public class MovieShowInformation {
 
 	public int getWatchers() {
 		return watchers;
+	}
+
+	public void setShowmovie(ShowMovie showmovie) {
+		this.showmovie = showmovie;
+	}
+
+	public ShowMovie getShowmovie() {
+		return showmovie;
 	}
 	
 	

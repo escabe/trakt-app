@@ -2,4 +2,5 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Settings" android:id="@+id/menuSettings" android:icon="@android:drawable/ic_menu_preferences"></item>
+    <item android:title="Search" android:id="@+id/menuSearch" android:icon="@android:drawable/ic_menu_search"></item>
 </menu>

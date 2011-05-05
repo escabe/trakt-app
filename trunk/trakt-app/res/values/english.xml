@@ -8,4 +8,5 @@
     <string name="loading_details">Loading Details...</string>
     <string name="loading_title">Loading Title...</string>
     <string name="loading_summary">Loading Summary...</string>
+    <string name="search">Search</string>
 </resources>
