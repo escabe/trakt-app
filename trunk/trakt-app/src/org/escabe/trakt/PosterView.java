@@ -109,10 +109,8 @@ public class PosterView extends Gallery {
 	 * @param sm Show or Movie
 	 */
 	public void initPosterView(Activity parent,String url, ShowMovie sm) {
-		
-		MovieShowInformation info = null;
-		data.add(info);
-		
+		/*MovieShowInformation info = null;
+		data.add(info);*/
 		thumbs = new ThumbnailAdapter(parent, new MovieShowAdapter(parent), ((Application)parent.getApplication()).getThumbsCache(),IMAGE_IDS);
 		setAdapter(thumbs);
 		
@@ -160,11 +158,10 @@ public class PosterView extends Gallery {
                 item = vi.inflate(R.layout.trakt_posterview_item, null);
 			}
 			MovieShowInformation info = getItem(position);
+			ImageView poster = (ImageView)item.findViewById(R.id.imagePosterViewPoster);
 			if (info==null) {
-				ImageView poster = (ImageView)item.findViewById(R.id.imagePosterViewPoster);
 				poster.setImageResource(R.drawable.emptyposter);
 			} else {
-				ImageView poster = (ImageView)item.findViewById(R.id.imagePosterViewPoster);
 				poster.setImageResource(R.drawable.emptyposter);
 				poster.setTag("http://escabe.org/resize2.php?image=" + info.getPoster());
 			}
