@@ -19,5 +19,5 @@
     <ScrollView android:layout_width="match_parent" android:layout_height="100px">
         <TextView android:layout_height="fill_parent" android:layout_width="fill_parent" android:text="@string/loading_summary" android:id="@+id/textEpisodeDetailsSummary"></TextView>
     </ScrollView>
-    <ExpandableListView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@id/android:list" android:divider="#000000" android:dividerHeight="1px"></ExpandableListView>
+    <ExpandableListView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@id/android:list" android:divider="#000000" android:dividerHeight="1px" style="@style/EpisodeList"></ExpandableListView>
 </LinearLayout>
