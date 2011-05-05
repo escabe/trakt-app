@@ -9,4 +9,7 @@
     <string name="loading_title">Loading Title...</string>
     <string name="loading_summary">Loading Summary...</string>
     <string name="search">Search</string>
+    <string name="recommended_shows">Recommended Shows</string>
+    <string name="recommended_movies">Recommended Movies</string>
+    <string name="actions">Actions</string>
 </resources>

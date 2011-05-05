@@ -46,12 +46,12 @@ public class PosterView extends Gallery {
 		// TODO Auto-generated constructor stub
 		traktapi = new TraktAPI(context);
 		data = new ArrayList<MovieShowInformation>();
-
 		// When clicked on poster display details
 		setOnItemClickListener(new OnItemClickListener(){
 			public void onItemClick(AdapterView<?> p, View v, int position, long id) {
 				// Determine which item is selected then call TraktDetails Activity to show the details for this Show/Movie.
 				MovieShowInformation info = data.get(position);
+				if (info==null) return;
 				if (showmovie == ShowMovie.Movie) {
 					parent.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + info.getId()),parent,TraktDetails.class));
 				} else {
@@ -109,8 +109,13 @@ public class PosterView extends Gallery {
 	 * @param sm Show or Movie
 	 */
 	public void initPosterView(Activity parent,String url, ShowMovie sm) {
+		
+		MovieShowInformation info = null;
+		data.add(info);
+		
 		thumbs = new ThumbnailAdapter(parent, new MovieShowAdapter(parent), ((Application)parent.getApplication()).getThumbsCache(),IMAGE_IDS);
 		setAdapter(thumbs);
+		
 		this.url = url;
 		this.parent = parent;
 		showmovie = sm;
@@ -155,9 +160,14 @@ public class PosterView extends Gallery {
                 item = vi.inflate(R.layout.trakt_posterview_item, null);
 			}
 			MovieShowInformation info = getItem(position);
-			ImageView poster = (ImageView)item.findViewById(R.id.imagePosterViewPoster);
-			poster.setImageResource(R.drawable.emptyposter);
-			poster.setTag("http://escabe.org/resize2.php?image=" + info.getPoster());
+			if (info==null) {
+				ImageView poster = (ImageView)item.findViewById(R.id.imagePosterViewPoster);
+				poster.setImageResource(R.drawable.emptyposter);
+			} else {
+				ImageView poster = (ImageView)item.findViewById(R.id.imagePosterViewPoster);
+				poster.setImageResource(R.drawable.emptyposter);
+				poster.setTag("http://escabe.org/resize2.php?image=" + info.getPoster());
+			}
 			return item;
 		}
 	}
