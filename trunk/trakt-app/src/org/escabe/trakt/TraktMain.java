@@ -44,6 +44,9 @@ public class TraktMain extends Activity {
 
 			PosterView pv = (PosterView)findViewById(R.id.posterviewRecomShows);
 			pv.initPosterView(this, "recommendations/shows/%k",ShowMovie.Show);
+			
+			pv = (PosterView)findViewById(R.id.posterviewRecomMovies);
+			pv.initPosterView(this, "recommendations/movies/%k",ShowMovie.Movie);
 		}
     }
     
