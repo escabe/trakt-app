@@ -36,7 +36,7 @@ public class TraktAPI {
 	public enum MarkMode {Watched, Unwatched, Loved, Unloved, Hated, Unhated};
 	// "Constants"
 	private String apikey = "682912f6e62d666428d261544d619d7c";
-	private String baseurl = "http://api.trakt.tv/";
+	private String baseurl = "http://api-trakt.apigee.com/";
 
 	private String username;
 	private String password;
