@@ -1,3 +1,12 @@
+/* TODO: Rewrite with
+ *  - Split List Activities (Search, List), use a base activity and overload
+ *  - Use JSON Data directly (no MovieShowInformation class anymore)
+ *  - Split Show and Movie details from the start
+ *  - Use AsyncTask instead of Thread for retrieving data
+ *  - Error handling from the start
+ *  - Loading indicator for PosterView
+ */
+
 package org.escabe.trakt;
 
 import java.io.File;
