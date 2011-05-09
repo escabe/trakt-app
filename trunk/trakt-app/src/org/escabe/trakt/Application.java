@@ -1,9 +1,7 @@
-/* TODO: Rewrite with
- *  - Split List Activities (Search, List), use a base activity and overload
+/* TODO:
  *  - Use JSON Data directly (no MovieShowInformation class anymore)
- *  - Split Show and Movie details from the start
  *  - Use AsyncTask instead of Thread for retrieving data
- *  - Error handling from the start
+ *  - Error handling
  *  - Loading indicator for PosterView
  */
 
