@@ -3,8 +3,6 @@ package org.escabe.trakt;
  * Main menu Activity
  */
 
-import java.net.URLEncoder;
-
 import org.escabe.trakt.TraktAPI.ShowMovie;
 
 import android.app.Activity;
@@ -49,6 +47,7 @@ public class TraktMain extends Activity {
 			pv.initPosterView(this, "recommendations/movies/%k",ShowMovie.Movie);
 		}
     }
+
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
