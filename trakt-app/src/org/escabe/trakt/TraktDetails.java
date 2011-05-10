@@ -10,9 +10,11 @@ import org.json.JSONObject;
 import com.commonsware.cwac.cache.WebImageCache;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,15 +25,8 @@ import android.widget.TextView;
  *
  */
 public class TraktDetails extends ActivityWithUpdate {
-	/* Currently displays info for a Movie or Show, instead of Show might want to use this only for Episode and create
-	 * an ListActivity which displays episode list when selecting a Show
-	 */
-	
-	private ProgressDialog progressdialog;
-	private Runnable getdata;
 	private TraktAPI traktapi;
 	
-	private ShowMovie showmovie;
 	private String id;
 	private WebImageCache cache = null;
 
@@ -78,13 +73,8 @@ public class TraktDetails extends ActivityWithUpdate {
 	 */
     private void HandleUri(Uri uri) {
 		if (uri.getScheme().equals("tmdb")) {
-			showmovie = ShowMovie.Movie;
 			id = uri.getSchemeSpecificPart();
 			GetData("movie/summary.json/%k/" + id);
-		} else if (uri.getScheme().equals("tvdb")) {
-			showmovie = ShowMovie.Show;
-			id = uri.getSchemeSpecificPart();
-			GetData("show/summary.json/%k/" + id);
 		}
     }
 
@@ -106,26 +96,26 @@ public class TraktDetails extends ActivityWithUpdate {
     	traktapi.MarkMovieAsWatched(this, mm, id, data.optString("title"));
     }
     
-    /**
-     * Actually retrieve details information from Server. Will start a separate Thread for this.
-     * @param url
-     */
-	private void GetData(final String url) {
-		getdata = new Runnable() {
-			public void run() {
-				data = traktapi.getDataObjectFromJSON(url, true); 
-				runOnUiThread(UpdateComplete);
-			}};
-		Thread thread =  new Thread(null, getdata);
-        thread.start();
-        progressdialog = ProgressDialog.show(this,"", "Retrieving data ...", true);
-	}
-	
-	/**
-	 * Called by GetData Thread on UiThread when data has been retrieved
-	 */
-	private Runnable UpdateComplete = new Runnable() {
-		public void run() {
+    private class DataGrabber extends AsyncTask<String,Void,Boolean> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+		
+		public DataGrabber(Context parent) {
+			this.parent = parent;
+		}
+
+		@Override
+		protected void onPreExecute() {
+		    progressdialog = ProgressDialog.show(parent,"", "Retrieving data ...", true);
+		}
+    	
+		@Override
+		protected Boolean doInBackground(String... params) {
+			data = traktapi.getDataObjectFromJSON(params[0], true); 
+			return true;
+		}
+		@Override
+	    protected void onPostExecute(Boolean result) {
 			// Fill in all the information
 			TextView title = (TextView) findViewById(R.id.textDetailsTitle);
 			title.setText(data.optString("title"));
@@ -144,19 +134,11 @@ public class TraktDetails extends ActivityWithUpdate {
 			TextView overview = (TextView) findViewById(R.id.textDetailsSummary);
 
 			// Details vary depending on whether displaying Movie or Show
-			if (showmovie==ShowMovie.Movie) {
-				String d = String.format("Released: %1$tB %1$te, %1$tY\nRuntime: %2$d min",new Date(data.optLong("released")*1000),data.optInt("runtime"));
-				details.setText(d);
-				d = String.format("\"%s\"\n\n%s",data.optString("tagline"),data.optString("overview"));
-				overview.setText(d);
-			} else {
-				String d = String.format("First Aired: %1$tB %1$te, %1$tY\nCountry: %2$s\nRuntime: %3$d min",
-						new Date(data.optLong("first_aired")*1000),
-						data.optString("country"),
-						data.optInt("runtime"));
-				details.setText(d);
-				overview.setText(data.optString("overview"));
-			}
+
+			String d = String.format("Released: %1$tB %1$te, %1$tY\nRuntime: %2$d min",new Date(data.optLong("released")*1000),data.optInt("runtime"));
+			details.setText(d);
+			d = String.format("\"%s\"\n\n%s",data.optString("tagline"),data.optString("overview"));
+			overview.setText(d);
 			
 			// Marked Watched/Loved/Hated
         	if (lovedhatedwatched==null)
@@ -183,21 +165,20 @@ public class TraktDetails extends ActivityWithUpdate {
 			// Close the progress dialog
 	        progressdialog.dismiss();
 		}
-	};
-	
-	public void imageDetailsPosterOnClick(View view) {
-		if (showmovie==ShowMovie.Show) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + id),this,EpisodeList.class));
-		}
+    }
+    
+    /**
+     * Actually retrieve details information from Server. Will start a separate Thread for this.
+     * @param url
+     */
+	private void GetData(String url) {
+		DataGrabber dg = new DataGrabber(this);
+		dg.execute(url);
 	}
-
+	
 	@Override
 	public void DoUpdate() {
-    	if (showmovie == ShowMovie.Movie) {
-    		GetData("movie/summary.json/%k/" + id);
-    	} else {
-    		GetData("show/summary.json/%k/" + id);	
-    	}
+		GetData("movie/summary.json/%k/" + id);
 	}
 	
 }
