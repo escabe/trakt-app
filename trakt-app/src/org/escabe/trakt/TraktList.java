@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -40,7 +41,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
  */
 public class TraktList extends ListActivity {
 	// Main ArrayList holding the currently displayed data
-	private ArrayList<MovieShowInformation> data=null;
+	private JSONArray data=null;
 
 	// For CWAC Thumbnail
 	private static final int[] IMAGE_IDS={R.id.imagePoster};
@@ -77,10 +78,9 @@ public class TraktList extends ListActivity {
 	    // Do the following here instead of in onStart such that this is not repeated when returning from Details Activity
 	    
 	    // Retrieve current list if was suspended
-	    data=(ArrayList<MovieShowInformation>)getLastNonConfigurationInstance();
-		if (data==null) {
-			// Create new list if none was saved
-			data = new ArrayList<MovieShowInformation>();
+	    data=(JSONArray)getLastNonConfigurationInstance();
+
+	    if (data==null) {
 			// Initialize CWAC Thumbnail for posters
 			thumbs = new ThumbnailAdapter(this, new MovieShowAdapter(), ((Application)getApplication()).getThumbsCache(),IMAGE_IDS);
 			// Assign the adaptor to the list
@@ -193,14 +193,8 @@ public class TraktList extends ListActivity {
 		
 		@Override
 		protected Boolean doInBackground(String... params) {
-			JSONArray arr = null;
 			//Get list
-			arr = traktapi.getDataArrayFromJSON(params[0],true);
-			// Clear current data Array
-			data.clear();
-			// Parse the data
-			ParseRespone(arr);
-
+			data = traktapi.getDataArrayFromJSON(params[0],true);
 			return true;
 		}
 		@Override
@@ -250,15 +244,15 @@ public class TraktList extends ListActivity {
 		DataGrabber dg = new DataGrabber(this) {
 			@Override
 			protected Boolean doInBackground(String... params) {
-				JSONArray arr = null;
-		    	data.clear();
-		    	//Search Shows
-		   		arr = traktapi.getDataArrayFromJSON("search/shows.json/%k/" + params[0],true);
-		    	ParseRespone(arr);
-
+		    	JSONArray arr = null;
+				//Search Shows
+		   		data = traktapi.getDataArrayFromJSON("search/shows.json/%k/" + params[0],true);
+		    	
 		    	//Search Movies
-		    	arr = traktapi.getDataArrayFromJSON("search/movies.json/%k/" + params[0],true);
-		    	ParseRespone(arr);
+		   		arr = traktapi.getDataArrayFromJSON("search/movies.json/%k/" + params[0],true);
+		    	for (int i=0;i<arr.length();i++) {
+		    		data.put(arr.optJSONObject(i));
+		    	}
 
 				return true;
 			}
@@ -303,65 +297,23 @@ public class TraktList extends ListActivity {
     	    	
     }
     
-    /**
-	 * Parses JSONArray into MovieShowInformation data array.
-	 * @param arr
-	 */
-	private void ParseRespone(JSONArray arr) {
-    	//Re-Fill the data Array
-    	try {
-    		//For all items
-	    	for (int i=0;i<arr.length();i++) {
-	    		MovieShowInformation info = new MovieShowInformation();
-	    		// Get item from array
-	    		JSONObject obj = arr.getJSONObject(i);
-	    		// Get poster
-	    		JSONObject picts = obj.getJSONObject("images");
-	    		String p = picts.optString("poster");
-	    		p = p.replace(".jpg", "-138.jpg");
-	    		info.setPoster(p);
-	    		// Get title
-	    		info.setTitle(obj.optString("title"));
-	    		// Get number of watchers
-	    		if (usertrending==UserTrending.Trending) {
-	    			info.setWatchers(obj.optInt("watchers"));
-	    		}
-
-	    		// Check whether show or movie based on type of ID given
-	    		String id = obj.optString("tmdb_id");
-	    		if(id.length()>0) {
-	    			info.setShowmovie(ShowMovie.Movie);
-	    		} else {
-	    			info.setShowmovie(ShowMovie.Show);
-	    			id =obj.optString("tvdb_id"); 
-	    		}
-	    		
-    			info.setId(id);
-
-    			data.add(info);
-	    	}
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-	}
-	
 	@Override
 	public Object onRetainNonConfigurationInstance() {
 		return(data);
 	}
 	
 	@Override
-	public void onListItemClick (ListView l, View v, int position, long id) {
+	public void onListItemClick (ListView l, View v, int position, long pos) {
 		// Determine which item is selected then call TraktDetails Activity to show the details for this Show/Movie.
-		MovieShowInformation info = data.get(position);
-		if (info.getShowmovie() == ShowMovie.Movie) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + info.getId()),this,TraktDetails.class));
-		} else {
+		JSONObject info = data.optJSONObject(position);
+		String id = info.optString("tmdb_id");
+		if(id.length()>0) { // Movie
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + id),this,TraktDetails.class));
+		} else { // Show
 			// Changed to display episode list instead of Details view
 			//startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + info.getId()),this,TraktDetails.class));
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + info.getId()),this,EpisodeList.class));
+			id = info.optString("tvdb_id");
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + id),this,EpisodeList.class));
 		}
 	}
 
@@ -371,34 +323,32 @@ public class TraktList extends ListActivity {
 	 * @author escabe
 	 *
 	 */
-	class MovieShowAdapter extends ArrayAdapter<MovieShowInformation> {
-		MovieShowAdapter() {
-			super(TraktList.this,R.layout.trak_list_row,data);
-		}
-		
-		@Override
+	class MovieShowAdapter extends BaseAdapter {
         public View getView(int position, View convertView, ViewGroup parent) {
 			View row = convertView;
             if (row == null) { //Create new row when needed
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 row = vi.inflate(R.layout.trak_list_row, null);
             }
-            MovieShowInformation info = getItem(position);
+            JSONObject info = (JSONObject) getItem(position);
             if (info != null) {
             	// Fill in basic information
             	TextView title = (TextView)row.findViewById(R.id.textTitle);
-            	title.setText(info.getTitle());
+            	title.setText(info.optString("title"));
 
+            	// Poster
+	    		JSONObject picts = info.optJSONObject("images");
+	    		String p = picts.optString("poster");
+	    		p = p.replace(".jpg", "-138.jpg");
             	ImageView poster = (ImageView)row.findViewById(R.id.imagePoster);
-            	
             	// Posters are retrieved through CWAC Thumbnail so set image URL as Tag
             	poster.setImageResource(R.drawable.emptyposter);
-            	poster.setTag("http://escabe.org/resize.php?image=" + info.getPoster());
+            	poster.setTag("http://escabe.org/resize.php?image=" + p);
             	
             	TextView details = (TextView)row.findViewById(R.id.textDetails);
             	// Only show number of watchers when this information is available
             	if (usertrending==UserTrending.Trending) {
-	            	String d = String.format("Watchers: %d", info.getWatchers());
+	            	String d = String.format("Watchers: %d", info.optInt("watchers"));
 	            	details.setText(d);
             	} else {
             		details.setText("");
@@ -410,10 +360,16 @@ public class TraktList extends ListActivity {
             	ImageView loved = (ImageView) row.findViewById(R.id.imageLoved);
             	ImageView hated = (ImageView) row.findViewById(R.id.imageHated);
             	ImageView watched = (ImageView) row.findViewById(R.id.imageWatched);
+
+        		String id = info.optString("tmdb_id");
+        		if(id.length()>0) { // Movie
+        		} else { // Show
+        			id = info.optString("tvdb_id");
+        		}
             	
             	// Check if Thread has already retrieved all info
             	if(lovedhatedwatched!=null) {
-            		LovedHatedWatched lhw = lovedhatedwatched.get(info.getId());
+            		LovedHatedWatched lhw = lovedhatedwatched.get(id);
             		if (lhw!=null) {
             			loved.setVisibility( lhw.isLoved() ? View.VISIBLE:View.GONE );
             			hated.setVisibility( lhw.isHated() ? View.VISIBLE:View.GONE );
@@ -430,6 +386,22 @@ public class TraktList extends ListActivity {
             	}
             }
             return(row);
+		}
+
+		public int getCount() {
+			if (data==null)
+				return 0;
+			return data.length();
+		}
+
+		public Object getItem(int position) {
+			if (data==null)
+				return null;
+			return data.optJSONObject(position);
+		}
+
+		public long getItemId(int position) {
+			return position;
 		}
 	}
 	
