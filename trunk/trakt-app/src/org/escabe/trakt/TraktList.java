@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,12 +41,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class TraktList extends ListActivity {
 	// Main ArrayList holding the currently displayed data
 	private ArrayList<MovieShowInformation> data=null;
+
 	// For CWAC Thumbnail
 	private static final int[] IMAGE_IDS={R.id.imagePoster};
 	private ThumbnailAdapter thumbs=null;
 	private static boolean initial;
-	private Runnable fillList;
-	private ProgressDialog progressdialog;
 	private Spinner sp;
 	private TraktAPI traktapi=null;
 
@@ -64,7 +64,7 @@ public class TraktList extends ListActivity {
 			"trakt://user/library/shows/all","trakt://user/library/movies/all","SEARCH"};
 	
 	private List<String> urls; 			
-			
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -168,19 +168,51 @@ public class TraktList extends ListActivity {
 	}
 	
 	/**
-	 * Called by SwitchList on UiThread when data has been retrieved
+	 * Switch data in the current list. Will be done in an AsyncTask
+	 * @param url
+	 * @param login
 	 */
-	private Runnable UpdateComplete = new Runnable() {
+	private void SwitchList(final String url,final boolean login) {
+		DataGrabber dg = new DataGrabber(this);
+		dg.execute(url);
+	}
+	
+	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+		
+		public DataGrabber(Context parent) {
+			this.parent = parent;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			thumbs.notifyDataSetInvalidated();
+		    progressdialog = ProgressDialog.show(parent,"", "Retrieving data ...", true);
+		}
+		
+		@Override
+		protected Boolean doInBackground(String... params) {
+			JSONArray arr = null;
+			//Get list
+			arr = traktapi.getDataArrayFromJSON(params[0],true);
+			// Clear current data Array
+			data.clear();
+			// Parse the data
+			ParseRespone(arr);
 
-		public void run() {
-			// Notify list that data has been retrieved
+			return true;
+		}
+		@Override
+	    protected void onPostExecute(Boolean result) {
 			thumbs.notifyDataSetChanged();
 	        // Scroll to first item
 			setSelection(0);
 	        // Hide progress dialog
 			progressdialog.dismiss();
-		}
-	};
+
+	    }
+	}
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -202,7 +234,7 @@ public class TraktList extends ListActivity {
     		HandleUri(intent.getDataString());
     	} else if (intent.getAction().equals(Intent.ACTION_SEARCH)) {
     	      String query = intent.getStringExtra(SearchManager.QUERY);
-    	      DoSearch(query,ShowMovie.Movie);
+    	      DoSearch(query);
     	}
     }
     
@@ -211,44 +243,29 @@ public class TraktList extends ListActivity {
      * @param q
      * @param sm
      */
-    private void DoSearch(String q,ShowMovie sm) {
-		final String qq = URLEncoder.encode(q);
+    private void DoSearch(String q) {
 		usertrending = UserTrending.Search;
 		sp.setSelection(urls.indexOf("SEARCH"));
 		
-		fillList = new Runnable() {
-			public void run() {
-				PerformSearch(qq);
-			}};
+		DataGrabber dg = new DataGrabber(this) {
+			@Override
+			protected Boolean doInBackground(String... params) {
+				JSONArray arr = null;
+		    	data.clear();
+		    	//Search Shows
+		   		arr = traktapi.getDataArrayFromJSON("search/shows.json/%k/" + params[0],true);
+		    	ParseRespone(arr);
+
+		    	//Search Movies
+		    	arr = traktapi.getDataArrayFromJSON("search/movies.json/%k/" + params[0],true);
+		    	ParseRespone(arr);
+
+				return true;
+			}
+		};
 		
-		thumbs.notifyDataSetInvalidated();
-		
-		Thread thread =  new Thread(null, fillList);
-        thread.start();
-        
-        progressdialog = ProgressDialog.show(this,"", "Searching...", true);
-		
+		dg.execute(URLEncoder.encode(q));
     }
-    
-    /**
-     * To be called from separate Thread to perform actual search
-     * @param q
-     */
-	private void PerformSearch(String q) {
-    	JSONArray arr = null;
-    	// Clear current data Array
-    	data.clear();
-    	
-    	//Search Shows
-   		arr = traktapi.getDataArrayFromJSON("search/shows.json/%k/" + q,true);
-    	ParseRespone(arr);
-
-    	//Search Movies
-    	arr = traktapi.getDataArrayFromJSON("search/movies.json/%k/" + q,true);
-    	ParseRespone(arr);
-
-    	runOnUiThread(UpdateComplete);
-	}
     
     /**
      * Decode the URI to determine what to do.
@@ -278,35 +295,15 @@ public class TraktList extends ListActivity {
 			SwitchList("user/library/movies/all.json/%k/%u",true);
 		}else if (uri.startsWith("trakt://search/movies")) {
 			String[] s = uri.split("/");
-			DoSearch(s[s.length-1],ShowMovie.Movie);
+			DoSearch(s[s.length-1]);
 		}else if (uri.startsWith("trakt://search/shows")) {
 			String[] s = uri.split("/");
-			DoSearch(s[s.length-1],ShowMovie.Show);
+			DoSearch(s[s.length-1]);
 		}
     	    	
     }
     
     /**
-     * Switch data in the current list. Will be done on separate Thread.
-     * @param url
-     * @param login
-     */
-	private void SwitchList(final String url,final boolean login) {
-		fillList = new Runnable() {
-			public void run() {
-				ShowList(url,login);
-			}};
-		
-		thumbs.notifyDataSetInvalidated();
-		
-		Thread thread =  new Thread(null, fillList);
-        thread.start();
-        
-        progressdialog = ProgressDialog.show(this,"", "Retrieving data ...", true);
-
-	}
-
-	/**
 	 * Parses JSONArray into MovieShowInformation data array.
 	 * @param arr
 	 */
@@ -348,23 +345,6 @@ public class TraktList extends ListActivity {
             e.printStackTrace();
         }
 
-	}
-	
-	/**
-	 * This should be run on a separate Thread. Retrieves the actual data from the server.
-	 * @param url
-	 * @param login
-	 */
-	private void ShowList(String url,boolean login) {
-    	JSONArray arr = null;
-    	//Get list
-   		arr = traktapi.getDataArrayFromJSON(url,login);
-    	// Clear current data Array
-    	data.clear();
-    	// Parse the data
-    	ParseRespone(arr);
-        
-    	runOnUiThread(UpdateComplete);
 	}
 	
 	@Override
