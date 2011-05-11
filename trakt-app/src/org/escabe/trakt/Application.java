@@ -14,8 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Handler;
-import android.os.Message;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -64,8 +63,8 @@ public class Application extends android.app.Application {
 	 */
 	public void GetUserData() {
 		if (lovedhatedwatched==null) {
-			Thread thread =  new Thread(null, retrieveLovedHatedWatched);
-	        thread.start();
+			LovedHatedWatchedRetriever rt = new LovedHatedWatchedRetriever();
+			rt.execute();
 		}
 	}
 	
@@ -101,27 +100,12 @@ public class Application extends android.app.Application {
 	}
 
 
-	Handler retrieveLovedHatedWatchedDone = new Handler() { 
-        @Override
-        public void handleMessage(Message msg) { 
-           Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
-        }
-    };	
-	
-    
-    public boolean ValidateLogin() {
-    	
-    	return true;
-    }
-	
-	/**
-	 * To be run as separate Thread. Calls trakt API multiple times to retrieve a full list of
-	 * loved, hated and watched movies and shows for the user.
-	 */
-	private Runnable retrieveLovedHatedWatched = new Runnable() {
-		public void run() {
+	private class LovedHatedWatchedRetriever extends AsyncTask<String,Void,Boolean> {
+
+		@Override
+		protected Boolean doInBackground(String... params) {
 			if (!ValidateLogin()) {
-				return;
+				return false;
 			}
 			lovedhatedwatched = new HashMap<String,LovedHatedWatched>();
 			
@@ -213,10 +197,18 @@ public class Application extends android.app.Application {
 				}
 			}
 			lhwloaded = true;
-			Message m = new Message();
-			m.obj = "Done Loading Watched/Loved/Hated information.";
-			retrieveLovedHatedWatchedDone.sendMessage(m);
+			return true;
 		}
-	};
+		
+		@Override
+	    protected void onPostExecute(Boolean result) {
+			Toast.makeText(getApplicationContext(), "Retrieving Watched/Loved/Hated done.", Toast.LENGTH_SHORT).show();	
+		}
+	}
+    
+    public boolean ValidateLogin() {
+    	return true;
+    }
+	
 	
 }
