@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import org.escabe.trakt.TraktAPI.MarkMode;
-import org.escabe.trakt.TraktAPI.ShowMovie;
 import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;
