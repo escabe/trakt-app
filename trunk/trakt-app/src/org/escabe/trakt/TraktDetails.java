@@ -29,8 +29,6 @@ public class TraktDetails extends ActivityWithUpdate {
 	private String id;
 	private WebImageCache cache = null;
 
-	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
-	
 	// Holds the data for current Movie/Show in JSON form
 	JSONObject data;
 	
@@ -140,26 +138,16 @@ public class TraktDetails extends ActivityWithUpdate {
 			overview.setText(d);
 			
 			// Marked Watched/Loved/Hated
-        	if (lovedhatedwatched==null)
-        		lovedhatedwatched=((Application)getApplication()).getLovedHatedWatched();
-        	
-        	// Check if Thread has already retrieved all info
-        	if(lovedhatedwatched!=null) {
-        		LovedHatedWatched lhw = lovedhatedwatched.get(id);
-        		if (lhw!=null) {
-		    		ImageView loved = (ImageView) findViewById(R.id.imageDetailsLoved);
-		        	ImageView hated = (ImageView) findViewById(R.id.imageDetailsHated);
-		        	if (lhw.isLoved()) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
-		        	if (lhw.isHated()) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
-        		}
-        	}
-
-        	// Moved watched here as info is available in data directly
         	ImageView watched = (ImageView) findViewById(R.id.imageDetailsWatched);        	
-        	if (data.optBoolean("watched")) 
-        		watched.setBackgroundResource(R.drawable.watchedactive);
-        	else
-        		watched.setBackgroundColor(Color.BLACK);
+			ImageView loved = (ImageView) findViewById(R.id.imageDetailsLoved);
+        	ImageView hated = (ImageView) findViewById(R.id.imageDetailsHated);
+
+        	if (data.optBoolean("watched")) watched.setBackgroundResource(R.drawable.watchedactive); 
+        	
+        	String rating = data.optString("rating");
+        	if (rating.equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
+        	if (rating.equals("hate")) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
+
         	
 			// Close the progress dialog
 	        progressdialog.dismiss();

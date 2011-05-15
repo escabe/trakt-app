@@ -51,8 +51,6 @@ public class TraktList extends ListActivity {
 	private enum UserTrending { User, Trending, Search}
 	private UserTrending usertrending;
 	
-	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
-	
 	// Strings for the spinner
 	private String[] strings = {"Trending Shows","Trending Movies",
 			"All Your Shows","All Your Movies","Search"};
@@ -341,37 +339,21 @@ public class TraktList extends ListActivity {
             	} else {
             		details.setText("");
             	}
-            	// Display Loved, Hated and Watched icons
-            	if (lovedhatedwatched==null)
-            		lovedhatedwatched=((Application)getApplication()).getLovedHatedWatched();
-            	
-            	ImageView loved = (ImageView) row.findViewById(R.id.imageLoved);
-            	ImageView hated = (ImageView) row.findViewById(R.id.imageHated);
-            	ImageView watched = (ImageView) row.findViewById(R.id.imageWatched);
 
-        		String id = info.optString("tmdb_id");
+            	String id = info.optString("tmdb_id");
         		if(id.length()>0) { // Movie
         		} else { // Show
         			id = info.optString("tvdb_id");
         		}
             	
-            	// Check if Thread has already retrieved all info
-            	if(lovedhatedwatched!=null) {
-            		LovedHatedWatched lhw = lovedhatedwatched.get(id);
-            		if (lhw!=null) {
-            			loved.setVisibility( lhw.isLoved() ? View.VISIBLE:View.GONE );
-            			hated.setVisibility( lhw.isHated() ? View.VISIBLE:View.GONE );
-            			watched.setVisibility( lhw.isWatched() ? View.VISIBLE:View.GONE );
-            		} else {
-            			loved.setVisibility(View.GONE);
-            			hated.setVisibility(View.GONE);
-            			watched.setVisibility(View.GONE);
-            		}
-            	} else {
-        			loved.setVisibility(View.GONE);
-        			hated.setVisibility(View.GONE);
-        			watched.setVisibility(View.GONE);
-            	}
+            	// Display Loved, Hated and Watched icons
+            	ImageView loved = (ImageView) row.findViewById(R.id.imageLoved);
+            	ImageView hated = (ImageView) row.findViewById(R.id.imageHated);
+            	ImageView watched = (ImageView) row.findViewById(R.id.imageWatched);
+        		String rating = info.optString("rating");
+    			loved.setVisibility( rating.equals("love") ? View.VISIBLE:View.GONE );
+    			hated.setVisibility( rating.equals("hate") ? View.VISIBLE:View.GONE );
+    			watched.setVisibility( info.optBoolean("watched") ? View.VISIBLE:View.GONE );
             }
             return(row);
 		}
