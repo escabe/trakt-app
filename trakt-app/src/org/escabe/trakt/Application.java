@@ -40,7 +40,6 @@ public class Application extends android.app.Application {
 	private TraktAPI traktapi = null;
 	
 
-	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
 	private boolean lhwloaded = false;
 	
 	/**
@@ -58,17 +57,7 @@ public class Application extends android.app.Application {
 		traktapi = new TraktAPI(this);
 	}
 
-	/**
-	 * Only to be called after login details are known
-	 */
-	public void GetUserData() {
-		if (lovedhatedwatched==null) {
-			LovedHatedWatchedRetriever rt = new LovedHatedWatchedRetriever();
-			rt.execute();
-		}
-	}
-	
-	
+
 	/**
 	 * Get SimpleWebImageCache which can be used for displaying images in ListViews.
 	 * @return	The Application's SimpleWebImageCache
@@ -91,121 +80,6 @@ public class Application extends android.app.Application {
 		return cache;
 	}
 	
-	public HashMap<String,LovedHatedWatched> getLovedHatedWatched() {
-		// Only return the list of the Thread as finished filling it.
-		if (lhwloaded)
-			return lovedhatedwatched;
-		else
-			return null;
-	}
-
-
-	private class LovedHatedWatchedRetriever extends AsyncTask<String,Void,Boolean> {
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			if (!ValidateLogin()) {
-				return false;
-			}
-			lovedhatedwatched = new HashMap<String,LovedHatedWatched>();
-			
-			JSONArray data = traktapi.getDataArrayFromJSON("user/library/movies/all.json/%k/%u", true);
-			for (int i=0;i<data.length();i++) {
-				try {
-					JSONObject d = data.getJSONObject(i);
-					LovedHatedWatched lhw = new LovedHatedWatched(d.optInt("plays")>0);
-					lovedhatedwatched.put(d.optString("tmdb_id"), lhw);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					Log.e(TAG,e.toString());
-				}
-			}
-			
-			data = traktapi.getDataArrayFromJSON("user/library/movies/loved.json/%k/%u", true);
-			for (int i=0;i<data.length();i++) {
-				try {
-					JSONObject d = data.getJSONObject(i);
-					LovedHatedWatched lhw = lovedhatedwatched.get(d.optString("tmdb_id"));
-					if (lhw==null) {
-						lhw = new LovedHatedWatched(false);
-					}
-					lhw.setLoved(true);
-					lovedhatedwatched.put(d.optString("tmdb_id"), lhw);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					Log.e(TAG,e.toString());
-				}
-			}
-			
-			data = traktapi.getDataArrayFromJSON("user/library/movies/hated.json/%k/%u", true);
-			for (int i=0;i<data.length();i++) {
-				try {
-					JSONObject d = data.getJSONObject(i);
-					LovedHatedWatched lhw = lovedhatedwatched.get(d.optString("tmdb_id"));
-					if (lhw==null) {
-						lhw = new LovedHatedWatched(false);
-					}
-					lhw.setHated(true);
-					lovedhatedwatched.put(d.optString("tmdb_id"), lhw);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					Log.e(TAG,e.toString());
-				}
-			}
-			
-			data = traktapi.getDataArrayFromJSON("user/library/shows/all.json/%k/%u", true);
-			for (int i=0;i<data.length();i++) {
-				try {
-					JSONObject d = data.getJSONObject(i);
-					LovedHatedWatched lhw = new LovedHatedWatched(false);
-					lovedhatedwatched.put(d.optString("tvdb_id"), lhw);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					Log.e(TAG,e.toString());
-				}
-			}
-			
-			data = traktapi.getDataArrayFromJSON("user/library/shows/loved.json/%k/%u", true);
-			for (int i=0;i<data.length();i++) {
-				try {
-					JSONObject d = data.getJSONObject(i);
-					LovedHatedWatched lhw = lovedhatedwatched.get(d.optString("tvdb_id"));
-					if (lhw==null) {
-						lhw = new LovedHatedWatched(false);
-					}
-					lhw.setLoved(true);
-					lovedhatedwatched.put(d.optString("tvdb_id"), lhw);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					Log.e(TAG,e.toString());
-				}
-			}
-
-			data = traktapi.getDataArrayFromJSON("user/library/shows/hated.json/%k/%u", true);
-			for (int i=0;i<data.length();i++) {
-				try {
-					JSONObject d = data.getJSONObject(i);
-					LovedHatedWatched lhw = lovedhatedwatched.get(d.optString("tvdb_id"));
-					if (lhw==null) {
-						lhw = new LovedHatedWatched(false);
-					}
-					lhw.setHated(true);
-					lovedhatedwatched.put(d.optString("tvdb_id"), lhw);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					Log.e(TAG,e.toString());
-				}
-			}
-			lhwloaded = true;
-			return true;
-		}
-		
-		@Override
-	    protected void onPostExecute(Boolean result) {
-			Toast.makeText(getApplicationContext(), "Retrieving Watched/Loved/Hated done.", Toast.LENGTH_SHORT).show();	
-		}
-	}
-    
     public boolean ValidateLogin() {
     	return true;
     }

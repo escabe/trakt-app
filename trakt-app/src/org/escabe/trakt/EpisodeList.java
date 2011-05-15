@@ -30,101 +30,14 @@ public class EpisodeList extends ExpandableListActivity {
 	private String TAG="EpisodeList";
 	private String id;
 	private String showname;
+
 	private JSONObject data;
-	
-	private HashMap<String,LovedHatedWatched> lovedhatedwatched=null;
-	private ArrayList<Season> seasons=null;
-	private ArrayList<ArrayList<Episode>> episodes = null;
 	
 	private EpisodeListAdapter adapter;
 	private TraktAPI traktapi;
 
 	private WebImageCache cache = null;
 
-	/**
-	 * Class for holding information about a single episode
-	 * @author escabe
-	 *
-	 */
-	private class Episode {
-		private int number=0;
-		private String title;
-		private String poster;
-		private long firstaired;
-		private String overview;
-		private boolean watched;
-		
-		public void setNumber(int number) {
-			this.number = number;
-		}
-		public int getNumber() {
-			return number;
-		}
-		public void setTitle(String title) {
-			this.title = title;
-		}
-		public String getTitle() {
-			return title;
-		}
-		public void setPoster(String poster) {
-			this.poster = poster;
-		}
-		public String getPoster() {
-			return poster;
-		}
-		public void setFirstaired(long firstaired) {
-			this.firstaired = firstaired;
-		}
-		public long getFirstaired() {
-			return firstaired;
-		}
-		public void setOverview(String overview) {
-			this.overview = overview;
-		}
-		public String getOverview() {
-			return overview;
-		}
-		public void setWatched(boolean watched) {
-			this.watched = watched;
-		}
-		public boolean isWatched() {
-			return watched;
-		}
-		
-	}
-	
-	/**
-	 * Class for holding information about a Season
-	 * @author escabe
-	 *
-	 */
-	private class Season {
-		private int number=0;
-		private int episodes=0;
-		private String poster;
-		
-		public void setNumber(int number) {
-			this.number = number;
-		}
-		public int getNumber() {
-			return number;
-		}
-
-		public void setEpisodes(int episodes) {
-			this.episodes = episodes;
-		}
-		public int getEpisodes() {
-			return episodes;
-		}
-		public void setPoster(String poster) {
-			this.poster = poster;
-		}
-		public String getPoster() {
-			return poster;
-		}
-	}
-	
-	
 	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -142,46 +55,6 @@ public class EpisodeList extends ExpandableListActivity {
 		protected Boolean doInBackground(String... params) {
 			data = traktapi.getDataObjectFromJSON("show/summary.json/%k/" + id + "/extended",true);
 			showname = data.optString("title");
-			try {
-				JSONArray d = data.getJSONArray("seasons");
-				for (int i=0;i<d.length();i++) {
-					JSONObject dd = d.getJSONObject(i);
-					Season s = new Season();
-					s.setEpisodes(dd.optInt("episodes"));
-					s.setNumber(dd.optInt("season"));
-		
-					JSONObject images = dd.getJSONObject("images");
-		    		String p = images.optString("poster");
-		    		p = p.replace(".jpg", "-138.jpg");
-		    		s.setPoster(p);
-		
-		    		JSONArray ddd = dd.getJSONArray("episodes");
-
-		    		s.setEpisodes(ddd.length());
-		    		
-		    		ArrayList<Episode> el = new ArrayList<Episode>();
-		    		for (int j=0;j<ddd.length();j++) {
-						JSONObject dddd = ddd.getJSONObject(j);
-						Episode e = new Episode();
-						e.setNumber(dddd.optInt("episode"));
-						e.setTitle(dddd.optString("title"));
-						e.setFirstaired(dddd.optLong("first_aired"));
-						e.setOverview(dddd.optString("overview"));
-						e.setWatched(dddd.optBoolean("watched"));
-						images = dddd.getJSONObject("images");
-			    		p = images.optString("screen");
-			    		p = p.replace(".jpg", "-218.jpg");
-			    		e.setPoster(p);
-		
-			    		el.add(e);    			
-		    		}
-		    		seasons.add(s);
-		    		episodes.add(el);
-				}
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				Log.e(TAG,e1.toString());
-			}
 			return true;
 		}
 		
@@ -212,19 +85,11 @@ public class EpisodeList extends ExpandableListActivity {
 
 			
 			// Marked Watched/Loved/Hated
-	    	if (lovedhatedwatched==null)
-	    		lovedhatedwatched=((Application)getApplication()).getLovedHatedWatched();
-	    	
-	    	// Check if Thread has already retrieved all info
-	    	if(lovedhatedwatched!=null) {
-	    		LovedHatedWatched lhw = lovedhatedwatched.get(id);
-	    		if (lhw!=null) {
-		    		ImageView loved = (ImageView) findViewById(R.id.imageEpisodeDetailsLoved);
-		        	ImageView hated = (ImageView) findViewById(R.id.imageEpisodeDetailsHated);
-		        	if (lhw.isLoved()) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
-		        	if (lhw.isHated()) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
-	    		}
-	    	}
+    		ImageView loved = (ImageView) findViewById(R.id.imageEpisodeDetailsLoved);
+        	ImageView hated = (ImageView) findViewById(R.id.imageEpisodeDetailsHated);
+        	String rating = data.optString("rating");
+        	if (rating.equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
+        	if (rating.equals("hate")) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
 			
 			// Notify list that data has been retrieved
 			adapter.notifyDataSetChanged();
@@ -240,13 +105,11 @@ public class EpisodeList extends ExpandableListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.trakt_episode_list);
-		seasons = new ArrayList<Season>();
-		episodes = new ArrayList<ArrayList<Episode>>();
 		traktapi = new TraktAPI(this);
 	    
 		cache = ((Application)getApplication()).getCache();
 		
-		adapter = new EpisodeListAdapter(this,seasons,episodes); 
+		adapter = new EpisodeListAdapter(); 
 		
 		setListAdapter(adapter);
 		
@@ -256,16 +119,18 @@ public class EpisodeList extends ExpandableListActivity {
 	
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		Episode e = episodes.get(groupPosition).get(childPosition);
-		Season s = seasons.get(groupPosition);
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("episode://tvdb/" + this.id +"/" + s.getNumber() + "/" + e.getNumber() ),this,TraktEpisodeDetails.class);
+		JSONObject d = data.optJSONArray("seasons").optJSONObject(groupPosition).optJSONArray("episodes").optJSONObject(childPosition);
+		
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("episode://tvdb/" + this.id +"/" + d.optInt("season") + "/" + d.optInt("episode") ),this,TraktEpisodeDetails.class);
 		
 		intent.putExtra("showname", showname);
-		intent.putExtra("title",e.getTitle());
-		intent.putExtra("overview", e.getOverview());
-		intent.putExtra("poster", e.getPoster());
-		intent.putExtra("firstaired", e.getFirstaired());
-		intent.putExtra("watched", e.isWatched());
+		intent.putExtra("title",d.optString("title"));
+		intent.putExtra("overview", d.optString("overview"));
+		String p = d.optString("screen");
+        p = p.replace(".jpg", "-218.jpg");
+		intent.putExtra("poster", p);
+		intent.putExtra("firstaired", d.optLong("first_aired"));
+		intent.putExtra("watched", d.optBoolean("watched"));
 		startActivity(intent);
 		return false;
 	}
@@ -307,42 +172,37 @@ public class EpisodeList extends ExpandableListActivity {
 	 *
 	 */
 	class EpisodeListAdapter extends BaseExpandableListAdapter {
-		private ArrayList<Season> seasons;
-		private ArrayList<ArrayList<Episode>> episodes;
-	
-	    public EpisodeListAdapter(Context context, ArrayList<Season> seasons, ArrayList<ArrayList<Episode>> episodes) {
-	        this.seasons = seasons;
-	        this.episodes = episodes;
-	    }
-		    
+    
 		/**
 		 * Display an Episode row
 		 */
 		public View getChildView(int groupPosition, int childPosition,
 				boolean isLastChild, View row, ViewGroup parent) {
-			Episode e = (Episode) getChild(groupPosition,childPosition);
-			Season s = (Season) getGroup(groupPosition);
 			if (row==null) {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 row = vi.inflate(R.layout.trakt_episode_episode, null);
 			}
-			TextView title = (TextView) row.findViewById(R.id.textEpisodeListEpisodeTitle);
-			title.setText(String.format("%02dx%02d: %s",s.getNumber(),e.getNumber(),e.getTitle()));
-
-			TextView details = (TextView) row.findViewById(R.id.textEpisodeListEpisodeDetails);
-			details.setText(String.format("First Aired: %1$tB %1$te, %1$tY",e.getFirstaired()*1000));
-			
-			ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListEpisodePoster);
-			String url = "http://escabe.org/resize3.php?image=" + e.getPoster();
-			try {
-				cache.handleImageView(poster, url, url);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			JSONObject d = data.optJSONArray("seasons").optJSONObject(groupPosition).optJSONArray("episodes").optJSONObject(childPosition);
+			if (d!=null) {
+				TextView title = (TextView) row.findViewById(R.id.textEpisodeListEpisodeTitle);
+				title.setText(String.format("%02dx%02d: %s",d.optInt("season"),d.optInt("episode"),d.optString("title")));
+	
+				TextView details = (TextView) row.findViewById(R.id.textEpisodeListEpisodeDetails);
+				details.setText(String.format("First Aired: %1$tB %1$te, %1$tY",d.optLong("first_aired")*1000));
+				
+				ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListEpisodePoster);
+				String p = d.optString("screen");
+		        p = p.replace(".jpg", "-218.jpg");
+				String url = "http://escabe.org/resize3.php?image=" + p;
+				try {
+					cache.handleImageView(poster, url, url);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				((ImageView)row.findViewById(R.id.imageEpisodeWatched)).setVisibility(d.optBoolean("watched") ? View.VISIBLE:View.GONE);
 			}
-			
-			((ImageView)row.findViewById(R.id.imageEpisodeWatched)).setVisibility(e.isWatched() ? View.VISIBLE:View.GONE);
-			
 			return row;
 		}
 
@@ -351,33 +211,35 @@ public class EpisodeList extends ExpandableListActivity {
 		 */
 		public View getGroupView(int groupPosition, boolean isExpanded,
 				View row, ViewGroup parent) {
-			Season s = (Season)getGroup(groupPosition);
 			if (row==null) {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 row = vi.inflate(R.layout.trakt_episode_season, null);
 			}
-			TextView title = (TextView)row.findViewById(R.id.textEpisodeListSeasonTitle);
-			title.setText(String.format("Season %d",s.getNumber()));
-			
-			TextView details = (TextView)row.findViewById(R.id.textEpisodeListSeasonDetails);
-			details.setText(String.format("Episodes: %d",s.getEpisodes()));
-
-			
-			ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListSeasonPoster);
-			String url = "http://escabe.org/resize.php?image=" + s.getPoster();
-			try {
-				cache.handleImageView(poster, url, url);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			JSONObject s = data.optJSONArray("seasons").optJSONObject(groupPosition);
+			if (s!=null) {
+				TextView title = (TextView)row.findViewById(R.id.textEpisodeListSeasonTitle);
+				title.setText(String.format("Season %d",s.optInt("season")));
+				
+				TextView details = (TextView)row.findViewById(R.id.textEpisodeListSeasonDetails);
+				details.setText(String.format("Episodes: %d",s.optJSONArray("episodes").length()));
+				
+				ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListSeasonPoster);
+				String url = "http://escabe.org/resize.php?image=" + s.optString("poster");
+				try {
+					cache.handleImageView(poster, url, url);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
-
 			
 			return row;
 		}	   
 		
 		public Object getChild(int groupPosition, int childPosition) {
-			return episodes.get(groupPosition).get(childPosition);
+			if(data==null)
+				return null;
+			return data.optJSONArray("seasons").optJSONObject(groupPosition).optJSONArray("episodes").optJSONObject(childPosition);
 		}
 
 		public long getChildId(int groupPosition, int childPosition) {
@@ -386,15 +248,21 @@ public class EpisodeList extends ExpandableListActivity {
 
 		
 		public int getChildrenCount(int groupPosition) {
-			return episodes.get(groupPosition).size();
+			if(data==null)
+				return 0;
+			return data.optJSONArray("seasons").optJSONObject(groupPosition).optJSONArray("episodes").length();
 		}
 
 		public Object getGroup(int groupPosition) {
-			return seasons.get(groupPosition);
+			if(data==null)
+				return null;
+			return data.optJSONArray("seasons").optJSONObject(groupPosition);
 		}
 
 		public int getGroupCount() {
-			return seasons.size();
+			if(data==null)
+				return 0;
+			return data.optJSONArray("seasons").length();
 		}
 
 		public long getGroupId(int groupPosition) {

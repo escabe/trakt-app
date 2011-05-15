@@ -35,10 +35,6 @@ public class TraktMain extends Activity {
 			startActivity(new Intent(this, TraktPrefs.class));
 		} else {
 
-			// Cannot be done if no login details, but in this location will not be run after filling in details
-
-			((Application)getApplication()).GetUserData();
-
 			PosterView pv = (PosterView)findViewById(R.id.posterviewRecomShows);
 			pv.initPosterView(this, "recommendations/shows/%k",ShowMovie.Show);
 			
