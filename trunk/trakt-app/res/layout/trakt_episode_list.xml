@@ -10,8 +10,8 @@
             <TextView android:text="@string/loading_details" android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsDetails"></TextView>
             <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom">
-                    <ImageView android:layout_height="25px" android:layout_width="34px" android:scaleType="center" android:src="@drawable/buttonlove" android:layout_margin="4px" android:id="@+id/imageEpisodeDetailsLoved"></ImageView>
-                    <ImageView android:layout_width="34px" android:scaleType="center" android:layout_height="25px" android:src="@drawable/buttonhate" android:layout_margin="4px" android:id="@+id/imageEpisodeDetailsHated"></ImageView>
+                    <ImageView android:scaleType="center" android:layout_margin="4px" android:id="@+id/imageEpisodeDetailsLoved" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_loved"></ImageView>
+                    <ImageView android:scaleType="center" android:layout_margin="4px" android:id="@+id/imageEpisodeDetailsHated" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_hated"></ImageView>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

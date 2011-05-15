@@ -9,9 +9,9 @@
             <TextView android:id="@+id/textDetailsDetails" android:text="@string/loading_details" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
             <FrameLayout android:layout_width="fill_parent" android:id="@+id/frameLayout1" android:layout_height="fill_parent">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout3" android:layout_gravity="bottom">
-                    <ImageView android:layout_width="34px" android:scaleType="center" android:layout_height="25px" android:id="@+id/imageDetailsWatched" android:src="@drawable/buttonwatch" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px"></ImageView>
-                    <ImageView android:layout_height="25px" android:layout_width="34px" android:id="@+id/imageDetailsLoved" android:scaleType="center" android:src="@drawable/buttonlove" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px"></ImageView>
-                    <ImageView android:layout_width="34px" android:scaleType="center" android:layout_height="25px" android:id="@+id/imageDetailsHated" android:src="@drawable/buttonhate" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px"></ImageView>
+                    <ImageView android:scaleType="center" android:id="@+id/imageDetailsWatched" android:src="@drawable/buttonwatch" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px" android:layout_height="32px" android:layout_width="40px"></ImageView>
+                    <ImageView android:id="@+id/imageDetailsLoved" android:scaleType="center" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_loved"></ImageView>
+                    <ImageView android:scaleType="center" android:id="@+id/imageDetailsHated" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_hated"></ImageView>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

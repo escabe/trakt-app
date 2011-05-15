@@ -8,8 +8,8 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout2">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textDetails"></TextView>
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconwatch" android:id="@+id/imageWatched" android:layout_margin="2px"></ImageView>
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconlove" android:id="@+id/imageLoved" android:layout_margin="2px"></ImageView>
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/iconhate" android:id="@+id/imageHated" android:layout_margin="2px"></ImageView>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageLoved" android:layout_margin="2px" android:src="@drawable/ic_item_loved_small"></ImageView>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageHated" android:layout_margin="2px" android:src="@drawable/ic_item_hated_small"></ImageView>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -73,15 +73,12 @@ public class TraktList extends ListActivity {
 	    urls = Arrays.asList(uu);
 	    // Do the following here instead of in onStart such that this is not repeated when returning from Details Activity
 	    
-	    // Retrieve current list if was suspended
-	    data=(JSONArray)getLastNonConfigurationInstance();
 
-	    if (data==null) {
-			// Initialize CWAC Thumbnail for posters
-			thumbs = new ThumbnailAdapter(this, new MovieShowAdapter(), ((Application)getApplication()).getThumbsCache(),IMAGE_IDS);
-			// Assign the adaptor to the list
-			setListAdapter(thumbs);
-		}
+		// Initialize CWAC Thumbnail for posters
+		thumbs = new ThumbnailAdapter(this, new MovieShowAdapter(), ((Application)getApplication()).getThumbsCache(),IMAGE_IDS);
+		// Assign the adaptor to the list
+		setListAdapter(thumbs);
+
 		
 		// Add Adapter to the spinner (to allow switching between lists)
 		initial = true;
@@ -293,11 +290,6 @@ public class TraktList extends ListActivity {
     	    	
     }
     
-	@Override
-	public Object onRetainNonConfigurationInstance() {
-		return(data);
-	}
-	
 	@Override
 	public void onListItemClick (ListView l, View v, int position, long pos) {
 		// Determine which item is selected then call TraktDetails Activity to show the details for this Show/Movie.

@@ -221,8 +221,8 @@ public class EpisodeList extends ExpandableListActivity {
 	    		if (lhw!=null) {
 		    		ImageView loved = (ImageView) findViewById(R.id.imageEpisodeDetailsLoved);
 		        	ImageView hated = (ImageView) findViewById(R.id.imageEpisodeDetailsHated);
-		        	if (lhw.isLoved()) loved.setBackgroundResource(R.drawable.lovedactive);
-		        	if (lhw.isHated()) hated.setBackgroundResource(R.drawable.hatedactive);
+		        	if (lhw.isLoved()) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
+		        	if (lhw.isHated()) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
 	    		}
 	    	}
 			
