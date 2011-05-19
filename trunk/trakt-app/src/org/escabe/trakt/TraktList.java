@@ -55,8 +55,8 @@ public class TraktList extends ListActivity {
 	private String[] strings = {"Trending Shows","Trending Movies",
 			"All Your Shows","All Your Movies","Search"};
 	
-	private String[] uu = new String[] {"trakt://shows/trending","trakt://movies/trending",
-			"trakt://user/library/shows/all","trakt://user/library/movies/all","SEARCH"};
+	private String[] uu = new String[] {"trakt://trending/shows/trending.json/%25k","trakt://trending/movies/trending.json/%25k",
+			"trakt://self/user/library/shows/all.json/%25k/%25u","trakt://self/user/library/movies/all.json/%25k/%25u","SEARCH"};
 	
 	private List<String> urls; 			
 
@@ -88,7 +88,7 @@ public class TraktList extends ListActivity {
 					if(urls.get(position).equals("SEARCH") ) {
 						onSearchRequested();
 					} else {
-						HandleUri(urls.get(position));
+						HandleUri(Uri.parse(urls.get(position)));
 					}
 				else
 					initial = false;
@@ -216,7 +216,7 @@ public class TraktList extends ListActivity {
 	 */
     private void HandleIntent(Intent intent) {
     	if (intent.getAction().equals(Intent.ACTION_VIEW)) {
-    		HandleUri(intent.getDataString());
+    		HandleUri(intent.getData());
     	} else if (intent.getAction().equals(Intent.ACTION_SEARCH)) {
     	      String query = intent.getStringExtra(SearchManager.QUERY);
     	      DoSearch(query);
@@ -224,6 +224,27 @@ public class TraktList extends ListActivity {
     }
     
     /**
+	 * Decode the URI to determine what to do.
+	 * @param uri
+	 */
+	private void HandleUri(Uri uri) {
+	
+		// Set the Spinner correctly
+		sp.setSelection(urls.indexOf(uri.toString()));
+
+		String t = uri.getHost();
+		if (t.equals("trending")) {
+			usertrending = UserTrending.Trending;
+		} else {
+			usertrending = UserTrending.User;
+		}
+		
+		SwitchList(uri.getPath(),true);
+		    	
+	}
+
+
+	/**
      * Instantiate a search
      * @param q
      * @param sm
@@ -252,43 +273,7 @@ public class TraktList extends ListActivity {
 		dg.execute(URLEncoder.encode(q));
     }
     
-    /**
-     * Decode the URI to determine what to do.
-     * @param uri
-     */
-    private void HandleUri(String uri) {
-
-    	// Set the Spinner correctly
-    	sp.setSelection(urls.indexOf(uri));
-    	
-    	// Consider to make this more a parser which will automatically call SwitchList with correct URL
-    	if (uri.equals("trakt://movies/trending")) { //Trending Movies
-
-			usertrending = UserTrending.Trending;
-			SwitchList("movies/trending.json/%k",true);
-		} else if (uri.equals("trakt://shows/trending")) { //Trending Shows
-
-			usertrending = UserTrending.Trending;
-			SwitchList("shows/trending.json/%k",true);
-		} else if (uri.equals("trakt://user/library/shows/all")) { //User Shows Library
-
-			usertrending = UserTrending.User;
-			SwitchList("user/library/shows/all.json/%k/%u",true);
-		}else if (uri.equals("trakt://user/library/movies/all")) { //User Movies Library
-
-			usertrending = UserTrending.User;
-			SwitchList("user/library/movies/all.json/%k/%u",true);
-		}else if (uri.startsWith("trakt://search/movies")) {
-			String[] s = uri.split("/");
-			DoSearch(s[s.length-1]);
-		}else if (uri.startsWith("trakt://search/shows")) {
-			String[] s = uri.split("/");
-			DoSearch(s[s.length-1]);
-		}
-    	    	
-    }
-    
-	@Override
+    @Override
 	public void onListItemClick (ListView l, View v, int position, long pos) {
 		// Determine which item is selected then call TraktDetails Activity to show the details for this Show/Movie.
 		JSONObject info = data.optJSONObject(position);
@@ -353,7 +338,11 @@ public class TraktList extends ListActivity {
         		String rating = info.optString("rating");
     			loved.setVisibility( rating.equals("love") ? View.VISIBLE:View.GONE );
     			hated.setVisibility( rating.equals("hate") ? View.VISIBLE:View.GONE );
-    			watched.setVisibility( info.optBoolean("watched") ? View.VISIBLE:View.GONE );
+    			if (usertrending==UserTrending.Trending) {
+    				watched.setVisibility( info.optBoolean("watched") ? View.VISIBLE:View.GONE );
+    			} else if (usertrending==UserTrending.User) {
+    				watched.setVisibility( info.optInt("plays") > 0 ? View.VISIBLE:View.GONE );
+    			}
             }
             return(row);
 		}

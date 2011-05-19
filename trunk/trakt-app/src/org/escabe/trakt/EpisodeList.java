@@ -218,7 +218,11 @@ public class EpisodeList extends ExpandableListActivity {
 			JSONObject s = data.optJSONArray("seasons").optJSONObject(groupPosition);
 			if (s!=null) {
 				TextView title = (TextView)row.findViewById(R.id.textEpisodeListSeasonTitle);
-				title.setText(String.format("Season %d",s.optInt("season")));
+				if (s.optInt("season")==0) {
+					title.setText("Specials");
+				} else {
+					title.setText(String.format("Season %d",s.optInt("season")));
+				}
 				
 				TextView details = (TextView)row.findViewById(R.id.textEpisodeListSeasonDetails);
 				details.setText(String.format("Episodes: %d",s.optJSONArray("episodes").length()));

@@ -81,16 +81,16 @@ public class TraktMain extends Activity {
     	switch (view.getId()) {
     	// The following buttons lead to showing the TraktList activity
     	case R.id.buttonTrendingMovies:
-    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://movies/trending"),this,TraktList.class));
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://trending/movies/trending.json/%25k"),this,TraktList.class));
     		break;
     	case R.id.buttonTrendingShows:
-    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://shows/trending"),this,TraktList.class));
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://trending/shows/trending.json/%25k"),this,TraktList.class));
     		break;
     	case R.id.buttonUserMovies:
-    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://user/library/movies/all"),this,TraktList.class));
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://self/user/library/movies/all.json/%25k/%25u"),this,TraktList.class));
     		break;
     	case R.id.buttonUserShows:
-    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://user/library/shows/all"),this,TraktList.class));
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://self/user/library/shows/all.json/%25k/%25u"),this,TraktList.class));
     		break;
     	case R.id.buttonSearch:
     		onSearchRequested();
