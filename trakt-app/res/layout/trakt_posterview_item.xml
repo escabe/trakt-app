@@ -3,5 +3,5 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-    <ImageView android:id="@+id/imagePosterViewPoster" android:src="@drawable/emptyposter" android:layout_height="100px" android:layout_width="70px"></ImageView>
+    <ImageView android:id="@+id/imagePosterViewPoster" android:src="@drawable/emptyposter" android:layout_height="@dimen/PosterMediumHeight" android:layout_width="@dimen/PosterMediumWidth"></ImageView>
 </LinearLayout>

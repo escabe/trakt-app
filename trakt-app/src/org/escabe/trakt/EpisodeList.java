@@ -57,11 +57,10 @@ public class EpisodeList extends ExpandableListActivity {
 			title.setText(data.optString("title"));
 			try {
 				JSONObject images = data.getJSONObject("images");
-				String p = images.optString("poster");
-				p = p.replace(".jpg", "-138.jpg");
+	
 				ImageView poster = (ImageView) findViewById(R.id.imageEpisodeDetailsPoster);
 				// Use CWAC Cache to retrieve the poster. Poster currently are pulled through a PHP script to resize
-				cache.handleImageView(poster,"http://escabe.org/resize2.php?image=" + p , "myposter");
+				cache.handleImageView(poster,traktapi.ResizePoster(images.optString("poster"),2) , "myposter");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -176,9 +175,7 @@ public class EpisodeList extends ExpandableListActivity {
 				details.setText(String.format("First Aired: %1$tB %1$te, %1$tY",d.optLong("first_aired")*1000));
 				
 				ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListEpisodePoster);
-				String p = d.optString("screen");
-		        p = p.replace(".jpg", "-218.jpg");
-				String url = "http://escabe.org/resize3.php?image=" + p;
+				String url = traktapi.ResizeScreen(d.optString("screen"),1);
 				try {
 					cache.handleImageView(poster, url, url);
 				} catch (Exception e1) {
@@ -213,7 +210,7 @@ public class EpisodeList extends ExpandableListActivity {
 				details.setText(String.format("Episodes: %d",s.optJSONArray("episodes").length()));
 				
 				ImageView poster = (ImageView) row.findViewById(R.id.imageEpisodeListSeasonPoster);
-				String url = "http://escabe.org/resize.php?image=" + s.optString("poster");
+				String url = traktapi.ResizePoster(s.optString("poster"),1);
 				try {
 					cache.handleImageView(poster, url, url);
 				} catch (Exception e1) {

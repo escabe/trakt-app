@@ -118,11 +118,10 @@ public class TraktDetails extends ActivityWithUpdate {
 			title.setText(data.optString("title"));
 			try {
 				JSONObject images = data.getJSONObject("images");
-				String p = images.optString("poster");
-				p = p.replace(".jpg", "-138.jpg");
+				String p = traktapi.ResizePoster(images.optString("poster"),2);
 				ImageView poster = (ImageView) findViewById(R.id.imageDetailsPoster);
 				// Use CWAC Cache to retrieve the poster. Poster currently are pulled through a PHP script to resize
-				cache.handleImageView(poster,"http://escabe.org/resize2.php?image=" + p , "myposter");
+				cache.handleImageView(poster,p , "myposter");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

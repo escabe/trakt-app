@@ -6,7 +6,7 @@
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsShowName" android:textSize="16px" android:text="@string/loading_title"></TextView>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsTitle" android:text="@string/loading_title"></TextView>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/linearLayout1">
-        <ImageView android:layout_width="wrap_content" android:id="@+id/imageEpisodeDetailsPoster" android:layout_height="wrap_content" android:src="@drawable/emptyposter" android:layout_margin="2px"></ImageView>
+        <ImageView android:id="@+id/imageEpisodeDetailsPoster" android:src="@drawable/emptyposter" android:layout_margin="2px" android:layout_height="@dimen/PosterMediumHeight" android:layout_width="@dimen/PosterMediumWidth"></ImageView>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsDetails" android:text="@string/loading_details"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="center_horizontal">
