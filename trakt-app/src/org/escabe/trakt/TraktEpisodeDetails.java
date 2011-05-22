@@ -148,7 +148,7 @@ public class TraktEpisodeDetails extends ActivityWithUpdate {
 		
 		ImageView w = (ImageView) findViewById(R.id.imageEpisodeDetailsWatched);
 		if (episode.optBoolean("watched"))
-			w.setBackgroundResource(R.drawable.watchedactive);
+			w.setBackgroundResource(R.drawable.ic_item_watched_active);
 		else
 			w.setBackgroundColor(Color.BLACK);
 				

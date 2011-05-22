@@ -10,7 +10,7 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsDetails" android:text="@string/loading_details"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="center_horizontal">
-        <ImageView android:scaleType="center" android:src="@drawable/buttonwatch" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsWatched" android:layout_height="32px" android:layout_width="40px"></ImageView>
+        <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsWatched" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_watched"></ImageView>
         <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsLoved" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_loved"></ImageView>
         <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsHated" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_hated"></ImageView>
     </LinearLayout>

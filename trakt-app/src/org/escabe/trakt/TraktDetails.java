@@ -142,11 +142,14 @@ public class TraktDetails extends ActivityWithUpdate {
 			ImageView loved = (ImageView) findViewById(R.id.imageDetailsLoved);
         	ImageView hated = (ImageView) findViewById(R.id.imageDetailsHated);
 
-        	if (data.optBoolean("watched")) watched.setBackgroundResource(R.drawable.watchedactive); 
+        	if (data.optBoolean("watched")) watched.setBackgroundResource(R.drawable.ic_item_watched_active);
+        		else watched.setBackgroundColor(android.R.color.black); 
         	
         	String rating = data.optString("rating");
         	if (rating.equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
+        		else loved.setBackgroundColor(android.R.color.black);
         	if (rating.equals("hate")) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
+        		else hated.setBackgroundColor(android.R.color.black);	
 
         	
 			// Close the progress dialog
@@ -154,14 +157,10 @@ public class TraktDetails extends ActivityWithUpdate {
 		}
     }
     
-    /**
-     * Actually retrieve details information from Server. Will start a separate Thread for this.
-     * @param url
-     */
-	private void GetData(String url) {
+    public void GetData(String url) {
 		DataGrabber dg = new DataGrabber(this);
 		dg.execute(url);
-	}
+    }
 	
 	@Override
 	public void DoUpdate() {
