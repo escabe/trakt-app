@@ -3,6 +3,7 @@ package org.escabe.trakt;
 import java.util.List;
 
 import org.escabe.trakt.TraktAPI.MarkMode;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;
@@ -71,6 +72,13 @@ public class TraktEpisodeDetails extends ActivityWithUpdate {
 	    		}
 	    		break;
     	}
+
+    	try {
+			episode.put("watched", !episode.optBoolean("watched"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+    	
     	traktapi.MarkEpisodeAsWatched(this,mm, show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number"), episode.optString("title"));
     }
     
