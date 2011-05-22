@@ -53,10 +53,12 @@ public class TraktList extends ListActivity {
 	
 	// Strings for the spinner
 	private String[] strings = {"Trending Shows","Trending Movies",
-			"All Your Shows","All Your Movies","Search"};
+			"All Your Shows","All Your Movies","Last 100 Watched", "Search"};
 	
 	private String[] uu = new String[] {"trakt://trending/shows/trending.json/%25k","trakt://trending/movies/trending.json/%25k",
-			"trakt://self/user/library/shows/all.json/%25k/%25u","trakt://self/user/library/movies/all.json/%25k/%25u","SEARCH"};
+			"trakt://self/user/library/shows/all.json/%25k/%25u","trakt://self/user/library/movies/all.json/%25k/%25u",
+			"trakt://self/user/watched.json/%25k/%25u",
+			"SEARCH"};
 	
 	private List<String> urls; 			
 
@@ -277,6 +279,15 @@ public class TraktList extends ListActivity {
 	public void onListItemClick (ListView l, View v, int position, long pos) {
 		// Determine which item is selected then call TraktDetails Activity to show the details for this Show/Movie.
 		JSONObject info = data.optJSONObject(position);
+
+		// If mixed list with type parameter:
+    	String t = info.optString("type");
+    	if (t.equals("movie")) {
+    		info = info.optJSONObject("movie");
+    	} else if (t.equals("episode")) {
+    		info = info.optJSONObject("show");
+    	}
+
 		String id = info.optString("tmdb_id");
 		if(id.length()>0) { // Movie
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tmdb:" + id),this,TraktDetails.class));
@@ -287,7 +298,35 @@ public class TraktList extends ListActivity {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tvdb:" + id),this,EpisodeList.class));
 		}
 	}
+    
+    private String AddWatchers(JSONObject info) {
+    	String d;
+		if (usertrending==UserTrending.Trending) {
+        	d = String.format("Watchers: %d", info.optInt("watchers"));
+    	} else {
+    		d = "";
+    	}
+		return d;
+    }
 
+	private void MovieDetails(TextView details,JSONObject info) {
+		String d = "";
+		
+		d += AddWatchers(info);
+		details.setText(d);
+	}
+    
+	private void ShowDetails(TextView details,JSONObject info) {
+    	String d = "";
+    	
+    	d += AddWatchers(info);
+    	details.setText(d);
+	}
+	
+	private void EpisodeDetails(TextView details,JSONObject info) {
+		String d = String.format("Episode: %02dx%02d", info.optInt("season"),info.optInt("number"));
+		details.setText(d);
+	}
 	
 	/**
 	 * Adaptor for the List    	
@@ -303,6 +342,16 @@ public class TraktList extends ListActivity {
             }
             JSONObject info = (JSONObject) getItem(position);
             if (info != null) {
+            	JSONObject episode=null;
+            	// If mixed list with type parameter:
+            	String t = info.optString("type");
+            	if (t.equals("movie")) {
+            		info = info.optJSONObject("movie");
+            	} else if (t.equals("episode")) {
+            		episode = info.optJSONObject("episode");
+            		info = info.optJSONObject("show");
+            	}
+            	
             	// Fill in basic information
             	TextView title = (TextView)row.findViewById(R.id.textTitle);
             	title.setText(info.optString("title"));
@@ -315,20 +364,20 @@ public class TraktList extends ListActivity {
             	// Posters are retrieved through CWAC Thumbnail so set image URL as Tag
             	poster.setImageResource(R.drawable.emptyposter);
             	poster.setTag("http://escabe.org/resize.php?image=" + p);
-            	
+
+            	// Details field, filled in based on type
             	TextView details = (TextView)row.findViewById(R.id.textDetails);
-            	// Only show number of watchers when this information is available
-            	if (usertrending==UserTrending.Trending) {
-	            	String d = String.format("Watchers: %d", info.optInt("watchers"));
-	            	details.setText(d);
-            	} else {
-            		details.setText("");
-            	}
 
             	String id = info.optString("tmdb_id");
         		if(id.length()>0) { // Movie
+        			MovieDetails(details,info);
         		} else { // Show
         			id = info.optString("tvdb_id");
+        			if (episode!=null) { // Episode
+        				EpisodeDetails(details,episode);
+        			} else { // Show
+        				ShowDetails(details,info);
+        			}
         		}
             	
             	// Display Loved, Hated and Watched icons
