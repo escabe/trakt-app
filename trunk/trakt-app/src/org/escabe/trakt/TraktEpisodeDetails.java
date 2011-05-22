@@ -131,8 +131,7 @@ public class TraktEpisodeDetails extends ActivityWithUpdate {
 		((TextView)findViewById(R.id.textEpisodeDetailsTitle)).setText(d);
 		((TextView)findViewById(R.id.textEpisodeDetailsOverview)).setText(episode.optString("overview"));
 		
-		String p = episode.optJSONObject("images").optString("screen");
-		p = p.replace(".jpg", "-218.jpg");
+		String p = traktapi.ResizeScreen(episode.optJSONObject("images").optString("screen"),3);
 		ImageView poster = (ImageView) findViewById(R.id.imageEpisodeDetailsPoster);
 		
 		try {

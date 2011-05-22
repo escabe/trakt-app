@@ -382,12 +382,10 @@ public class TraktList extends ListActivity {
             	
             	// Poster
 	    		JSONObject picts = info.optJSONObject("images");
-	    		String p = picts.optString("poster");
-	    		p = p.replace(".jpg", "-138.jpg");
             	ImageView poster = (ImageView)row.findViewById(R.id.imagePoster);
             	// Posters are retrieved through CWAC Thumbnail so set image URL as Tag
             	poster.setImageResource(R.drawable.emptyposter);
-            	poster.setTag("http://escabe.org/resize.php?image=" + p);
+            	poster.setTag(traktapi.ResizePoster(picts.optString("poster"),1));
 
             	
             	// Display Loved, Hated and Watched icons

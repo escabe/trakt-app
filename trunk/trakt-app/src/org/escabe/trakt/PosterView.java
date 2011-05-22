@@ -133,10 +133,7 @@ public class PosterView extends Gallery {
 				poster.setImageResource(R.drawable.emptyposter);
 
 				JSONObject picts = info.optJSONObject("images");
-	    		String p = picts.optString("poster");
-	    		p = p.replace(".jpg", "-138.jpg");
-
-				poster.setTag("http://escabe.org/resize2.php?image=" + p);
+				poster.setTag(traktapi.ResizePoster(picts.optString("poster"),2));
 			}
 			return item;
 		}

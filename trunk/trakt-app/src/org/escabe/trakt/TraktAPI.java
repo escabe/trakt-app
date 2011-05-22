@@ -34,6 +34,8 @@ public class TraktAPI {
 	private String TAG = "TraktAPI";
 	public enum ShowMovie {Show, Movie};
 	public enum MarkMode {Watched, Unwatched, Loved, Unloved, Hated, Unhated};
+	private Context context;
+	
 	// "Constants"
 	private String apikey = "682912f6e62d666428d261544d619d7c";
 	private String baseurl = "http://api-trakt.apigee.com/";
@@ -50,6 +52,7 @@ public class TraktAPI {
 	 */
 	public TraktAPI(Context c) {
 		// Get preferences object and retrieve username and password
+		context = c;
 		prefs = PreferenceManager.getDefaultSharedPreferences(c);
 		username = prefs.getString("user", "");
 		password = EncodePassword(prefs.getString("password", ""));
@@ -66,6 +69,36 @@ public class TraktAPI {
         }
     };	
 	
+    public String ResizePoster(String image, int size) {
+    	String p = image.replace(".jpg", "-138.jpg");
+    	switch (size) {
+    	case 1:
+    		return "http://escabe.org/resize.php?image=" + p + 
+    			"&h=" +	context.getResources().getDimensionPixelSize(R.dimen.PosterSmallHeight) +
+    			"&w=" + context.getResources().getDimensionPixelSize(R.dimen.PosterSmallWidth);
+    	case 2:
+    		return "http://escabe.org/resize.php?image=" + p + 
+			"&h=" +	context.getResources().getDimensionPixelSize(R.dimen.PosterMediumHeight) +
+			"&w=" + context.getResources().getDimensionPixelSize(R.dimen.PosterMediumWidth);
+    	default:
+    		return p;
+    	}
+    }
+    
+    public String ResizeScreen(String image, int size) {
+    	String s = image.replace(".jpg", "-218.jpg");
+    	switch (size) {
+    	case 1:
+    		return "http://escabe.org/resize.php?image=" + s + 
+			"&h=" +	context.getResources().getDimensionPixelSize(R.dimen.ScreenSmallHeight) +
+			"&w=" + context.getResources().getDimensionPixelSize(R.dimen.ScreenSmallWidth);
+    	case 2:
+    		
+    	default:
+    			return s;
+    	}
+    }
+
     
 	public void MarkEpisodeAsWatched(final Activity context, final MarkMode markmode , final String id, final int season, final int episode, String title) {
 		progressdialog = ProgressDialog.show(context,"", String.format("Marking %s %02dx%02d as watched...",title,season,episode), true);
