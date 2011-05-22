@@ -3,11 +3,11 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:orientation="vertical">
-    <TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsShowName" android:textSize="16px"></TextView>
-    <TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsTitle"></TextView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsShowName" android:textSize="16px" android:text="@string/loading_title"></TextView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsTitle" android:text="@string/loading_title"></TextView>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/linearLayout1">
         <ImageView android:layout_width="wrap_content" android:id="@+id/imageEpisodeDetailsPoster" android:layout_height="wrap_content" android:src="@drawable/emptyposter" android:layout_margin="2px"></ImageView>
-        <TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsDetails"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsDetails" android:text="@string/loading_details"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="center_horizontal">
         <ImageView android:scaleType="center" android:src="@drawable/buttonwatch" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsWatched" android:layout_height="32px" android:layout_width="40px"></ImageView>
@@ -16,6 +16,6 @@
     </LinearLayout>
     
     <ScrollView android:id="@+id/scrollView1" android:layout_height="fill_parent" android:layout_width="fill_parent">
-        <TextView android:text="TextView" android:id="@+id/textEpisodeDetailsOverview" android:layout_height="fill_parent" android:layout_width="fill_parent"></TextView>
+        <TextView android:id="@+id/textEpisodeDetailsOverview" android:layout_height="fill_parent" android:layout_width="fill_parent" android:text="@string/loading_summary"></TextView>
     </ScrollView>
 </LinearLayout>

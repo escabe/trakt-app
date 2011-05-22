@@ -1,11 +1,6 @@
 package org.escabe.trakt;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;
@@ -29,8 +24,6 @@ import android.widget.TextView;
 public class EpisodeList extends ExpandableListActivity {
 	private String TAG="EpisodeList";
 	private String id;
-	private String showname;
-
 	private JSONObject data;
 	
 	private EpisodeListAdapter adapter;
@@ -54,7 +47,7 @@ public class EpisodeList extends ExpandableListActivity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			data = traktapi.getDataObjectFromJSON("show/summary.json/%k/" + id + "/extended",true);
-			showname = data.optString("title");
+			data.optString("title");
 			return true;
 		}
 		
@@ -122,15 +115,7 @@ public class EpisodeList extends ExpandableListActivity {
 		JSONObject d = data.optJSONArray("seasons").optJSONObject(groupPosition).optJSONArray("episodes").optJSONObject(childPosition);
 		
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("episode://tvdb/" + this.id +"/" + d.optInt("season") + "/" + d.optInt("episode") ),this,TraktEpisodeDetails.class);
-		
-		intent.putExtra("showname", showname);
-		intent.putExtra("title",d.optString("title"));
-		intent.putExtra("overview", d.optString("overview"));
-		String p = d.optString("screen");
-        p = p.replace(".jpg", "-218.jpg");
-		intent.putExtra("poster", p);
-		intent.putExtra("firstaired", d.optLong("first_aired"));
-		intent.putExtra("watched", d.optBoolean("watched"));
+
 		startActivity(intent);
 		return false;
 	}
