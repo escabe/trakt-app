@@ -309,22 +309,31 @@ public class TraktList extends ListActivity {
 		return d;
     }
 
-	private void MovieDetails(TextView details,JSONObject info) {
+	private void MovieDetails(TextView title, TextView details,JSONObject info) {
+    	title.setText(info.optString("title"));
+
+		
 		String d = "";
 		
 		d += AddWatchers(info);
 		details.setText(d);
 	}
     
-	private void ShowDetails(TextView details,JSONObject info) {
-    	String d = "";
+	private void ShowDetails(TextView title, TextView details,JSONObject info) {
+    	title.setText(info.optString("title"));
+
+		
+		String d = "";
     	
     	d += AddWatchers(info);
     	details.setText(d);
 	}
 	
-	private void EpisodeDetails(TextView details,JSONObject info) {
-		String d = String.format("Episode: %02dx%02d", info.optInt("season"),info.optInt("number"));
+	private void EpisodeDetails(TextView title,TextView details,JSONObject show, JSONObject episode, Long watchdate) {
+		title.setText(String.format("%2$s - %1$tB %1$te, %1$tY",watchdate*1000,show.optString("title")));
+		
+		String d = String.format("%02dx%02d %s",episode.optInt("season"),episode.optInt("number"),episode.optString("title"));
+		
 		details.setText(d);
 	}
 	
@@ -343,19 +352,34 @@ public class TraktList extends ListActivity {
             JSONObject info = (JSONObject) getItem(position);
             if (info != null) {
             	JSONObject episode=null;
+            	Long watchdate = null;
             	// If mixed list with type parameter:
             	String t = info.optString("type");
             	if (t.equals("movie")) {
+            		watchdate = info.optLong("watched");
             		info = info.optJSONObject("movie");
             	} else if (t.equals("episode")) {
+            		watchdate = info.optLong("watched");
             		episode = info.optJSONObject("episode");
             		info = info.optJSONObject("show");
             	}
             	
-            	// Fill in basic information
+            	// Fill in information based on type
             	TextView title = (TextView)row.findViewById(R.id.textTitle);
-            	title.setText(info.optString("title"));
+            	TextView details = (TextView)row.findViewById(R.id.textDetails);
 
+            	String id = info.optString("tmdb_id");
+        		if(id.length()>0) { // Movie
+        			MovieDetails(title,details,info);
+        		} else { // Show
+        			id = info.optString("tvdb_id");
+        			if (episode!=null) { // Episode
+        				EpisodeDetails(title,details,info,episode,watchdate);
+        			} else { // Show
+        				ShowDetails(title,details,info);
+        			}
+        		}
+            	
             	// Poster
 	    		JSONObject picts = info.optJSONObject("images");
 	    		String p = picts.optString("poster");
@@ -365,20 +389,6 @@ public class TraktList extends ListActivity {
             	poster.setImageResource(R.drawable.emptyposter);
             	poster.setTag("http://escabe.org/resize.php?image=" + p);
 
-            	// Details field, filled in based on type
-            	TextView details = (TextView)row.findViewById(R.id.textDetails);
-
-            	String id = info.optString("tmdb_id");
-        		if(id.length()>0) { // Movie
-        			MovieDetails(details,info);
-        		} else { // Show
-        			id = info.optString("tvdb_id");
-        			if (episode!=null) { // Episode
-        				EpisodeDetails(details,episode);
-        			} else { // Show
-        				ShowDetails(details,info);
-        			}
-        		}
             	
             	// Display Loved, Hated and Watched icons
             	ImageView loved = (ImageView) row.findViewById(R.id.imageLoved);
