@@ -28,14 +28,14 @@ import com.commonsware.cwac.thumbnail.ThumbnailMessage;
 public class Application extends android.app.Application {
 	private String TAG="TraktAPP";
 	private ThumbnailBus thumbbus=new ThumbnailBus();
-	private AsyncCache.DiskCachePolicy policy=new AsyncCache.DiskCachePolicy() {
+	public AsyncCache.DiskCachePolicy policy=new AsyncCache.DiskCachePolicy() {
 		public boolean eject(File file) {
 			return(System.currentTimeMillis()-file.lastModified()>1000*60*60*24*7);
 		}
 	};
 	private SimpleWebImageCache<ThumbnailBus, ThumbnailMessage> thumbscache=null;
 	// For CWAC Cache for other images
-	private SimpleBus bus = new SimpleBus();
+	public SimpleBus bus = new SimpleBus();
 	private WebImageCache cache = null;
 	private TraktAPI traktapi = null;
 	
