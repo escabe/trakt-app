@@ -20,6 +20,7 @@ import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -209,7 +210,28 @@ public class TraktList extends ListActivity {
 		@Override
 	    protected void onPostExecute(Boolean result) {
 			TextView ut = (TextView) parent.findViewById(R.id.textListUserInfo);
-			ut.setText(userdata.optString("full_name"));
+			JSONObject stats = userdata.optJSONObject("stats");
+			String lawa;
+			JSONObject lw = userdata.optJSONArray("watched").optJSONObject(0);
+			if (lw.optString("type").equals("episode")) {
+				lawa = String.format("%s %02dx%02d",lw.optJSONObject("show").optString("title"),
+													lw.optJSONObject("episode").optInt("season"),
+													lw.optJSONObject("episode").optInt("number"));
+			} else {
+				lawa = lw.optJSONObject("movie").optString("title");
+			}
+			
+			
+			String d = String.format("<b>%s</b> - %s<br>" +
+									 "<b>Location:</b><i>%s</i><br>" +
+									 "<b>Watched:</b> Episodes: <i>%d</i> Movies: <i>%d</i><br>" +
+									 "<b>Last Watched:</b><i>%s</i>",
+					userdata.optString("username"),userdata.optString("full_name"),
+					userdata.optString("location"),
+					stats.optJSONObject("episodes").optInt("watched"),stats.optJSONObject("movies").optInt("watched"),
+					lawa);
+			
+			ut.setText(Html.fromHtml(d));
 
 			ImageView iv = (ImageView)parent.findViewById(R.id.imageListUser);
 			try {
