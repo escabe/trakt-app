@@ -8,6 +8,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.commonsware.cwac.cache.WebImageCache;
 import com.commonsware.cwac.thumbnail.ThumbnailAdapter;
 
 import android.app.ListActivity;
@@ -39,10 +40,13 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class TraktList extends ListActivity {
 	// Main ArrayList holding the currently displayed data
 	private JSONArray data=null;
+	private JSONObject userdata=null;
 
 	// For CWAC Thumbnail
 	private static final int[] IMAGE_IDS={R.id.imagePoster};
 	private ThumbnailAdapter thumbs=null;
+	private WebImageCache cache = null;
+	
 	private static boolean initial;
 	private Spinner sp;
 	private TraktAPI traktapi=null;
@@ -80,6 +84,9 @@ public class TraktList extends ListActivity {
 		// Assign the adaptor to the list
 		setListAdapter(thumbs);
 
+		// For user avatar
+		Application app = (Application)getApplication();
+		cache = new WebImageCache(getCacheDir(), app.bus, app.policy, 101,getResources().getDrawable(R.drawable.ic_item_avatar));
 		
 		// Add Adapter to the spinner (to allow switching between lists)
 		initial = true;
@@ -171,6 +178,56 @@ public class TraktList extends ListActivity {
 		dg.execute(url);
 	}
 	
+	private void SwitchUser(String username) {
+		if (userdata!=null) {
+			if (userdata.optString("username").equals(username))
+				return;
+		}
+		UserGrabber ug = new UserGrabber(this);
+		ug.execute("user/profile.json/%k/%u");
+	}
+	
+	private class UserGrabber extends AsyncTask<String,Void,Boolean> {
+		private TraktList parent;
+		
+		public UserGrabber(TraktList parent) {
+			this.parent = parent;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			ProgressBar pb = (ProgressBar) parent.findViewById(R.id.progbarListUser);
+			pb.setVisibility(View.VISIBLE);
+		}
+		
+		@Override
+		protected Boolean doInBackground(String... params) {
+			//Get list
+			userdata = traktapi.getDataObjectFromJSON(params[0],true);
+			return true;
+		}
+		@Override
+	    protected void onPostExecute(Boolean result) {
+			TextView ut = (TextView) parent.findViewById(R.id.textListUserInfo);
+			ut.setText(userdata.optString("full_name"));
+
+			ImageView iv = (ImageView)parent.findViewById(R.id.imageListUser);
+			try {
+				cache.handleImageView(iv, traktapi.ResizeAvatar(userdata.optString("avatar"),3), "avatar");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			// Hide progress dialog
+			ProgressBar pb = (ProgressBar) parent.findViewById(R.id.progbarListUser);
+			pb.setVisibility(View.INVISIBLE);
+			
+	    }
+
+		
+	}
+	
 	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
 		private TraktList parent;
 		
@@ -244,6 +301,7 @@ public class TraktList extends ListActivity {
 		}
 		
 		SwitchList(uri.getPath(),true);
+		SwitchUser("");
 		    	
 	}
 

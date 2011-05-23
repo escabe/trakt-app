@@ -85,6 +85,21 @@ public class TraktAPI {
     	}
     }
     
+    public String ResizeAvatar(String image, int size) {
+    	switch (size) {
+    	case 1:
+    		return "http://escabe.org/resize.php?image=" + image + 
+    			"&h=" +	context.getResources().getDimensionPixelSize(R.dimen.AvatarSmallHeight) +
+    			"&w=" + context.getResources().getDimensionPixelSize(R.dimen.AvatarSmallWidth);
+    	case 2:
+    		return "http://escabe.org/resize.php?image=" + image + 
+			"&h=" +	context.getResources().getDimensionPixelSize(R.dimen.AvatarMediumHeight) +
+			"&w=" + context.getResources().getDimensionPixelSize(R.dimen.AvatarMediumWidth);
+    	default:
+    		return image;
+    	}
+    }
+    
     public String ResizeScreen(String image, int size) {
     	String s = image.replace(".jpg", "-218.jpg");
     	switch (size) {
