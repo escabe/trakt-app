@@ -26,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -171,17 +172,17 @@ public class TraktList extends ListActivity {
 	}
 	
 	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
-		private ProgressDialog progressdialog;
-		private Context parent;
+		private TraktList parent;
 		
-		public DataGrabber(Context parent) {
+		public DataGrabber(TraktList parent) {
 			this.parent = parent;
 		}
 		
 		@Override
 		protected void onPreExecute() {
 			thumbs.notifyDataSetInvalidated();
-		    progressdialog = ProgressDialog.show(parent,"", "Retrieving data ...", true);
+			ProgressBar pb = (ProgressBar) parent.findViewById(R.id.progbarListList);
+			pb.setVisibility(View.VISIBLE);
 		}
 		
 		@Override
@@ -196,8 +197,9 @@ public class TraktList extends ListActivity {
 	        // Scroll to first item
 			setSelection(0);
 	        // Hide progress dialog
-			progressdialog.dismiss();
-
+			ProgressBar pb = (ProgressBar) parent.findViewById(R.id.progbarListList);
+			pb.setVisibility(View.INVISIBLE);
+			
 	    }
 	}
 	

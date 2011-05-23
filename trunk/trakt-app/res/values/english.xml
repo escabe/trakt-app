@@ -12,4 +12,5 @@
     <string name="recommended_shows">Recommended Shows</string>
     <string name="recommended_movies">Recommended Movies</string>
     <string name="actions">Actions</string>
+    <string name="user">User</string>
 </resources>
