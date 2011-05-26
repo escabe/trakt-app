@@ -1,9 +1,6 @@
 package org.escabe.trakt;
 
 import java.util.Date;
-import java.util.HashMap;
-
-import org.escabe.trakt.TraktAPI.MarkMode;
 import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;
@@ -11,7 +8,6 @@ import com.commonsware.cwac.cache.WebImageCache;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -80,17 +76,16 @@ public class TraktDetails extends ActivityWithUpdate {
     * @param view
     */
     public void imageDetailsOnClick(View view) {
-    	MarkMode mm = null;
     	switch(view.getId()) {
 	    	case R.id.imageDetailsWatched:
 	    		if (data.optBoolean("watched")) { // Mark as unwatched
-	    			mm = MarkMode.Unwatched;
+	    			traktapi.Mark(this, "movie","unseen",id);
 	    		} else { // Mark as watched
-	    			mm = MarkMode.Watched;
+	    			traktapi.Mark(this, "movie","seen",id);
 	    		}
 	    		break;
     	}
-    	traktapi.MarkMovieAsWatched(this, mm, id, data.optString("title"));
+
     }
     
     private class DataGrabber extends AsyncTask<String,Void,Boolean> {

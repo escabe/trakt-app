@@ -2,7 +2,6 @@ package org.escabe.trakt;
 
 import java.net.URLEncoder;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -12,7 +11,6 @@ import com.commonsware.cwac.cache.WebImageCache;
 import com.commonsware.cwac.thumbnail.ThumbnailAdapter;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;

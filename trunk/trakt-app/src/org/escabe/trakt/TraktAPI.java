@@ -15,12 +15,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -44,8 +42,6 @@ public class TraktAPI {
 	private String password;
 	private SharedPreferences prefs;
 
-	private ProgressDialog progressdialog;
-	
 	/**
 	 * Constructor.
 	 * @param c	Context which is needed to be able to retrieve the Preferences.
@@ -57,17 +53,6 @@ public class TraktAPI {
 		username = prefs.getString("user", "");
 		password = EncodePassword(prefs.getString("password", ""));
 	}
-
-	Handler MarkComplete = new Handler() { 
-        @Override
-        public void handleMessage(Message msg) { 
-           Object[] o =  (Object[]) msg.obj;
-           ActivityWithUpdate parent = (ActivityWithUpdate) o[0];
-           progressdialog.dismiss();
-           Toast.makeText(parent.getApplicationContext(), (String) o[1], Toast.LENGTH_SHORT).show();
-           parent.DoUpdate();           
-        }
-    };	
 	
     public String ResizePoster(String image, int size) {
     	String p = image.replace(".jpg", "-138.jpg");
@@ -114,90 +99,91 @@ public class TraktAPI {
     	}
     }
 
+    public void Mark(ActivityWithUpdate parent, Object... params) {
+    	Marker m = new Marker(parent);
+    	m.execute(params);
+    }
     
-	public void MarkEpisodeAsWatched(final Activity context, final MarkMode markmode , final String id, final int season, final int episode, String title) {
-		progressdialog = ProgressDialog.show(context,"", String.format("Marking %s %02dx%02d as watched...",title,season,episode), true);
-		Runnable Marker = new Runnable() {
-			public void run() {
-				JSONObject data=null;
-				try {
-					String url = "show/episode/";
-					JSONObject post = new JSONObject();
-					// Episodes Array
-					JSONArray es = new JSONArray();
-					// Episode Element
-					JSONObject e = new JSONObject();
-					e.put("season",season);
-					e.put("episode",episode);
-					es.put(e);
-					post.put("episodes",es);
-					post.put("tvdb_id", id);
-					url += (markmode==MarkMode.Watched?"seen/":"unseen/");
-					url += "%k";
-					data = getDataObjectFromJSON(url,true,post);
-				} catch (Exception e) {
-					Log.e(TAG,e.toString());
-				}
-				Object[] d = new Object[2];
-				d[0] = context;
-				if (data!=null) {
-					d[1] = "Marking succeeded";
-				} else {
-					d[1] = "Marking Failed";
-				}
-					
-				Message m = new Message();
-				m.obj = d;
-				MarkComplete.sendMessage(m);
-
-			}
-		};
+    public class Marker extends AsyncTask<Object,Void,Boolean> {
+		ActivityWithUpdate parent;
+		ProgressDialog progressdialog;
 		
-		Thread t = new Thread(null,Marker);
-		t.run();
-	}
-
+		public Marker(ActivityWithUpdate parent) {
+			this.parent = parent;
+		}
+		@Override
+		protected void onPreExecute() {
+			progressdialog = ProgressDialog.show(context,"", String.format("Marking..."), true);
+		}
+		
+		@Override
+		protected Boolean doInBackground(Object... params) {
+			String type = (String) params[0];
+			String status = (String) params[1];
+			if (status.equals("seen") || status.equals("unseen")) {
+				if (type.equals("movie")) {
+					try {
+						String url = "movie/";
+						JSONObject post = new JSONObject();
+						// Movies Array
+						JSONArray ms = new JSONArray();
+						// Movie Element
+						JSONObject m = new JSONObject();
+						
+						m.put("tmdb_id", (String) params[2]);
+						ms.put(m);
+						post.put("movies",ms);
+						url += status + "/%k";
+						JSONObject data = getDataObjectFromJSON(url,true,post);
+						return data!=null;
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else if(type.equals("episode")) {
+					try {
+						String url = "show/episode/";
+						JSONObject post = new JSONObject();
+						// Episodes Array
+						JSONArray es = new JSONArray();
+						// Episode Element
+						JSONObject e = new JSONObject();
+						e.put("season",(Integer) params[3]);
+						e.put("episode",(Integer) params[4]);
+						es.put(e);
+						post.put("episodes",es);
+						post.put("tvdb_id", (String) params[2]);
+						url += status + "/%k";
+						JSONObject data = getDataObjectFromJSON(url,true,post);
+						return data!=null;
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			} else {
+				
+			}
+			return null;
+		}
+		
+		@Override
+	    protected void onPostExecute(Boolean result) {
+			String message;
+			if (result) {
+				message = "Marking succeeded";
+			} else {
+				message = "Marking failed";
+			}
+			progressdialog.dismiss();
+			Toast.makeText(parent.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+			parent.DoUpdate();    
+	    }
     
-	public void MarkMovieAsWatched(final Activity context, final MarkMode markmode , final String id, String title) {
-		progressdialog = ProgressDialog.show(context,"", String.format("Marking %s (%s) as watched...",title,id), true);
-		Runnable Marker = new Runnable() {
-			public void run() {
-				JSONObject data=null;
-				try {
-					String url = "movie/";
-					JSONObject post = new JSONObject();
-					// Movies Array
-					JSONArray ms = new JSONArray();
-					// Movie Element
-					JSONObject m = new JSONObject();
-					m.put("tmdb_id", id);
-					ms.put(m);
-					post.put("movies",ms);
-					url += (markmode==MarkMode.Watched?"seen/":"unseen/");
-					url += "%k";
-					data = getDataObjectFromJSON(url,true,post);
-				} catch (Exception e) {
-					Log.e(TAG,e.toString());
-				}
-				Object[] d = new Object[2];
-				d[0] = context;
-				if (data!=null) {
-					d[1] = "Marking succeeded";
-				} else {
-					d[1] = "Marking Failed";
-				}
-					
-				Message m = new Message();
-				m.obj = d;
-				MarkComplete.sendMessage(m);
-
-			}
-		};
+    }
+    
 		
-		Thread t = new Thread(null,Marker);
-		t.run();
-	}
-	
 	/**
 	 * Encodes p as SHA1 Hash.
 	 * @param p	Password.
