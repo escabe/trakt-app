@@ -84,6 +84,20 @@ public class TraktDetails extends ActivityWithUpdate {
 	    			traktapi.Mark(this, "movie","seen",id);
 	    		}
 	    		break;
+	    	case R.id.imageDetailsLoved:
+	    		if (data.optString("rating").equals("love")) { // Unrate
+	    			traktapi.Mark(this, "movie","unrate",data.optString("imdb_id"));
+	    		} else { // Rate as loved
+	    			traktapi.Mark(this, "movie","love",data.optString("imdb_id"));
+	    		}
+	    		break;
+	    	case R.id.imageDetailsHated:
+	    		if (data.optString("rating").equals("hate")) { // Unrate
+	    			traktapi.Mark(this, "movie","unrate",data.optString("imdb_id"));
+	    		} else { // Rate as hated
+	    			traktapi.Mark(this, "movie","hate",data.optString("imdb_id"));
+	    		}
+	    		break;
     	}
 
     }
