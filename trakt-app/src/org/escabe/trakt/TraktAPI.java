@@ -163,7 +163,21 @@ public class TraktAPI {
 					
 				}
 			} else {
-				
+				if (type.equals("movie") || type.equals("show")) {
+					try {
+						String url = "rate/" + type + "/%k";
+						JSONObject post = new JSONObject();
+						post.put("imdb_id", (String) params[2]);
+						post.put("rating",status);
+						JSONObject data = getDataObjectFromJSON(url,true,post);
+						return data!=null;
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else if (type.equals("episode")) {
+					
+				}
 			}
 			return null;
 		}
