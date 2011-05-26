@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -99,16 +100,16 @@ public class TraktAPI {
     	}
     }
 
-    public void Mark(ActivityWithUpdate parent, Object... params) {
+    public void Mark(Activity parent, Object... params) {
     	Marker m = new Marker(parent);
     	m.execute(params);
     }
     
     public class Marker extends AsyncTask<Object,Void,Boolean> {
-		ActivityWithUpdate parent;
+		Activity parent;
 		ProgressDialog progressdialog;
 		
-		public Marker(ActivityWithUpdate parent) {
+		public Marker(Activity parent) {
 			this.parent = parent;
 		}
 		@Override
@@ -192,7 +193,7 @@ public class TraktAPI {
 			}
 			progressdialog.dismiss();
 			Toast.makeText(parent.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-			parent.DoUpdate();    
+			((ActivityWithUpdate)parent).DoUpdate();    
 	    }
     
     }
