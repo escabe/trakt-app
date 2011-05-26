@@ -204,6 +204,10 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
 				}
 				
 				((ImageView)row.findViewById(R.id.imageEpisodeWatched)).setVisibility(d.optBoolean("watched") ? View.VISIBLE:View.GONE);
+        		
+				String rating = d.optString("rating");
+				((ImageView)row.findViewById(R.id.imageEpisodeLoved)).setVisibility( rating.equals("love") ? View.VISIBLE:View.GONE );
+				((ImageView)row.findViewById(R.id.imageEpisodeHated)).setVisibility( rating.equals("hate") ? View.VISIBLE:View.GONE );
 			}
 			return row;
 		}
