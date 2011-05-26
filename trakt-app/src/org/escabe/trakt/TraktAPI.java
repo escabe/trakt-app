@@ -177,7 +177,19 @@ public class TraktAPI {
 						e.printStackTrace();
 					}
 				} else if (type.equals("episode")) {
-					
+					try {
+						String url = "rate/" + type + "/%k";
+						JSONObject post = new JSONObject();
+						post.put("tvdb_id", (String) params[2]);
+						post.put("season",(Integer) params[3]);
+						post.put("episode",(Integer) params[4]);
+						post.put("rating",status);
+						JSONObject data = getDataObjectFromJSON(url,true,post);
+						return data!=null;
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}					
 				}
 			}
 			return null;
