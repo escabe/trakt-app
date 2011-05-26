@@ -2,7 +2,6 @@ package org.escabe.trakt;
 
 import java.util.List;
 
-import org.escabe.trakt.TraktAPI.MarkMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,13 +61,12 @@ public class TraktEpisodeDetails extends ActivityWithUpdate {
     }
     
     public void imageEpisodeDetailsOnClick(View view) {
-    	MarkMode mm = null;
     	switch(view.getId()) {
 	    	case R.id.imageEpisodeDetailsWatched:
 	    		if (episode.optBoolean("watched")) { // Mark as unwatched
-	    			mm = MarkMode.Unwatched;
+	    			traktapi.Mark(this,"episode","unseen",show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number") );
 	    		} else { // Mark as watched
-	    			mm = MarkMode.Watched;
+	    			traktapi.Mark(this,"episode","seen",show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number") );
 	    		}
 	    		break;
     	}
@@ -79,7 +77,6 @@ public class TraktEpisodeDetails extends ActivityWithUpdate {
 			e.printStackTrace();
 		}
     	
-    	traktapi.MarkEpisodeAsWatched(this,mm, show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number"), episode.optString("title"));
     }
     
 	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
