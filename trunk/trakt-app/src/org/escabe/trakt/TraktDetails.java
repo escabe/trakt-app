@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +20,7 @@ import android.widget.TextView;
  * @author escabe
  *
  */
-public class TraktDetails extends ActivityWithUpdate {
+public class TraktDetails extends Activity implements ActivityWithUpdate {
 	private TraktAPI traktapi;
 	
 	private String id;
@@ -170,7 +171,6 @@ public class TraktDetails extends ActivityWithUpdate {
 		dg.execute(url);
     }
 	
-	@Override
 	public void DoUpdate() {
 		GetData("movie/summary.json/%k/" + id);
 	}

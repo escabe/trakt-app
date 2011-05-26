@@ -21,7 +21,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class EpisodeList extends ExpandableListActivity {
+public class EpisodeList extends ExpandableListActivity implements ActivityWithUpdate {
 	private String TAG="EpisodeList";
 	private String id;
 	private JSONObject data;
@@ -77,11 +77,13 @@ public class EpisodeList extends ExpandableListActivity {
 
 			
 			// Marked Watched/Loved/Hated
-    		ImageView loved = (ImageView) findViewById(R.id.imageEpisodeDetailsLoved);
-        	ImageView hated = (ImageView) findViewById(R.id.imageEpisodeDetailsHated);
+    		ImageView loved = (ImageView) findViewById(R.id.imageEpisodeListLoved);
+        	ImageView hated = (ImageView) findViewById(R.id.imageEpisodeListHated);
         	String rating = data.optString("rating");
         	if (rating.equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
+        		else loved.setBackgroundColor(android.R.color.black);
         	if (rating.equals("hate")) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
+        		else hated.setBackgroundColor(android.R.color.black);
 			
 			// Notify list that data has been retrieved
 			adapter.notifyDataSetChanged();
@@ -148,6 +150,24 @@ public class EpisodeList extends ExpandableListActivity {
 		}
     }
     
+    public void imageEpisodeListOnClick(View view) {
+    	switch (view.getId()) {
+	    	case R.id.imageEpisodeListLoved:
+	    		if (data.optString("rating").equals("love")) { // Unrate
+	    			traktapi.Mark(this, "show","unrate",data.optString("imdb_id"));
+	    		} else { // Rate as loved
+	    			traktapi.Mark(this, "show","love",data.optString("imdb_id"));
+	    		}
+	    		break;
+	    	case R.id.imageEpisodeListHated:
+	    		if (data.optString("rating").equals("hate")) { // Unrate
+	    			traktapi.Mark(this, "show","unrate",data.optString("imdb_id"));
+	    		} else { // Rate as hated
+	    			traktapi.Mark(this, "show","hate",data.optString("imdb_id"));
+	    		}
+	    		break;
+    	}
+    }
 
     
 	/**
@@ -262,6 +282,11 @@ public class EpisodeList extends ExpandableListActivity {
 		public boolean isChildSelectable(int groupPosition, int childPosition) {
 			return true;
 		}
+		
+	}
+
+	public void DoUpdate() {
+		HandleIntent(getIntent());
 		
 	}
     

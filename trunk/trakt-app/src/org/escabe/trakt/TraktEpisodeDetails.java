@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class TraktEpisodeDetails extends ActivityWithUpdate {
+public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate {
 	private String TAG="EpisodeDetails";
 	private JSONObject data;
 	private JSONObject show;
@@ -70,13 +71,6 @@ public class TraktEpisodeDetails extends ActivityWithUpdate {
 	    		}
 	    		break;
     	}
-
-    	try {
-			episode.put("watched", !episode.optBoolean("watched"));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-    	
     }
     
 	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
@@ -102,7 +96,31 @@ public class TraktEpisodeDetails extends ActivityWithUpdate {
 		}
 		@Override
 	    protected void onPostExecute(Boolean result) {
-			DoUpdate();
+			((TextView)findViewById(R.id.textEpisodeDetailsShowName)).setText(show.optString("title"));
+			String d = String.format("%02dx%02d %s",episode.optInt("season"),episode.optInt("number"),episode.optString("title"));
+			((TextView)findViewById(R.id.textEpisodeDetailsTitle)).setText(d);
+			((TextView)findViewById(R.id.textEpisodeDetailsOverview)).setText(episode.optString("overview"));
+			
+			String p = traktapi.ResizeScreen(episode.optJSONObject("images").optString("screen"),3);
+			ImageView poster = (ImageView) findViewById(R.id.imageEpisodeDetailsPoster);
+			
+			try {
+				cache.handleImageView(poster, p, p);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.e(TAG,e.toString());
+			}
+			
+			d = String.format("First Aired:\n%1$tB %1$te, %1$tY",episode.optLong("first_aired")*1000);
+			((TextView)findViewById(R.id.textEpisodeDetailsDetails)).setText(d);
+			
+			
+			ImageView w = (ImageView) findViewById(R.id.imageEpisodeDetailsWatched);
+			if (episode.optBoolean("watched"))
+				w.setBackgroundResource(R.drawable.ic_item_watched_active);
+			else
+				w.setBackgroundColor(Color.BLACK);
+			
 	        // Hide progress dialog
 			progressdialog.dismiss();
 
@@ -120,34 +138,8 @@ public class TraktEpisodeDetails extends ActivityWithUpdate {
     }
     
     
-
-	@Override
-	public void DoUpdate() {
-		((TextView)findViewById(R.id.textEpisodeDetailsShowName)).setText(show.optString("title"));
-		String d = String.format("%02dx%02d %s",episode.optInt("season"),episode.optInt("number"),episode.optString("title"));
-		((TextView)findViewById(R.id.textEpisodeDetailsTitle)).setText(d);
-		((TextView)findViewById(R.id.textEpisodeDetailsOverview)).setText(episode.optString("overview"));
-		
-		String p = traktapi.ResizeScreen(episode.optJSONObject("images").optString("screen"),3);
-		ImageView poster = (ImageView) findViewById(R.id.imageEpisodeDetailsPoster);
-		
-		try {
-			cache.handleImageView(poster, p, p);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			Log.e(TAG,e.toString());
-		}
-		
-		d = String.format("First Aired:\n%1$tB %1$te, %1$tY",episode.optLong("first_aired")*1000);
-		((TextView)findViewById(R.id.textEpisodeDetailsDetails)).setText(d);
-		
-		
-		ImageView w = (ImageView) findViewById(R.id.imageEpisodeDetailsWatched);
-		if (episode.optBoolean("watched"))
-			w.setBackgroundResource(R.drawable.ic_item_watched_active);
-		else
-			w.setBackgroundColor(Color.BLACK);
-				
+    public void DoUpdate() {
+		HandleIntent(getIntent());
 		
 	}
 	
