@@ -51,6 +51,8 @@ public class TraktList extends ListActivity {
 	private Spinner sp;
 	private TraktAPI traktapi=null;
 
+	private Boolean bare;
+	
 	// To hold information about what we are currently looking at
 	
 	private enum UserTrending { User, Trending, Search}
@@ -75,7 +77,11 @@ public class TraktList extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.trakt_list);
+	    bare = getIntent().getBooleanExtra("bare", false);
+	    if (bare)
+	    	setContentView(R.layout.trakt_list_bare);
+	    else
+	    	setContentView(R.layout.trakt_list);
 	    // Initialize API
 	    
 	    traktapi = new TraktAPI(this);
@@ -88,30 +94,31 @@ public class TraktList extends ListActivity {
 		// Assign the adaptor to the list
 		setListAdapter(thumbs);
 
-		// For user avatar
-		Application app = (Application)getApplication();
-		cache = new WebImageCache(getCacheDir(), app.bus, app.policy, 101,getResources().getDrawable(R.drawable.ic_item_avatar));
-		
-		// Add Adapter to the spinner (to allow switching between lists)
-		initial = true;
-		sp = (Spinner)findViewById(R.id.spinnerTraktList);
-		sp.setAdapter(new SpinAdapter());
-		sp.setOnItemSelectedListener(new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View v,int position, long id) {
-				if(!initial)
-					if(urls.get(position).equals("SEARCH") ) {
-						onSearchRequested();
-					} else {
-						HandleUri(Uri.parse(urls.get(position)));
-					}
-				else
-					initial = false;
-			}
-			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
-			}
-		});			
-
+		if (!bare) {
+			// For user avatar
+			Application app = (Application)getApplication();
+			cache = new WebImageCache(getCacheDir(), app.bus, app.policy, 101,getResources().getDrawable(R.drawable.ic_item_avatar));
+			
+			// Add Adapter to the spinner (to allow switching between lists)
+			initial = true;
+			sp = (Spinner)findViewById(R.id.spinnerTraktList);
+			sp.setAdapter(new SpinAdapter());
+			sp.setOnItemSelectedListener(new OnItemSelectedListener() {
+				public void onItemSelected(AdapterView<?> parent, View v,int position, long id) {
+					if(!initial)
+						if(urls.get(position).equals("SEARCH") ) {
+							onSearchRequested();
+						} else {
+							HandleUri(Uri.parse(urls.get(position)));
+						}
+					else
+						initial = false;
+				}
+				public void onNothingSelected(AdapterView<?> parent) {
+					// TODO Auto-generated method stub
+				}
+			});			
+		}
 		// Determine with which intent the Activity was started.
 		HandleIntent(getIntent());
 	}
@@ -183,6 +190,7 @@ public class TraktList extends ListActivity {
 	}
 	
 	private void SwitchUser(String username) {
+		if (bare) return;
 		if (username==null) {
 			username = PreferenceManager.getDefaultSharedPreferences(this).getString("user","");
 		}
@@ -267,7 +275,12 @@ public class TraktList extends ListActivity {
 		@Override
 		protected void onPreExecute() {
 			thumbs.notifyDataSetInvalidated();
-			ProgressBar pb = (ProgressBar) parent.findViewById(R.id.progbarListList);
+
+			ProgressBar pb;
+			if (bare)
+				pb = (ProgressBar) parent.findViewById(R.id.progbarListBare);
+			else
+				pb = (ProgressBar) parent.findViewById(R.id.progbarListList);
 			pb.setVisibility(View.VISIBLE);
 		}
 		
@@ -283,9 +296,13 @@ public class TraktList extends ListActivity {
 	        // Scroll to first item
 			setSelection(0);
 	        // Hide progress dialog
-			ProgressBar pb = (ProgressBar) parent.findViewById(R.id.progbarListList);
-			pb.setVisibility(View.INVISIBLE);
-			
+			ProgressBar pb;
+			if (bare)
+				pb = (ProgressBar) parent.findViewById(R.id.progbarListBare);
+			else
+				pb = (ProgressBar) parent.findViewById(R.id.progbarListList);
+			pb.setVisibility(View.GONE);
+
 	    }
 	}
 	
@@ -319,10 +336,12 @@ public class TraktList extends ListActivity {
 	 */
 	private void HandleUri(Uri uri) {
 	
-		// Set the Spinner correctly
-		sp.setSelection(urls.indexOf(uri.toString()));
-		TextView listitle = (TextView) findViewById(R.id.textTraktListTitle);
-		listitle.setText(strings[urls.indexOf(uri.toString())]);
+		if (!bare) {
+			// Set the Spinner correctly
+			sp.setSelection(urls.indexOf(uri.toString()));
+			TextView listitle = (TextView) findViewById(R.id.textTraktListTitle);
+			listitle.setText(strings[urls.indexOf(uri.toString())]);
+		}
 		String t = uri.getHost();
 		if (t.equals("trending")) {
 			usertrending = UserTrending.Trending;

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,7 +42,6 @@ public class EpisodeWatchList extends ExpandableListActivity {
 
 		HandleIntent(getIntent());
 		
-	    // TODO Auto-generated method stub
 	}
 	
 	private void HandleIntent(Intent intent) {
@@ -57,7 +57,7 @@ public class EpisodeWatchList extends ExpandableListActivity {
     	dg.execute();
     	
     }
-	
+    
 	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -86,6 +86,18 @@ public class EpisodeWatchList extends ExpandableListActivity {
 			progressdialog.dismiss();
 	    }
 		
+	}
+	
+	
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+		JSONObject s = (JSONObject) adapter.getGroup(groupPosition);
+		JSONObject d = (JSONObject) adapter.getChild(groupPosition, childPosition);
+		
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("episode://tvdb/" + s.optString("tvdb_id") +"/" + d.optInt("season") + "/" + d.optInt("number") ),this,TraktEpisodeDetails.class);
+
+		startActivity(intent);
+		return false;
 	}
 	
 	class EpisodeWatchListAdapter extends BaseExpandableListAdapter {
