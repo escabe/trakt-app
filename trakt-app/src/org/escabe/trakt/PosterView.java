@@ -43,6 +43,8 @@ public class PosterView extends Gallery {
 		setOnItemClickListener(new OnItemClickListener(){
 			public void onItemClick(AdapterView<?> p, View v, int position, long id) {
 				// Determine which item is selected then call TraktDetails Activity to show the details for this Show/Movie.
+				if (data==null)
+					return;
 				JSONObject info = data.optJSONObject(position);
 				if (info==null) return;
 				if (showmovie == ShowMovie.Movie) {
