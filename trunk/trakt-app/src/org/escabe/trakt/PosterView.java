@@ -59,10 +59,10 @@ public class PosterView extends Gallery {
 	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
 		@Override
 		protected void onPreExecute() {
+			thumbs.notifyDataSetInvalidated();
 		}
 		@Override
 		protected Boolean doInBackground(String... params) {
-			thumbs.notifyDataSetInvalidated();
 			data = traktapi.getDataArrayFromJSON(url,true);
 			return true;
 		}

@@ -92,6 +92,9 @@ public class TraktMain extends Activity {
     	case R.id.buttonUserShows:
     		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://self/user/library/shows/all.json/%25k/%25u"),this,TraktList.class));
     		break;
+    	case R.id.buttonWatchlist:
+    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://self/watchlist"),this,TraktWatchList.class));
+    		break;    		
     	case R.id.buttonSearch:
     		onSearchRequested();
     		break;
