@@ -30,5 +30,7 @@
 		<activity android:name=".TraktDetails"></activity>
 		<activity android:name=".EpisodeList"></activity>
 		<activity android:name=".TraktEpisodeDetails"></activity>
+		<activity android:name=".TraktWatchList"></activity>
+		<activity android:name=".EpisodeWatchList"></activity>
     </application>
 </manifest>

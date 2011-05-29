@@ -18,6 +18,7 @@ import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,11 +58,15 @@ public class TraktList extends ListActivity {
 	
 	// Strings for the spinner
 	private String[] strings = {"Trending Shows","Trending Movies",
-			"All Your Shows","All Your Movies","Last 100 Watched", "Search"};
+								"All Your Shows","All Your Movies",
+								"Last 100 Watched",
+								"Movies Watchlist","Shows Watchlist","Episode Watchlist",
+								"Search"};
 	
 	private String[] uu = new String[] {"trakt://trending/shows/trending.json/%25k","trakt://trending/movies/trending.json/%25k",
 			"trakt://self/user/library/shows/all.json/%25k/%25u","trakt://self/user/library/movies/all.json/%25k/%25u",
 			"trakt://self/user/watched.json/%25k/%25u",
+			"trakt://self/user/watchlist/movies.json/%25k/%25u","trakt://self/user/watchlist/shows.json/%25k/%25u","trakt://self/user/watchlist/episodes.json/%25k/%25u",
 			"SEARCH"};
 	
 	private List<String> urls; 			
@@ -178,6 +183,9 @@ public class TraktList extends ListActivity {
 	}
 	
 	private void SwitchUser(String username) {
+		if (username==null) {
+			username = PreferenceManager.getDefaultSharedPreferences(this).getString("user","");
+		}
 		if (userdata!=null) {
 			if (userdata.optString("username").equals(username))
 				return;
@@ -209,16 +217,17 @@ public class TraktList extends ListActivity {
 	    protected void onPostExecute(Boolean result) {
 			TextView ut = (TextView) parent.findViewById(R.id.textListUserInfo);
 			JSONObject stats = userdata.optJSONObject("stats");
-			String lawa;
+			String lawa = "";
 			JSONObject lw = userdata.optJSONArray("watched").optJSONObject(0);
-			if (lw.optString("type").equals("episode")) {
-				lawa = String.format("%s %02dx%02d",lw.optJSONObject("show").optString("title"),
-													lw.optJSONObject("episode").optInt("season"),
-													lw.optJSONObject("episode").optInt("number"));
-			} else {
-				lawa = lw.optJSONObject("movie").optString("title");
+			if (lw!=null) {
+				if (lw.optString("type").equals("episode")) {
+					lawa = String.format("%s %02dx%02d",lw.optJSONObject("show").optString("title"),
+														lw.optJSONObject("episode").optInt("season"),
+														lw.optJSONObject("episode").optInt("number"));
+				} else {
+					lawa = lw.optJSONObject("movie").optString("title");
+				}
 			}
-			
 			
 			String d = String.format("<b>%s</b> - %s<br>" +
 									 "<b>Location:</b><i>%s</i><br>" +
@@ -312,7 +321,8 @@ public class TraktList extends ListActivity {
 	
 		// Set the Spinner correctly
 		sp.setSelection(urls.indexOf(uri.toString()));
-
+		TextView listitle = (TextView) findViewById(R.id.textTraktListTitle);
+		listitle.setText(strings[urls.indexOf(uri.toString())]);
 		String t = uri.getHost();
 		if (t.equals("trending")) {
 			usertrending = UserTrending.Trending;
@@ -321,7 +331,7 @@ public class TraktList extends ListActivity {
 		}
 		
 		SwitchList(uri.getPath(),true);
-		SwitchUser("");
+		SwitchUser(getIntent().getStringExtra("user"));
 		    	
 	}
 

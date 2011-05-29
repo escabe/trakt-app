@@ -13,4 +13,5 @@
     <string name="recommended_movies">Recommended Movies</string>
     <string name="actions">Actions</string>
     <string name="user">User</string>
+    <string name="watchlist">Watchlist</string>
 </resources>

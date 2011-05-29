@@ -14,7 +14,7 @@
     </LinearLayout>
     <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/spinnerTraktList"></Spinner>
     <LinearLayout android:layout_width="match_parent" style="@style/HeaderStyle" android:layout_height="wrap_content">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/recommended_shows"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/recommended_shows" android:id="@+id/textTraktListTitle"></TextView>
         <ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" style="@android:style/Widget.ProgressBar.Small" android:id="@+id/progbarListList"></ProgressBar>
     </LinearLayout>
     <ListView android:id="@android:id/list" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
