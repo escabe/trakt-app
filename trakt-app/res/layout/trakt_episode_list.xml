@@ -12,6 +12,7 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom">
                     <ImageView android:scaleType="center" android:layout_margin="4px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_loved" android:onClick="imageEpisodeListOnClick" android:id="@+id/imageEpisodeListLoved"></ImageView>
                     <ImageView android:scaleType="center" android:layout_margin="4px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_hated" android:onClick="imageEpisodeListOnClick" android:id="@+id/imageEpisodeListHated"></ImageView>
+                    <ImageView android:layout_margin="4px" android:onClick="imageEpisodeListOnClick" android:layout_height="32px" android:layout_width="40px" android:scaleType="center" android:src="@drawable/ic_item_watchlist_icon" android:id="@+id/imageEpisodeListWatchlist"></ImageView>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

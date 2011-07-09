@@ -122,18 +122,18 @@ public class TraktAPI {
 			String type = (String) params[0];
 			String status = (String) params[1];
 			if (status.equals("seen") || status.equals("unseen") || status.equals("watchlist") || status.equals("unwatchlist")) {
-				if (type.equals("movie")) {
+				if (type.equals("movie") || type.equals("show")) {
 					try {
-						String url = "movie/";
+						String url = type + "/";
 						JSONObject post = new JSONObject();
 						// Movies Array
 						JSONArray ms = new JSONArray();
 						// Movie Element
 						JSONObject m = new JSONObject();
 						
-						m.put("tmdb_id", (String) params[2]);
+						m.put("imdb_id", (String) params[2]);
 						ms.put(m);
-						post.put("movies",ms);
+						post.put( type + "s",ms);
 						url += status + "/%k";
 						JSONObject data = getDataObjectFromJSON(url,true,post);
 						return data!=null;

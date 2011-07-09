@@ -501,6 +501,8 @@ public class TraktList extends ListActivity {
             	ImageView loved = (ImageView) row.findViewById(R.id.imageLoved);
             	ImageView hated = (ImageView) row.findViewById(R.id.imageHated);
             	ImageView watched = (ImageView) row.findViewById(R.id.imageWatched);
+            	ImageView watchlist = (ImageView) row.findViewById(R.id.imageWatchlist);
+            	
         		String rating = info.optString("rating");
     			loved.setVisibility( rating.equals("love") ? View.VISIBLE:View.GONE );
     			hated.setVisibility( rating.equals("hate") ? View.VISIBLE:View.GONE );
@@ -509,6 +511,7 @@ public class TraktList extends ListActivity {
     			} else if (usertrending==UserTrending.User) {
     				watched.setVisibility( info.optInt("plays") > 0 ? View.VISIBLE:View.GONE );
     			}
+    			watchlist.setVisibility( info.optBoolean("in_watchlist") ? View.VISIBLE:View.GONE );
             }
             return(row);
 		}

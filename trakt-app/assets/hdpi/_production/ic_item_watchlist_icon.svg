@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.1 "
    sodipodi:docname="ic_item_watchlist_icon.svg"
-   inkscape:export-filename="..\ic_item_watchlist_icon.png"
+   inkscape:export-filename="..\ic_item_watchlist_icon_active.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -1853,7 +1853,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1884,27 +1884,33 @@
          id="tspan5519"
          x="22.879105"
          y="1032.7412" /></text>
-    <rect
-       ry="0.35466868"
-       y="1030.3132"
-       x="13.951044"
-       height="12.097913"
-       width="12.097913"
-       id="rect5657"
-       style="fill:none;stroke:url(#linearGradient4803);stroke-width:1.3275007;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <g
-       id="layer1-25"
-       transform="matrix(0.82144138,0,0,0.8911978,-231.404,873.16572)"
-       style="fill:url(#linearGradient4808);fill-opacity:1">
+       id="g4814"
+       inkscape:export-filename="..\ic_item_watchlist_icon_small.png"
+       inkscape:export-xdpi="77.237457"
+       inkscape:export-ydpi="77.237457">
+      <rect
+         style="fill:none;stroke:url(#linearGradient4803);stroke-width:1.3275007;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect5657"
+         width="12.097913"
+         height="12.097913"
+         x="13.951044"
+         y="1030.3132"
+         ry="0.35466868" />
       <g
-         id="layer1-2"
-         style="fill:url(#linearGradient4812);fill-opacity:1">
-        <path
-           style="fill:url(#linearGradient4810);fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4"
-           inkscape:connector-curvature="0"
-           stroke-miterlimit="4"
-           id="path4068"
-           d="m 299.7774,181.07651 6.77405,7.53283 c 3.45154,-6.74169 7.67676,-12.94377 14.46805,-18.83207 -5.08276,2.74823 -10.68558,7.96696 -15.47159,14.42456 l -5.77051,-3.12532 z" />
+         style="fill:url(#linearGradient4808);fill-opacity:1"
+         transform="matrix(0.82144138,0,0,0.8911978,-231.404,873.16572)"
+         id="layer1-25">
+        <g
+           style="fill:url(#linearGradient4812);fill-opacity:1"
+           id="layer1-2">
+          <path
+             d="m 299.7774,181.07651 6.77405,7.53283 c 3.45154,-6.74169 7.67676,-12.94377 14.46805,-18.83207 -5.08276,2.74823 -10.68558,7.96696 -15.47159,14.42456 l -5.77051,-3.12532 z"
+             id="path4068"
+             stroke-miterlimit="4"
+             inkscape:connector-curvature="0"
+             style="fill:url(#linearGradient4810);fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4" />
+        </g>
       </g>
     </g>
   </g>
