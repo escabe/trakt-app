@@ -70,6 +70,13 @@ public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate 
 	    			traktapi.Mark(this,"episode","seen",show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number") );
 	    		}
 	    		break;
+	    	case R.id.imageEpisodeDetailsWatchlist:
+	    		if (episode.optBoolean("in_watchlist")) { // Remove from watchlist
+	    			traktapi.Mark(this,"episode","unwatchlist",show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number") );
+	    		} else { // Add to watchlist
+	    			traktapi.Mark(this,"episode","watchlist",show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number") );
+	    		}
+	    		break;	    		
 	    	case R.id.imageEpisodeDetailsLoved:
 	    		if (episode.optString("rating").equals("love")) { // Unrate
 	    			traktapi.Mark(this,"episode","unrate",show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number") );
@@ -80,7 +87,7 @@ public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate 
 	    	case R.id.imageEpisodeDetailsHated:
 	    		if (episode.optString("rating").equals("hate")) { // Unrate
 	    			traktapi.Mark(this,"episode","unrate",show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number") );
-	    		} else { // Rate as loved
+	    		} else { // Rate as hated
 	    			traktapi.Mark(this,"episode","hate",show.optString("tvdb_id"), episode.optInt("season"), episode.optInt("number") );
 	    		}
 	    		break;	    		
@@ -130,11 +137,15 @@ public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate 
 			
 			
 			ImageView watched = (ImageView) findViewById(R.id.imageEpisodeDetailsWatched);
+			ImageView watchedlist = (ImageView) findViewById(R.id.imageEpisodeDetailsWatchlist);
 			ImageView loved = (ImageView) findViewById(R.id.imageEpisodeDetailsLoved);
 			ImageView hated = (ImageView) findViewById(R.id.imageEpisodeDetailsHated);
 			
 			if (episode.optBoolean("watched")) watched.setBackgroundResource(R.drawable.ic_item_watched_active);
 				else watched.setBackgroundColor(Color.BLACK);
+			
+			if (episode.optBoolean("in_watchlist")) watchedlist.setBackgroundResource(R.drawable.ic_item_watchlist_icon_active);
+			else watchedlist.setBackgroundColor(Color.BLACK);
 			
 			if (episode.optString("rating").equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
 				else loved.setBackgroundColor(Color.BLACK);

@@ -80,16 +80,16 @@ public class TraktDetails extends Activity implements ActivityWithUpdate {
     	switch(view.getId()) {
 	    	case R.id.imageDetailsWatched:
 	    		if (data.optBoolean("watched")) { // Mark as unwatched
-	    			traktapi.Mark(this, "movie","unseen",id);
+	    			traktapi.Mark(this, "movie","unseen",data.optString("imdb_id"));
 	    		} else { // Mark as watched
-	    			traktapi.Mark(this, "movie","seen",id);
+	    			traktapi.Mark(this, "movie","seen",data.optString("imdb_id"));
 	    		}
 	    		break;
 	    	case R.id.imageDetailsWatchlist:
 	    		if (data.optBoolean("in_watchlist")) { // Remove from watchlist
-	    			traktapi.Mark(this, "movie","unwatchlist",id);
+	    			traktapi.Mark(this, "movie","unwatchlist",data.optString("imdb_id"));
 	    		} else { // Add to watchlist
-	    			traktapi.Mark(this, "movie","watchlist",id);
+	    			traktapi.Mark(this, "movie","watchlist",data.optString("imdb_id"));
 	    		}
     		break;
 	    	case R.id.imageDetailsLoved:

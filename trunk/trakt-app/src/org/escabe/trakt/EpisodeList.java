@@ -77,14 +77,21 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
 
 			
 			// Marked Watched/Loved/Hated
-    		ImageView loved = (ImageView) findViewById(R.id.imageEpisodeListLoved);
+			ImageView watchlist = (ImageView) findViewById(R.id.imageEpisodeListWatchlist);
+			ImageView loved = (ImageView) findViewById(R.id.imageEpisodeListLoved);
         	ImageView hated = (ImageView) findViewById(R.id.imageEpisodeListHated);
+
+        	if (data.optBoolean("in_watchlist")) watchlist.setBackgroundResource(R.drawable.ic_item_watchlist_icon_active);
+    		else watchlist.setBackgroundColor(android.R.color.black); 
+        	
         	String rating = data.optString("rating");
         	if (rating.equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
         		else loved.setBackgroundColor(android.R.color.black);
         	if (rating.equals("hate")) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
         		else hated.setBackgroundColor(android.R.color.black);
 			
+
+        	
 			// Notify list that data has been retrieved
 			adapter.notifyDataSetChanged();
 			
@@ -152,7 +159,14 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
     
     public void imageEpisodeListOnClick(View view) {
     	switch (view.getId()) {
-	    	case R.id.imageEpisodeListLoved:
+    		case R.id.imageEpisodeListWatchlist:
+    			if (data.optBoolean("in_watchlist")) { // Unwatchlist
+    				traktapi.Mark(this, "show","unwatchlist",data.optString("imdb_id"));
+    			} else { // Watchlist
+    				traktapi.Mark(this, "show","watchlist",data.optString("imdb_id"));
+    			}
+    		break;
+    		case R.id.imageEpisodeListLoved:
 	    		if (data.optString("rating").equals("love")) { // Unrate
 	    			traktapi.Mark(this, "show","unrate",data.optString("imdb_id"));
 	    		} else { // Rate as loved

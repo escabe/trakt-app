@@ -13,6 +13,7 @@
         <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsWatched" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_watched"></ImageView>
         <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsLoved" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_loved"></ImageView>
         <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsHated" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_hated"></ImageView>
+        <ImageView android:onClick="imageEpisodeDetailsOnClick" android:layout_height="32px" android:layout_width="40px" android:layout_marginLeft="10px" android:scaleType="center" android:id="@+id/imageEpisodeDetailsWatchlist" android:src="@drawable/ic_item_watchlist_icon"></ImageView>
     </LinearLayout>
     
     <ScrollView android:id="@+id/scrollView1" android:layout_height="fill_parent" android:layout_width="fill_parent">

@@ -10,6 +10,7 @@
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageWatched" android:layout_margin="2px" android:src="@drawable/ic_item_watched_small" android:layout_gravity="center_vertical"></ImageView>
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageLoved" android:layout_margin="2px" android:src="@drawable/ic_item_loved_small"></ImageView>
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageHated" android:layout_margin="2px" android:src="@drawable/ic_item_hated_small"></ImageView>
+            <ImageView android:layout_margin="2px" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/imageWatchlist" android:src="@drawable/ic_item_watchlist_icon_small"></ImageView>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
