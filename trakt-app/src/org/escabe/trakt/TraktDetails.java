@@ -85,6 +85,13 @@ public class TraktDetails extends Activity implements ActivityWithUpdate {
 	    			traktapi.Mark(this, "movie","seen",id);
 	    		}
 	    		break;
+	    	case R.id.imageDetailsWatchlist:
+	    		if (data.optBoolean("in_watchlist")) { // Remove from watchlist
+	    			traktapi.Mark(this, "movie","unwatchlist",id);
+	    		} else { // Add to watchlist
+	    			traktapi.Mark(this, "movie","watchlist",id);
+	    		}
+    		break;
 	    	case R.id.imageDetailsLoved:
 	    		if (data.optString("rating").equals("love")) { // Unrate
 	    			traktapi.Mark(this, "movie","unrate",data.optString("imdb_id"));
@@ -99,6 +106,7 @@ public class TraktDetails extends Activity implements ActivityWithUpdate {
 	    			traktapi.Mark(this, "movie","hate",data.optString("imdb_id"));
 	    		}
 	    		break;
+	    		
     	}
 
     }
@@ -150,9 +158,14 @@ public class TraktDetails extends Activity implements ActivityWithUpdate {
         	ImageView watched = (ImageView) findViewById(R.id.imageDetailsWatched);        	
 			ImageView loved = (ImageView) findViewById(R.id.imageDetailsLoved);
         	ImageView hated = (ImageView) findViewById(R.id.imageDetailsHated);
+        	ImageView watchlist = (ImageView) findViewById(R.id.imageDetailsWatchlist);
 
+        	
         	if (data.optBoolean("watched")) watched.setBackgroundResource(R.drawable.ic_item_watched_active);
         		else watched.setBackgroundColor(android.R.color.black); 
+
+        	if (data.optBoolean("in_watchlist")) watchlist.setBackgroundResource(R.drawable.ic_item_watchlist_icon_active);
+    		else watchlist.setBackgroundColor(android.R.color.black); 
         	
         	String rating = data.optString("rating");
         	if (rating.equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);

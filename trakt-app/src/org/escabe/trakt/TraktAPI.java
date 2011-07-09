@@ -121,7 +121,7 @@ public class TraktAPI {
 		protected Boolean doInBackground(Object... params) {
 			String type = (String) params[0];
 			String status = (String) params[1];
-			if (status.equals("seen") || status.equals("unseen")) {
+			if (status.equals("seen") || status.equals("unseen") || status.equals("watchlist") || status.equals("unwatchlist")) {
 				if (type.equals("movie")) {
 					try {
 						String url = "movie/";
