@@ -12,6 +12,7 @@
                     <ImageView android:scaleType="center" android:id="@+id/imageDetailsWatched" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_watched"></ImageView>
                     <ImageView android:id="@+id/imageDetailsLoved" android:scaleType="center" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_loved"></ImageView>
                     <ImageView android:scaleType="center" android:id="@+id/imageDetailsHated" android:onClick="imageDetailsOnClick" android:layout_marginLeft="10px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_hated"></ImageView>
+                    <ImageView android:onClick="imageDetailsOnClick" android:layout_height="32px" android:layout_width="40px" android:layout_marginLeft="10px" android:scaleType="center" android:id="@+id/imageDetailsWatchlist" android:src="@drawable/ic_item_watchlist_icon"></ImageView>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
