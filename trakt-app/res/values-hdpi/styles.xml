@@ -30,8 +30,9 @@
     <style parent="@android:style/Widget.ExpandableListView" name="EpisodeList">
 		<item name="android:groupIndicator">@android:id/empty</item>
     </style>
-    <dimen name="PosterSmallWidth">37px</dimen>
-    <dimen name="PosterSmallHeight">55px</dimen>
+    <dimen name="PosterSmallWidth">56px</dimen>
+    <dimen name="PosterSmallHeight">82px</dimen>
+    
     <dimen name="PosterMediumWidth">122px</dimen>
     <dimen name="PosterMediumHeight">180px</dimen>
     
@@ -43,4 +44,7 @@
     <dimen name="AvatarMediumWidth">75px</dimen>
     <dimen name="AvatarMediumHeight">75px</dimen>
     
+    <dimen name="ButtonWidth">60px</dimen>
+    <dimen name="ButtonHeight">48px</dimen>
+   
 </resources>
