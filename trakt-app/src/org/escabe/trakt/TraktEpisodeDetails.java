@@ -158,13 +158,13 @@ public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate 
 			watched.setVisibility( episode.optBoolean("watched") ? View.VISIBLE:View.GONE );
 			
 			if (episode.optBoolean("in_watchlist")) watchedlist.setBackgroundResource(R.drawable.ic_item_watchlist_icon_active);
-			else watchedlist.setBackgroundColor(Color.BLACK);
+			else watchedlist.setBackgroundColor(Color.TRANSPARENT);
 			
 			if (episode.optString("rating").equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
-				else loved.setBackgroundColor(Color.BLACK);
+				else loved.setBackgroundColor(Color.TRANSPARENT);
 
 			if (episode.optString("rating").equals("hate")) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
-				else hated.setBackgroundColor(Color.BLACK);
+				else hated.setBackgroundColor(Color.TRANSPARENT);
 
 			
 	        // Hide progress dialog

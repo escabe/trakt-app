@@ -32,8 +32,8 @@
     </style>
     <dimen name="PosterSmallWidth">37px</dimen>
     <dimen name="PosterSmallHeight">55px</dimen>
-    <dimen name="PosterMediumWidth">74px</dimen>
-    <dimen name="PosterMediumHeight">110px</dimen>
+    <dimen name="PosterMediumWidth">50px</dimen>
+    <dimen name="PosterMediumHeight">75px</dimen>
     
     <dimen name="ScreenSmallWidth">97px</dimen>
     <dimen name="ScreenSmallHeight">55px</dimen>
