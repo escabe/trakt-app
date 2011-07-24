@@ -103,6 +103,13 @@ public class TraktAPI {
     	m.execute(params);
     }
     
+    public boolean LoggedIn() {
+    	JSONObject result = getDataObjectFromJSON("account/test/%k",true);
+    	if (result==null) return false;
+    	if (result.optString("status").equals("success")) return true;
+    	return false;
+    }
+    
     public class Marker extends AsyncTask<Object,Void,Boolean> {
 		Activity parent;
 		ProgressDialog progressdialog;

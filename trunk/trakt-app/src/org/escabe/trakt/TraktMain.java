@@ -7,46 +7,55 @@ import org.escabe.trakt.TraktAPI.ShowMovie;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 public class TraktMain extends Activity {
-    private SharedPreferences prefs=null;
 	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trakt_main);
-        
-        prefs=PreferenceManager.getDefaultSharedPreferences(this);
-		
-		String user=prefs.getString("user", null);
-		String password=prefs.getString("password", null);
 
-		// If username and password are not defined show preferences screen 
-		if (user==null || password==null) {
-			startActivity(new Intent(this, TraktPrefs.class));
-		} else {
-
-			PosterView pv = (PosterView)findViewById(R.id.posterviewRecomShows);
-			pv.initPosterView(this, "recommendations/shows/%k",ShowMovie.Show);
-			
-			pv = (PosterView)findViewById(R.id.posterviewRecomMovies);
-			pv.initPosterView(this, "recommendations/movies/%k",ShowMovie.Movie);
-		}
+        //Check whether login details are correct
+        checkLogin();
+    
     }
 
-    
+    private void showRecommendations() {
+        PosterView pv = (PosterView)findViewById(R.id.posterviewRecomShows);
+		pv.initPosterView(this, "recommendations/shows/%k",ShowMovie.Show);
+		
+		pv = (PosterView)findViewById(R.id.posterviewRecomMovies);
+		pv.initPosterView(this, "recommendations/movies/%k",ShowMovie.Movie);
+    }
+		    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // If returning from configuration
+        if (requestCode==32) {
+        	// Check whether login is correct now
+        	checkLogin();
+		}
+    }
+
+    private void checkLogin() {
+        TraktAPI traktapi = new TraktAPI(this);
+        if (!traktapi.LoggedIn()) {
+        	Toast.makeText(this, "Authentication Failed! Please check login details.", Toast.LENGTH_SHORT).show();
+        	startActivityForResult(new Intent(this, TraktPrefs.class),32);
+        } else {
+        	showRecommendations();
+        }			
+
     }
     
 	@Override
@@ -61,7 +70,7 @@ public class TraktMain extends Activity {
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case R.id.menuSettings:
-	    	startActivity(new Intent(this, TraktPrefs.class));
+	    	startActivityForResult(new Intent(this, TraktPrefs.class),32);
 	    	return true;	    	
 	    case R.id.menuSearch:
 	    	onSearchRequested();
