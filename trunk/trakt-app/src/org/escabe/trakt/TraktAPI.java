@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -30,7 +29,6 @@ import android.widget.Toast;
  *
  */
 public class TraktAPI {
-	private String TAG = "TraktAPI";
 	public enum ShowMovie {Show, Movie};
 	public enum MarkMode {Watched, Unwatched, Loved, Unloved, Hated, Unhated};
 	private Context context;

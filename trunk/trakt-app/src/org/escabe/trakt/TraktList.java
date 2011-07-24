@@ -510,6 +510,8 @@ public class TraktList extends ListActivity {
     				watched.setVisibility( info.optBoolean("watched") ? View.VISIBLE:View.GONE );
     			} else if (usertrending==UserTrending.User) {
     				watched.setVisibility( info.optInt("plays") > 0 ? View.VISIBLE:View.GONE );
+    			} else {
+    				watched.setVisibility(View.GONE);
     			}
     			watchlist.setVisibility( info.optBoolean("in_watchlist") ? View.VISIBLE:View.GONE );
             }

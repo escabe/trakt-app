@@ -2,7 +2,6 @@ package org.escabe.trakt;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TabHost;
@@ -13,7 +12,6 @@ public class TraktWatchList extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    Resources res = getResources(); 
 	    TabHost host = getTabHost();
 	    
 	    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://self/user/watchlist/shows.json/%25k/%25u"),this,TraktList.class);
