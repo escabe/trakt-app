@@ -95,13 +95,12 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
         	ImageView hated = (ImageView) findViewById(R.id.imageEpisodeListHated);
 
         	if (data.optBoolean("in_watchlist")) watchlist.setBackgroundResource(R.drawable.ic_item_watchlist_icon_active);
-    		else watchlist.setBackgroundColor(android.R.color.black); 
-        	
+    		else watchlist.setBackgroundColor(android.R.color.transparent); 
         	String rating = data.optString("rating");
         	if (rating.equals("love")) loved.setBackgroundResource(R.drawable.ic_item_loved_active);
-        		else loved.setBackgroundColor(android.R.color.black);
+        		else loved.setBackgroundColor(android.R.color.transparent);
         	if (rating.equals("hate")) hated.setBackgroundResource(R.drawable.ic_item_hated_active);
-        		else hated.setBackgroundColor(android.R.color.black);
+        		else hated.setBackgroundColor(android.R.color.transparent);
 			
 
         	

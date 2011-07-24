@@ -25,9 +25,8 @@
     	<view
   			class="org.escabe.trakt.PosterView" 
   			android:layout_width="fill_parent"
-  			android:layout_height="100px"
   			android:id="@+id/posterviewRecomShows"
-  			android:spacing="0px"/>
+  			android:spacing="0px" android:layout_height="@dimen/PosterMediumHeight"/>
         <TextView android:layout_height="wrap_content" android:layout_width="fill_parent" style="@style/HeaderStyle" android:text="@string/actions"></TextView>
 
         <LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_gravity="center_horizontal">
@@ -66,8 +65,7 @@
     	<view
   			class="org.escabe.trakt.PosterView" 
   			android:layout_width="fill_parent"
-  			android:layout_height="100px"
   			android:id="@+id/posterviewRecomMovies"
-  			android:spacing="0px"/>
+  			android:spacing="0px" android:layout_height="@dimen/PosterMediumHeight"/>
     </LinearLayout>
 </FrameLayout>

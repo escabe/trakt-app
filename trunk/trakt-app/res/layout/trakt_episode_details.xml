@@ -17,7 +17,7 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsShowName" android:textSize="16px" android:text="@string/loading_title"></TextView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsShowName" android:text="@string/loading_title"></TextView>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsTitle" android:text="@string/loading_title"></TextView>
     <RelativeLayout android:id="@+id/relativeLayout1" android:layout_height="123px" android:gravity="center_horizontal" android:layout_width="fill_parent">
         <ImageView android:src="@drawable/emptyposter" android:id="@+id/imageEpisodeDetailsPoster" android:layout_height="123px" android:layout_width="213px" android:layout_centerHorizontal="true"></ImageView>
