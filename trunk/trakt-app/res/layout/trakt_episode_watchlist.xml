@@ -2,5 +2,5 @@
 <ExpandableListView
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent" android:id="@id/android:list" style="@style/EpisodeList">
+  android:layout_height="match_parent" android:id="@id/android:list" style="@style/EpisodeList" android:divider="#000000" android:dividerHeight="1px">
 </ExpandableListView>

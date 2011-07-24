@@ -18,7 +18,7 @@ public class TraktWatchList extends TabActivity {
 	    
 	    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("trakt://self/user/watchlist/shows.json/%25k/%25u"),this,TraktList.class);
 	    i.putExtra("bare", true);
-	    host.addTab(host.newTabSpec("episodes").setIndicator("Shows", res.getDrawable(R.drawable.ic_item_user_shows)).setContent(i));
+	    host.addTab(host.newTabSpec("episodes").setIndicator("Shows").setContent(i));
 	    
         
 	    host.addTab(host.newTabSpec("episodes").setIndicator("Episodes").setContent(new Intent(this, EpisodeWatchList.class)));

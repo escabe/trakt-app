@@ -151,18 +151,21 @@ public class TraktDetails extends Activity implements ActivityWithUpdate {
 
 			String d = String.format("Released: %1$tB %1$te, %1$tY\nRuntime: %2$d min",new Date(data.optLong("released")*1000),data.optInt("runtime"));
 			details.setText(d);
-			d = String.format("\"%s\"\n\n%s",data.optString("tagline"),data.optString("overview"));
+			if (!data.optString("tagline").equals("")) {
+				d = String.format("\"%s\"\n\n", data.optString("tagline"));
+			} else {
+				d = "";
+			}
+			d += data.optString("overview");
 			overview.setText(d);
 			
 			// Marked Watched/Loved/Hated
-        	ImageView watched = (ImageView) findViewById(R.id.imageDetailsWatched);        	
+        	ImageView watched = (ImageView) findViewById(R.id.imageDetailsWatchedBanner);        	
 			ImageView loved = (ImageView) findViewById(R.id.imageDetailsLoved);
         	ImageView hated = (ImageView) findViewById(R.id.imageDetailsHated);
         	ImageView watchlist = (ImageView) findViewById(R.id.imageDetailsWatchlist);
 
-        	
-        	if (data.optBoolean("watched")) watched.setBackgroundResource(R.drawable.ic_item_watched_active);
-        		else watched.setBackgroundColor(android.R.color.black); 
+        	watched.setVisibility( data.optBoolean("watched") ? View.VISIBLE:View.GONE );
 
         	if (data.optBoolean("in_watchlist")) watchlist.setBackgroundResource(R.drawable.ic_item_watchlist_icon_active);
     		else watchlist.setBackgroundColor(android.R.color.black); 

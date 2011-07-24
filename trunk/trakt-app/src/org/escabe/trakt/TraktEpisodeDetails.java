@@ -132,17 +132,16 @@ public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate 
 				Log.e(TAG,e.toString());
 			}
 			
-			d = String.format("First Aired:\n%1$tB %1$te, %1$tY",episode.optLong("first_aired")*1000);
+			d = String.format("First Aired: %1$tB %1$te, %1$tY",episode.optLong("first_aired")*1000);
 			((TextView)findViewById(R.id.textEpisodeDetailsDetails)).setText(d);
 			
 			
-			ImageView watched = (ImageView) findViewById(R.id.imageEpisodeDetailsWatched);
+			ImageView watched = (ImageView) findViewById(R.id.imageEpisodeDetailsWatchedBanner);
 			ImageView watchedlist = (ImageView) findViewById(R.id.imageEpisodeDetailsWatchlist);
 			ImageView loved = (ImageView) findViewById(R.id.imageEpisodeDetailsLoved);
 			ImageView hated = (ImageView) findViewById(R.id.imageEpisodeDetailsHated);
-			
-			if (episode.optBoolean("watched")) watched.setBackgroundResource(R.drawable.ic_item_watched_active);
-				else watched.setBackgroundColor(Color.BLACK);
+
+			watched.setVisibility( episode.optBoolean("watched") ? View.VISIBLE:View.GONE );
 			
 			if (episode.optBoolean("in_watchlist")) watchedlist.setBackgroundResource(R.drawable.ic_item_watchlist_icon_active);
 			else watchedlist.setBackgroundColor(Color.BLACK);
