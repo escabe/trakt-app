@@ -81,8 +81,7 @@ public class PosterView extends Gallery {
 	 * @param sm Show or Movie
 	 */
 	public void initPosterView(Activity parent,String url, ShowMovie sm) {
-		/*MovieShowInformation info = null;
-		data.add(info);*/
+		traktapi = new TraktAPI(parent);
 		thumbs = new ThumbnailAdapter(parent, new MovieShowAdapter(parent), ((Application)parent.getApplication()).getThumbsCache(),IMAGE_IDS);
 		setAdapter(thumbs);
 		
