@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent" android:orientation="vertical">
+  android:orientation="vertical" android:layout_height="match_parent" android:layout_width="match_parent">
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsShowName" android:textSize="16px" android:text="@string/loading_title"></TextView>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsTitle" android:text="@string/loading_title"></TextView>
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/linearLayout1">
-        <ImageView android:id="@+id/imageEpisodeDetailsPoster" android:src="@drawable/emptyposter" android:layout_margin="2px" android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageView>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsDetails" android:text="@string/loading_details"></TextView>
-    </LinearLayout>
+    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_height="123px" android:gravity="center_horizontal" android:layout_width="fill_parent">
+        <ImageView android:src="@drawable/emptyposter" android:id="@+id/imageEpisodeDetailsPoster" android:layout_height="123px" android:layout_width="213px" android:layout_centerHorizontal="true"></ImageView>
+        <ImageView android:src="@drawable/episode_seen" android:id="@+id/imageEpisodeDetailsWatchedBanner" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignRight="@+id/imageEpisodeDetailsPoster" android:visibility="gone"></ImageView>
+    </RelativeLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="center_horizontal">
         <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsWatched" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_watched"></ImageView>
         <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsLoved" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_loved"></ImageView>
         <ImageView android:scaleType="center" android:layout_marginLeft="10px" android:onClick="imageEpisodeDetailsOnClick" android:id="@+id/imageEpisodeDetailsHated" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_hated"></ImageView>
         <ImageView android:onClick="imageEpisodeDetailsOnClick" android:layout_height="32px" android:layout_width="40px" android:layout_marginLeft="10px" android:scaleType="center" android:id="@+id/imageEpisodeDetailsWatchlist" android:src="@drawable/ic_item_watchlist_icon"></ImageView>
     </LinearLayout>
+    <TextView android:layout_width="wrap_content" android:text="@string/loading_details" android:id="@+id/textEpisodeDetailsDetails" android:layout_height="wrap_content"></TextView>
     
     <ScrollView android:id="@+id/scrollView1" android:layout_height="fill_parent" android:layout_width="fill_parent">
         <TextView android:id="@+id/textEpisodeDetailsOverview" android:layout_height="fill_parent" android:layout_width="fill_parent" android:text="@string/loading_summary"></TextView>
