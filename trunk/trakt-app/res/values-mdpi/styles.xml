@@ -43,4 +43,7 @@
     <dimen name="AvatarMediumWidth">75px</dimen>
     <dimen name="AvatarMediumHeight">75px</dimen>
     
+    <dimen name="ButtonWidth">40px</dimen>
+    <dimen name="ButtonHeight">32px</dimen>
+    
 </resources>

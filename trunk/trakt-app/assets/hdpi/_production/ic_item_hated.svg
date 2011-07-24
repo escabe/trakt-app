@@ -14,11 +14,11 @@
    height="32"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.0 r9654"
+   inkscape:version="0.48.1 "
    sodipodi:docname="ic_item_hated.svg"
-   inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/ic_item_loved.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="../ic_item_hated.png"
+   inkscape:export-xdpi="135"
+   inkscape:export-ydpi="135">
   <defs
      id="defs4">
     <linearGradient
@@ -63,8 +63,8 @@
      fit-margin-bottom="0"
      inkscape:window-width="967"
      inkscape:window-height="869"
-     inkscape:window-x="243"
-     inkscape:window-y="196"
+     inkscape:window-x="232"
+     inkscape:window-y="198"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
