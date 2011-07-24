@@ -363,7 +363,9 @@ public class TraktList extends ListActivity {
     private void DoSearch(String q) {
 		usertrending = UserTrending.Search;
 		sp.setSelection(urls.indexOf("SEARCH"));
-		
+		TextView listitle = (TextView) findViewById(R.id.textTraktListTitle);
+		listitle.setText("Search: " + q);
+
 		DataGrabber dg = new DataGrabber(this) {
 			@Override
 			protected Boolean doInBackground(String... params) {
