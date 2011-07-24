@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent" android:orientation="vertical">
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:orientation="vertical">
     <!-- Spinner which should allow selecting different lists without leaving this TraktList Activity -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" style="@style/HeaderStyle">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/HeaderStyle">
         <TextView android:text="@string/user" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1"></TextView>
         <ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" style="@android:style/Widget.ProgressBar.Small" android:id="@+id/progbarListUser"></ProgressBar>
     </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
         <ImageView android:id="@+id/imageListUser" android:layout_height="@dimen/AvatarMediumHeight" android:layout_width="@dimen/AvatarMediumWidth" android:src="@drawable/ic_item_avatar" android:layout_margin="2px"></ImageView>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/loading_details" android:id="@+id/textListUserInfo"></TextView>
     </LinearLayout>
     <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/spinnerTraktList"></Spinner>
-    <LinearLayout android:layout_width="match_parent" style="@style/HeaderStyle" android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="fill_parent" style="@style/HeaderStyle" android:layout_height="wrap_content">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/recommended_shows" android:id="@+id/textTraktListTitle"></TextView>
         <ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" style="@android:style/Widget.ProgressBar.Small" android:id="@+id/progbarListList"></ProgressBar>
     </LinearLayout>

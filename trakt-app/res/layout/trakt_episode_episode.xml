@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="match_parent">
+  android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="fill_parent">
     <ImageView android:id="@+id/imageEpisodeListEpisodePoster" android:src="@drawable/emptyposter" android:background="@android:color/white" android:layout_gravity="center_vertical" android:layout_height="@dimen/ScreenSmallHeight" android:layout_width="@dimen/ScreenSmallWidth"></ImageView>
     <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="wrap_content" android:layout_weight="1" android:paddingLeft="2px">
         <TextView android:text="TextView" android:layout_height="wrap_content" android:id="@+id/textEpisodeListEpisodeTitle" android:layout_width="wrap_content"></TextView>
         <TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textEpisodeListEpisodeDetails"></TextView>
-        <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:layout_width="match_parent">
+        <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:layout_width="fill_parent">
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2px" android:id="@+id/imageEpisodeLoved" android:src="@drawable/ic_item_loved_small"></ImageView>
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="2px" android:id="@+id/imageEpisodeHated" android:src="@drawable/ic_item_hated_small"></ImageView>
         </LinearLayout>

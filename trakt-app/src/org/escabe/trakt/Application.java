@@ -8,15 +8,6 @@
 package org.escabe.trakt;
 
 import java.io.File;
-import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.commonsware.cwac.bus.SimpleBus;
 import com.commonsware.cwac.cache.AsyncCache;
@@ -26,8 +17,8 @@ import com.commonsware.cwac.thumbnail.ThumbnailBus;
 import com.commonsware.cwac.thumbnail.ThumbnailMessage;
 
 public class Application extends android.app.Application {
-	private String TAG="TraktAPP";
 	private ThumbnailBus thumbbus=new ThumbnailBus();
+	
 	public AsyncCache.DiskCachePolicy policy=new AsyncCache.DiskCachePolicy() {
 		public boolean eject(File file) {
 			return(System.currentTimeMillis()-file.lastModified()>1000*60*60*24*7);
@@ -37,10 +28,6 @@ public class Application extends android.app.Application {
 	// For CWAC Cache for other images
 	public SimpleBus bus = new SimpleBus();
 	private WebImageCache cache = null;
-	private TraktAPI traktapi = null;
-	
-
-	private boolean lhwloaded = false;
 	
 	/**
 	 * Main entry point for the Application.
@@ -52,9 +39,6 @@ public class Application extends android.app.Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
-		
-		traktapi = new TraktAPI(this);
 	}
 
 

@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class EpisodeList extends ExpandableListActivity implements ActivityWithUpdate {
-	private String TAG="EpisodeList";
 	private String id;
 	private JSONObject data;
 	

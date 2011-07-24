@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="HeaderStyle" parent="@android:style/Widget.TextView.ListSeparator"></style>
+    <style name="MyListSeparator">
+        <item name="android:background">@drawable/dark_header_dither</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">25dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">5sp</item>
+    </style>
+
+    <style name="HeaderStyle" parent="@MyListSeparator"></style>
     <style parent="@android:style/Widget.ExpandableListView" name="EpisodeList">
 		<item name="android:groupIndicator">@android:id/empty</item>
     </style>

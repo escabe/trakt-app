@@ -26,7 +26,6 @@ import android.widget.ImageView;
  *
  */
 public class PosterView extends Gallery {
-	private String TAG = "PosterView";
 	private String url;
 	private JSONArray data=null;
 	private ThumbnailAdapter thumbs=null;

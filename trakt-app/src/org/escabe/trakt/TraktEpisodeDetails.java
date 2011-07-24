@@ -2,7 +2,6 @@ package org.escabe.trakt;
 
 import java.util.List;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.commonsware.cwac.cache.WebImageCache;

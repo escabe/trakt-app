@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent" android:orientation="vertical">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:orientation="vertical">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
         <ImageView android:src="@drawable/emptyposter" android:onClick="imageDetailsPosterOnClick" android:id="@+id/imageEpisodeDetailsPoster" android:layout_height="@dimen/PosterMediumHeight" android:layout_width="@dimen/PosterMediumWidth"></ImageView>
         <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="wrap_content" android:layout_marginLeft="2px">
             <TextView android:layout_height="wrap_content" android:textSize="16px" android:text="@string/loading_details" android:layout_width="fill_parent" android:id="@+id/textEpisodeDetailsTitle"></TextView>
             <TextView android:text="@string/loading_details" android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/textEpisodeDetailsDetails" android:lines="3"></TextView>
             <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="bottom">
                     <ImageView android:scaleType="center" android:layout_margin="4px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_loved" android:onClick="imageEpisodeListOnClick" android:id="@+id/imageEpisodeListLoved"></ImageView>
                     <ImageView android:scaleType="center" android:layout_margin="4px" android:layout_height="32px" android:layout_width="40px" android:src="@drawable/ic_item_hated" android:onClick="imageEpisodeListOnClick" android:id="@+id/imageEpisodeListHated"></ImageView>
                     <ImageView android:layout_margin="4px" android:onClick="imageEpisodeListOnClick" android:layout_height="32px" android:layout_width="40px" android:scaleType="center" android:src="@drawable/ic_item_watchlist_icon" android:id="@+id/imageEpisodeListWatchlist"></ImageView>
@@ -17,7 +17,7 @@
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
-    <ScrollView android:layout_width="match_parent" android:layout_height="100px">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="100px">
         <TextView android:layout_height="fill_parent" android:layout_width="fill_parent" android:text="@string/loading_summary" android:id="@+id/textEpisodeDetailsSummary"></TextView>
     </ScrollView>
     <ExpandableListView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@id/android:list" android:divider="#000000" android:dividerHeight="1px" style="@style/EpisodeList"></ExpandableListView>
