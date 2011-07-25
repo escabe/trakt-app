@@ -247,7 +247,8 @@ public class TraktAPI {
 			byte[] hash = sha.digest();
 			p = "";
 			for (int i=0;i<hash.length;i++) {
-				p += Integer.toHexString(hash[i] & 0xFF);
+				//FIX for http://code.google.com/p/trakt-app/issues/detail?id=1
+				p = String.format("%s%02x", p,hash[i] & 0xFF);
 			}
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
