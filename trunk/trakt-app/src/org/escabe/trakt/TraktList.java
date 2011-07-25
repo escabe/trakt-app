@@ -35,6 +35,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 /**
  * Activity to Display lists of Shows or Movies
@@ -53,6 +55,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
  *
  */
 public class TraktList extends ListActivity {
+	private static final String TAG="ListActivity";
 	// Main ArrayList holding the currently displayed data
 	private JSONArray data=null;
 	private JSONObject userdata=null;
@@ -234,10 +237,19 @@ public class TraktList extends ListActivity {
 		protected Boolean doInBackground(String... params) {
 			//Get list
 			userdata = traktapi.getDataObjectFromJSON(params[0],true);
+			if (userdata==null) {
+				return false;
+			}
 			return true;
 		}
 		@Override
 	    protected void onPostExecute(Boolean result) {
+			if (!result) {
+				ProgressBar pb = (ProgressBar) parent.findViewById(R.id.progbarListUser);
+				pb.setVisibility(View.INVISIBLE);
+				Toast.makeText(parent, "Failed retrieving user information.", Toast.LENGTH_SHORT).show();
+				return;
+			}
 			TextView ut = (TextView) parent.findViewById(R.id.textListUserInfo);
 			JSONObject stats = userdata.optJSONObject("stats");
 			String lawa = "";
@@ -268,7 +280,7 @@ public class TraktList extends ListActivity {
 				cache.handleImageView(iv, traktapi.ResizeAvatar(userdata.optString("avatar"),3), "avatar");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.w(TAG,"Failed to retrieve avatar",e);
 			}
 			
 			// Hide progress dialog
@@ -303,10 +315,16 @@ public class TraktList extends ListActivity {
 		protected Boolean doInBackground(String... params) {
 			//Get list
 			data = traktapi.getDataArrayFromJSON(params[0],true);
+			if (data==null) {
+				return false;
+			}
 			return true;
 		}
 		@Override
 	    protected void onPostExecute(Boolean result) {
+			if (!result) {
+				Toast.makeText(parent, "Failed loading list data.",Toast.LENGTH_SHORT).show();
+			}
 			thumbs.notifyDataSetChanged();
 	        // Scroll to first item
 			setSelection(0);

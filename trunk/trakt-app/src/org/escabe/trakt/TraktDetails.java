@@ -27,15 +27,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 /**
  * Activity to show details about a Movie
  * @author escabe
  *
  */
 public class TraktDetails extends Activity implements ActivityWithUpdate {
+	private static final String TAG="TraktDetails";
 	private TraktAPI traktapi;
 	
 	private String id;
@@ -142,10 +145,18 @@ public class TraktDetails extends Activity implements ActivityWithUpdate {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			data = traktapi.getDataObjectFromJSON(params[0], true); 
+			if (data==null) {
+				return false;
+			}
 			return true;
 		}
 		@Override
 	    protected void onPostExecute(Boolean result) {
+			if (!result) {
+				progressdialog.dismiss();
+				Toast.makeText(parent, "Failed loading movie details.",Toast.LENGTH_SHORT).show();
+				return;
+			}
 			// Fill in all the information
 			TextView title = (TextView) findViewById(R.id.textDetailsTitle);
 			title.setText(data.optString("title"));
@@ -157,7 +168,7 @@ public class TraktDetails extends Activity implements ActivityWithUpdate {
 				cache.handleImageView(poster,p , "myposter");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.w(TAG,"Failed to retrieve poster",e);
 			}
 			TextView details = (TextView) findViewById(R.id.textDetailsDetails);
 			TextView overview = (TextView) findViewById(R.id.textDetailsSummary);

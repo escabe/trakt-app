@@ -14,8 +14,6 @@
  * limitations under the License.
  ******************************************************************************/
 /* TODO:
- *  - Use JSON Data directly (no MovieShowInformation class anymore)
- *  - Use AsyncTask instead of Thread for retrieving data
  *  - Error handling
  *  - Loading indicator for PosterView
  */
