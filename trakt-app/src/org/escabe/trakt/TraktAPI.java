@@ -36,6 +36,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -44,6 +45,7 @@ import android.widget.Toast;
  *
  */
 public class TraktAPI {
+	private static final String TAG="TraktAPI";
 	public enum ShowMovie {Show, Movie};
 	public enum MarkMode {Watched, Unwatched, Loved, Unloved, Hated, Unhated};
 	private Context context;
@@ -159,7 +161,7 @@ public class TraktAPI {
 						return data!=null;
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Log.w(TAG,"Marking failed",e);
 					}
 				} else if(type.equals("episode")) {
 					try {
@@ -179,7 +181,7 @@ public class TraktAPI {
 						return data!=null;
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Log.w(TAG,"Marking failed",e);
 					}
 					
 				}
@@ -194,7 +196,7 @@ public class TraktAPI {
 						return data!=null;
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Log.e(TAG,"Marking failed",e);
 					}
 				} else if (type.equals("episode")) {
 					try {
@@ -208,7 +210,7 @@ public class TraktAPI {
 						return data!=null;
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Log.e(TAG,"Marking failed",e);
 					}					
 				}
 			}
@@ -248,10 +250,10 @@ public class TraktAPI {
 			}
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(TAG,e.getMessage());
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(TAG,e.getMessage());
 		}
 		return p;
 	}
@@ -298,18 +300,18 @@ public class TraktAPI {
 		        } else {
 		        	return new JSONObject(response);		        	
 		        }
-	        } catch (JSONException e1) {
+	        } catch (JSONException e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+	        	Log.e(TAG,"getDataFromJSON with login failed",e);
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG,"getDataFromJSON with login failed",e);
 			} catch (ClientProtocolException e) {
 	            // TODO Auto-generated catch block
-	            e.printStackTrace();
+				Log.e(TAG,"getDataFromJSON with login failed",e);
 	        } catch (IOException e) {
 	            // TODO Auto-generated catch block
-	            e.printStackTrace();
+	        	Log.e(TAG,"getDataFromJSON with login failed",e);
 	        }
 		} else { // No login
 	        // Simply perform a GET
@@ -324,13 +326,13 @@ public class TraktAPI {
 		        }
 	        } catch (ClientProtocolException e) {
 	            // TODO Auto-generated catch block
-	            e.printStackTrace();
+	        	Log.e(TAG,"getDataFromJSON without login failed",e);
 	        } catch (IOException e) {
 	            // TODO Auto-generated catch block
-	            e.printStackTrace();
+	        	Log.e(TAG,"getDataFromJSON without login failed",e);
 	        } catch (JSONException e) {
 	            // TODO Auto-generated catch block
-	            e.printStackTrace();
+	        	Log.e(TAG,"getDataFromJSON without login failed",e);
 	        }
 		}
         return null;

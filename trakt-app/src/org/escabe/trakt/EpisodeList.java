@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +35,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EpisodeList extends ExpandableListActivity implements ActivityWithUpdate {
+	private static final String TAG = "EpisodeList";
 	private String id;
 	private JSONObject data;
 	
@@ -60,12 +63,19 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
 		@Override
 		protected Boolean doInBackground(String... params) {
 			data = traktapi.getDataObjectFromJSON("show/summary.json/%k/" + id + "/extended",true);
-			data.optString("title");
+			if (data==null) {
+				return false;
+			}
 			return true;
 		}
 		
 		@Override
 	    protected void onPostExecute(Boolean result) {
+			if (!result) {
+				progressdialog.dismiss();
+				Toast.makeText(parent, "Failed loading Epsiode list.",Toast.LENGTH_SHORT).show();
+				return;
+			}
 			TextView title = (TextView) findViewById(R.id.textEpisodeDetailsTitle);
 			title.setText(data.optString("title"));
 			try {
@@ -76,7 +86,7 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
 				cache.handleImageView(poster,traktapi.ResizePoster(images.optString("poster"),2) , "myposter");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.w(TAG,"Failed to retrieve poster",e);
 			}
 			TextView details = (TextView) findViewById(R.id.textEpisodeDetailsDetails);
 			TextView overview = (TextView) findViewById(R.id.textEpisodeDetailsSummary);
@@ -226,7 +236,7 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
 					cache.handleImageView(poster, url, url);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Log.w(TAG,"Failed to retrieve poster",e1);
 				}
 				
 				((ImageView)row.findViewById(R.id.imageEpisodeWatched)).setVisibility(d.optBoolean("watched") ? View.VISIBLE:View.GONE);
@@ -265,7 +275,7 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
 					cache.handleImageView(poster, url, url);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Log.w(TAG,"Failed to retrieve poster",e1);
 				}
 			}
 			

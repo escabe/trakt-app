@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +35,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EpisodeWatchList extends ExpandableListActivity {
+	private static final String TAG="EpisodeWatchList";
 	private JSONArray data;
 	private WebImageCache cache = null;
 	private TraktAPI traktapi;
@@ -89,11 +92,18 @@ public class EpisodeWatchList extends ExpandableListActivity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			data = traktapi.getDataArrayFromJSON("user/watchlist/episodes.json/%k/%u",true);
+			if (data==null) {
+				return false;
+			}
 			return true;
 		}
 		
 		@Override
 	    protected void onPostExecute(Boolean result) {
+			if(!result) {
+				Toast.makeText(parent, "Failed loading Epsiode watchlist.",Toast.LENGTH_SHORT).show();
+			}
+			
 			// Notify list that data has been retrieved
 			adapter.notifyDataSetChanged();
 			
@@ -176,7 +186,7 @@ public class EpisodeWatchList extends ExpandableListActivity {
 					cache.handleImageView(poster, url, url);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Log.w(TAG,"Failed to retrieve poster",e1);
 				}
 			}
 
@@ -202,7 +212,7 @@ public class EpisodeWatchList extends ExpandableListActivity {
 					cache.handleImageView(poster, url, url);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Log.w(TAG,"Failed to retrieve poster",e1);
 				}
 				
 				((ImageView)row.findViewById(R.id.imageEpisodeWatched)).setVisibility(d.optBoolean("watched") ? View.VISIBLE:View.GONE);

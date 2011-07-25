@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate {
 	private String TAG="EpisodeDetails";
@@ -125,12 +126,22 @@ public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate 
 		protected Boolean doInBackground(String... params) {
 			//Get list
 			data = traktapi.getDataObjectFromJSON(params[0],true);
+			if (data==null) {
+				show=null;
+				episode=null;
+				return false;
+			}
 			show = data.optJSONObject("show");
 			episode = data.optJSONObject("episode");
 			return true;
 		}
 		@Override
 	    protected void onPostExecute(Boolean result) {
+			if (!result) {
+				progressdialog.dismiss();
+				Toast.makeText(parent, "Failed loading episode details.",Toast.LENGTH_SHORT).show();
+				return;
+			}
 			((TextView)findViewById(R.id.textEpisodeDetailsShowName)).setText(show.optString("title"));
 			String d = String.format("%02dx%02d %s",episode.optInt("season"),episode.optInt("number"),episode.optString("title"));
 			((TextView)findViewById(R.id.textEpisodeDetailsTitle)).setText(d);
@@ -143,7 +154,7 @@ public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate 
 				cache.handleImageView(poster, p, p);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				Log.e(TAG,e.toString());
+				Log.w(TAG,"Failed to retrieve poster",e);
 			}
 			
 			d = String.format("First Aired: %1$tB %1$te, %1$tY",episode.optLong("first_aired")*1000);

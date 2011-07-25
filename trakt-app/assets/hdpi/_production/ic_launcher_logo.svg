@@ -14,11 +14,11 @@
    height="72"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
-   sodipodi:docname="logo.svg"
-   inkscape:export-filename="/home/escabe/devel/trakt-app/trakt-app/assets/hdpi/ic_launcher_logo.png"
-   inkscape:export-xdpi="14.917127"
-   inkscape:export-ydpi="14.917127">
+   inkscape:version="0.48.1 "
+   sodipodi:docname="ic_launcher_logo.svg"
+   inkscape:export-filename="d:/devel/traktapp/publish/icon.png"
+   inkscape:export-xdpi="640"
+   inkscape:export-ydpi="640">
   <defs
      id="defs4">
     <linearGradient
@@ -243,8 +243,8 @@
      showgrid="true"
      inkscape:window-width="1195"
      inkscape:window-height="1074"
-     inkscape:window-x="704"
-     inkscape:window-y="68"
+     inkscape:window-x="1662"
+     inkscape:window-y="105"
      inkscape:window-maximized="0"
      showguides="false"
      inkscape:guide-bbox="true"
@@ -273,7 +273,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
