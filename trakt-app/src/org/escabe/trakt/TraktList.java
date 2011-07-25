@@ -405,10 +405,15 @@ public class TraktList extends ListActivity {
 		    	JSONArray arr = null;
 				//Search Shows
 		   		data = traktapi.getDataArrayFromJSON("search/shows.json/%k/" + params[0],true);
-		    	
+		    	if (data==null) {
+		    		return false;
+		    	}
 		    	//Search Movies
 		   		arr = traktapi.getDataArrayFromJSON("search/movies.json/%k/" + params[0],true);
-		    	for (int i=0;i<arr.length();i++) {
+		    	if (arr==null) {
+		    		return true;
+		    	}
+		   		for (int i=0;i<arr.length();i++) {
 		    		data.put(arr.optJSONObject(i));
 		    	}
 

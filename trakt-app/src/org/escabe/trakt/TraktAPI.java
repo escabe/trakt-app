@@ -52,7 +52,7 @@ public class TraktAPI {
 	
 	// "Constants"
 	private String apikey = "682912f6e62d666428d261544d619d7c";
-	private String baseurl = "http://api-trakt.apigee.com/";
+	private String baseurl = "http://api.trakt.tv/";
 
 	private String username;
 	private String password;
@@ -124,6 +124,7 @@ public class TraktAPI {
     	JSONObject result = getDataObjectFromJSON("account/test/%k",true);
     	if (result==null) return false;
     	if (result.optString("status").equals("success")) return true;
+    	Toast.makeText(context, "Trakt returned " + result.optString("error"), Toast.LENGTH_SHORT).show();
     	return false;
     }
     
@@ -311,6 +312,7 @@ public class TraktAPI {
 				Log.e(TAG,"getDataFromJSON with login failed",e);
 	        } catch (IOException e) {
 	            // TODO Auto-generated catch block
+	        	Toast.makeText(context.getApplicationContext(), "Connection to Trakt.tv host failed. Do you have internet access?", Toast.LENGTH_SHORT).show();
 	        	Log.e(TAG,"getDataFromJSON with login failed",e);
 	        }
 		} else { // No login
