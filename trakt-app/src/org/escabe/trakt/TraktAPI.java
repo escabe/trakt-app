@@ -330,7 +330,8 @@ public class TraktAPI {
 	            // TODO Auto-generated catch block
 	        	Log.e(TAG,"getDataFromJSON without login failed",e);
 	        } catch (IOException e) {
-	            // TODO Auto-generated catch block
+	        	// TODO Auto-generated catch block
+	        	Toast.makeText(context.getApplicationContext(), "Connection to Trakt.tv host failed. Do you have internet access?", Toast.LENGTH_SHORT).show();
 	        	Log.e(TAG,"getDataFromJSON without login failed",e);
 	        } catch (JSONException e) {
 	            // TODO Auto-generated catch block
