@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+ <TextView android:id="@+id/handle" android:text="Shouts" android:gravity="bottom|center_horizontal" android:background="@drawable/shout_handle" android:layout_height="24dp" android:layout_width="60dp" android:textColor="#FFFFFF" android:textStyle="bold"></TextView>
+ <LinearLayout  android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical" android:background="#E8E8DC">
+     <FrameLayout android:layout_width="fill_parent" android:layout_height="3dp" android:background="#ffffff"></FrameLayout>
+     <LinearLayout android:layout_width="fill_parent" android:orientation="horizontal" android:layout_height="wrap_content" android:layout_weight="1">
+         <FrameLayout android:background="#ffffff" android:layout_height="fill_parent" android:layout_width="3dp"></FrameLayout>
+         <LinearLayout android:layout_height="fill_parent" android:layout_width="wrap_content" android:orientation="vertical" android:layout_weight="1">
+             <ProgressBar android:layout_height="wrap_content" android:id="@+id/progressShout" android:layout_width="wrap_content" android:layout_gravity="center_horizontal"></ProgressBar>
+             <ListView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/listShouts" android:cacheColorHint="#E8E8DC"></ListView>
+         </LinearLayout>
+         <FrameLayout android:background="#ffffff" android:layout_height="fill_parent" android:layout_width="3dp"></FrameLayout>
+     </LinearLayout>
+     <FrameLayout android:background="#ffffff" android:layout_height="3dp" android:layout_width="fill_parent"></FrameLayout>
+ </LinearLayout>
+</FrameLayout>

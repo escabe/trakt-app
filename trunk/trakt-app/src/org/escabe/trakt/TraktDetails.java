@@ -157,6 +157,11 @@ public class TraktDetails extends Activity implements ActivityWithUpdate {
 				Toast.makeText(parent, "Failed loading movie details.",Toast.LENGTH_SHORT).show();
 				return;
 			}
+			// Set shout information
+			ShoutView sv = (ShoutView) findViewById(R.id.shoutDetails);
+			sv.setViewurl("movie/shouts.json/%k/" + data.optString("imdb_id"));
+			
+			
 			// Fill in all the information
 			TextView title = (TextView) findViewById(R.id.textDetailsTitle);
 			title.setText(data.optString("title"));
