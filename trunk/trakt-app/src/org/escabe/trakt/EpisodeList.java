@@ -76,6 +76,11 @@ public class EpisodeList extends ExpandableListActivity implements ActivityWithU
 				Toast.makeText(parent, "Failed loading Epsiode list.",Toast.LENGTH_SHORT).show();
 				return;
 			}
+			
+			// Configure shouts
+			ShoutView sv = (ShoutView)findViewById(R.id.shoutEpisodeList);
+			sv.setViewurl("show/shouts.json/%k/" + data.optString("tvdb_id"));
+			
 			TextView title = (TextView) findViewById(R.id.textEpisodeDetailsTitle);
 			title.setText(data.optString("title"));
 			try {
