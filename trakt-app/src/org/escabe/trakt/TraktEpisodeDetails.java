@@ -142,6 +142,12 @@ public class TraktEpisodeDetails extends Activity implements ActivityWithUpdate 
 				Toast.makeText(parent, "Failed loading episode details.",Toast.LENGTH_SHORT).show();
 				return;
 			}
+			
+			// Configure shout
+			ShoutView sv = (ShoutView)findViewById(R.id.shoutEpisodeDetails);
+			sv.setViewurl("show/episode/shouts.json/%k/" + show.optString("tvdb_id") +  "/" +
+					episode.optInt("season") + "/" + episode.optInt("number"));
+			
 			((TextView)findViewById(R.id.textEpisodeDetailsShowName)).setText(show.optString("title"));
 			String d = String.format("%02dx%02d %s",episode.optInt("season"),episode.optInt("number"),episode.optString("title"));
 			((TextView)findViewById(R.id.textEpisodeDetailsTitle)).setText(d);
