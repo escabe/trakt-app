@@ -72,7 +72,6 @@ public class TraktAPI {
 	
     public String ResizePoster(String image, int size) {
     	String p = image.replace(".jpg", "-138.jpg");
-    	if (true) return image;
     	switch (size) {
     	case 1:
     		return "http://escabe.org/resize.php?image=" + p + 
@@ -88,7 +87,6 @@ public class TraktAPI {
     }
     
     public String ResizeAvatar(String image, int size) {
-    	if (true) return image;
     	switch (size) {
     	case 1:
     		return "http://escabe.org/resize.php?image=" + image + 
@@ -105,7 +103,6 @@ public class TraktAPI {
     
     public String ResizeScreen(String image, int size) {
     	String s = image.replace(".jpg", "-218.jpg");
-    	if (true) return image;
     	switch (size) {
     	case 1:
     		return "http://escabe.org/resize.php?image=" + s + 
