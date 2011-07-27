@@ -36,21 +36,13 @@
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout android:layout_height="wrap_content" android:id="@+id/relativeLayout2" android:layout_width="fill_parent">
-        <ScrollView android:layout_width="fill_parent" android:id="@+id/scrollView1" android:layout_height="fill_parent" android:paddingBottom="24dp" android:fadingEdge="none">
-            <TextView android:layout_width="fill_parent" android:text="@string/loading_summary" android:id="@+id/textDetailsSummary" android:layout_height="fill_parent"></TextView>
-        </ScrollView>
-        <SlidingDrawer android:layout_height="fill_parent" android:layout_width="fill_parent" android:handle="@+id/handle" android:content="@+id/content" android:id="@+id/drawerDetailsShout">
-            <TextView android:id="@+id/handle" android:text="Shouts" android:gravity="bottom|center_horizontal" android:background="@drawable/shout_handle" android:layout_height="24dp" android:layout_width="60dp" android:textColor="#FFFFFF" android:textStyle="bold"></TextView>
-            <LinearLayout android:id="@+id/content" android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical" android:background="@drawable/dark_header">
-                <FrameLayout android:layout_width="fill_parent" android:layout_height="3dp" android:background="#ffffff"></FrameLayout>
-                <LinearLayout android:layout_width="fill_parent" android:orientation="horizontal" android:layout_height="wrap_content" android:layout_weight="1">
-                    <FrameLayout android:background="#ffffff" android:layout_height="fill_parent" android:layout_width="3dp"></FrameLayout>
-                    <ListView android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/listDetailsShout"></ListView>
-                    <FrameLayout android:background="#ffffff" android:layout_height="fill_parent" android:layout_width="3dp"></FrameLayout>
-                </LinearLayout>
-                <FrameLayout android:background="#ffffff" android:layout_height="3dp" android:layout_width="fill_parent"></FrameLayout>
-            </LinearLayout>
-            
-        </SlidingDrawer>
-    </RelativeLayout>
+
+	    <ScrollView android:id="@+id/scrollDetails" android:layout_width="fill_parent" android:paddingBottom="24dp" android:layout_height="fill_parent" android:fadingEdge="none">
+	        <TextView android:layout_height="fill_parent" android:text="@string/loading_summary" android:layout_width="fill_parent" android:id="@+id/textDetailsSummary"></TextView>
+	    </ScrollView>
+	    
+	    <view class="org.escabe.trakt.ShoutView"  android:handle="@+id/handle"
+	     android:content="@+id/content" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/shoutDetails"></view>
+
+	</RelativeLayout>
 </LinearLayout>

@@ -39,10 +39,10 @@
     <dimen name="ScreenSmallWidth">97px</dimen>
     <dimen name="ScreenSmallHeight">55px</dimen>
     
-    <dimen name="AvatarSmallWidth">50px</dimen>
-    <dimen name="AvatarSmallHeight">50px</dimen>
-    <dimen name="AvatarMediumWidth">75px</dimen>
-    <dimen name="AvatarMediumHeight">75px</dimen>
+    <dimen name="AvatarSmallWidth">75px</dimen>
+    <dimen name="AvatarSmallHeight">75px</dimen>
+    <dimen name="AvatarMediumWidth">112px</dimen>
+    <dimen name="AvatarMediumHeight">112px</dimen>
     
     <dimen name="ButtonWidth">60px</dimen>
     <dimen name="ButtonHeight">48px</dimen>
