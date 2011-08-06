@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -21,20 +23,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 
-public class ShoutView extends SlidingDrawer implements OnDrawerOpenListener {
+public class ShoutView extends SlidingDrawer implements OnDrawerOpenListener, ActivityWithUpdate {
 	private ListView list;
 	private ProgressBar progress;
+	private EditText editShout;
+	private Button buttonShout;
 	private JSONArray data;
 	private TraktAPI traktapi;
 	private Context context;
 	private String viewurl;
+	private View me;
 	
 	private ThumbnailAdapter thumbs=null;
 	private static final int[] IMAGE_IDS={R.id.imageAvatar};
 
 	public ShoutView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-
+		me = this;
 		// Add standard content
         LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item = vi.inflate(R.layout.trakt_shout_view, null);
@@ -49,11 +54,59 @@ public class ShoutView extends SlidingDrawer implements OnDrawerOpenListener {
 		progress = (ProgressBar) findViewById(R.id.progressShout);
 		list = (ListView) findViewById(R.id.listShouts);
 		viewurl = null;
+
+		buttonShout = (Button) findViewById(R.id.buttonShout);
+		buttonShout.setOnClickListener(OnButtonClick);
+		
+		editShout = (EditText) findViewById(R.id.editShout);
+		editShout.setOnFocusChangeListener(EditFocusChanged);
+
+		list.requestFocus();
 		
 		Activity act = (Activity)context;		
 		thumbs = new ThumbnailAdapter(act, new ShoutAdapter(), ((Application)act.getApplication()).getThumbsCache(),IMAGE_IDS);
 		list.setAdapter(thumbs);
 	}
+
+	private OnClickListener OnButtonClick = new OnClickListener() {
+		public void onClick(View view) {
+			String shout = editShout.getText().toString();
+			if (shout.length()<1) {
+				Toast.makeText(context, "Please enter a shout.",Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (viewurl.contains("movie/")) {
+				String p[] = viewurl.split("/");
+				String id = p[p.length-1];
+				traktapi.Shout(me, "movie",shout,id);
+			} else if (viewurl.contains("episode/")) {
+				String p[] = viewurl.split("/");
+				String id = p[p.length-3];
+				Integer season = Integer.parseInt(p[p.length-2]);
+				Integer episode = Integer.parseInt(p[p.length-1]);
+				traktapi.Shout(me, "episode",shout,id,season,episode);
+			} else if (viewurl.contains("show/")) {
+				String p[] = viewurl.split("/");
+				String id = p[p.length-1];
+				traktapi.Shout(me, "show",shout,id);
+			}
+		}
+	};
+	
+	private OnFocusChangeListener EditFocusChanged = new OnFocusChangeListener() {
+		public void onFocusChange(View v, boolean hasFocus) {
+			EditText edit = (EditText)v;
+			if (hasFocus) {
+				edit.setLines(3);
+				buttonShout.setVisibility(VISIBLE);
+			} else {
+				edit.setLines(1);
+				buttonShout.setVisibility(GONE);
+			}
+			
+		}
+
+	};
 	
 	public void onDrawerOpened() {
 		if (viewurl==null) {
@@ -72,7 +125,6 @@ public class ShoutView extends SlidingDrawer implements OnDrawerOpenListener {
 	public String getViewurl() {
 		return viewurl;
 	}
-
 
 	private class DataGrabber extends AsyncTask<String,Void,Boolean> {
 		public DataGrabber() {
@@ -143,6 +195,10 @@ public class ShoutView extends SlidingDrawer implements OnDrawerOpenListener {
             }
 			return row;
 		}
+	}
+
+	public void DoUpdate() {
+		onDrawerOpened();
 	}
 	
 }
