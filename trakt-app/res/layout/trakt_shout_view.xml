@@ -9,7 +9,9 @@
      <LinearLayout android:layout_width="fill_parent" android:orientation="horizontal" android:layout_height="wrap_content" android:layout_weight="1">
          <FrameLayout android:background="#ffffff" android:layout_height="fill_parent" android:layout_width="3dp"></FrameLayout>
          <LinearLayout android:layout_height="fill_parent" android:layout_width="wrap_content" android:orientation="vertical" android:layout_weight="1">
-             <ProgressBar android:layout_height="wrap_content" android:id="@+id/progressShout" android:layout_width="wrap_content" android:layout_gravity="center_horizontal"></ProgressBar>
+             <EditText android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="textMultiLine" android:gravity="top" android:hint="Shout" android:id="@+id/editShout" android:maxLength="1000"></EditText>
+             <Button android:layout_width="wrap_content" android:id="@+id/buttonShout" android:layout_height="wrap_content" android:text="Shout" android:layout_gravity="right" android:visibility="gone"></Button>
+             <ProgressBar android:layout_width="wrap_content" android:id="@+id/progressShout" android:layout_height="wrap_content" android:layout_gravity="center_horizontal"></ProgressBar>
              <ListView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/listShouts" android:cacheColorHint="#E8E8DC"></ListView>
          </LinearLayout>
          <FrameLayout android:background="#ffffff" android:layout_height="fill_parent" android:layout_width="3dp"></FrameLayout>

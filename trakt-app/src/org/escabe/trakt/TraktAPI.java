@@ -37,6 +37,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -71,8 +72,11 @@ public class TraktAPI {
 	}
 	
     public String ResizePoster(String image, int size) {
-    	String p = image.replace(".jpg", "-138.jpg");
-    	switch (size) {
+    	
+    	String p = image.replaceAll("/(\\d*)(\\.?\\d*?)?\\.jpg", "/$1-138$2.jpg");
+    	return p;
+/*    	
+		switch (size) {
     	case 1:
     		return "http://escabe.org/resize.php?image=" + p + 
     			"&h=" +	context.getResources().getDimensionPixelSize(R.dimen.PosterSmallHeight) +
@@ -84,9 +88,12 @@ public class TraktAPI {
     	default:
     		return p;
     	}
+ */
     }
     
     public String ResizeAvatar(String image, int size) {
+    	return image;
+/*
     	switch (size) {
     	case 1:
     		return "http://escabe.org/resize.php?image=" + image + 
@@ -99,10 +106,13 @@ public class TraktAPI {
     	default:
     		return image;
     	}
+*/
     }
     
     public String ResizeScreen(String image, int size) {
-    	String s = image.replace(".jpg", "-218.jpg");
+    	String s = image.replaceAll("/(\\d*)(\\.?\\d*?)?\\.jpg", "/$1-218$2.jpg");
+    	return s;
+/*
     	switch (size) {
     	case 1:
     		return "http://escabe.org/resize.php?image=" + s + 
@@ -113,6 +123,7 @@ public class TraktAPI {
     	default:
     			return s;
     	}
+*/    	
     }
 
     public void Mark(Activity parent, Object... params) {
@@ -127,6 +138,83 @@ public class TraktAPI {
     	Toast.makeText(context, "Trakt returned " + result.optString("error"), Toast.LENGTH_SHORT).show();
     	return false;
     }
+    
+    public void Shout(View parent, Object... params) {
+    	Shouter s = new Shouter(parent);
+    	s.execute(params);
+    }
+    
+    public class Shouter extends AsyncTask<Object,Void,Boolean> {
+    	View parent;
+		ProgressDialog progressdialog;
+		
+		public Shouter(View parent) {
+			this.parent = parent;
+		}
+		@Override
+		protected void onPreExecute() {
+			progressdialog = ProgressDialog.show(context,"", String.format("Shouting..."), true);
+		}
+		
+		@Override
+		protected Boolean doInBackground(Object... params) {
+			String type = (String) params[0];
+			String shout = (String) params[1];
+			if (type.equals("movie")) {
+				try {
+					String url = "shout/movie/%k";
+					JSONObject post = new JSONObject();
+					post.put("imdb_id", (String) params[2]);
+					post.put("shout",shout);
+					JSONObject data = getDataObjectFromJSON(url,true,post);
+					return data!=null;
+				} catch (JSONException e) {
+					Log.e(TAG,"Shouting failed",e);
+				}
+			} else if(type.equals("show")) {
+				try {
+					String url = "shout/show/%k";
+					JSONObject post = new JSONObject();
+					post.put("tvdb_id", (String) params[2]);
+					post.put("shout",shout);
+					JSONObject data = getDataObjectFromJSON(url,true,post);
+					return data!=null;
+				} catch (JSONException e) {
+					Log.e(TAG,"Shouting failed",e);
+				}
+			} else if(type.equals("episode")) {
+				try {
+					String url = "shout/episode/%k";
+					JSONObject post = new JSONObject();
+					post.put("season",(Integer) params[3]);
+					post.put("episode",(Integer) params[4]);
+					post.put("tvdb_id", (String) params[2]);
+					post.put("shout",shout);
+					JSONObject data = getDataObjectFromJSON(url,true,post);
+					return data!=null;
+				} catch (JSONException e) {
+					Log.e(TAG,"Shouting failed",e);
+				}
+				
+			}
+			return false;
+		}
+		
+		@Override
+	    protected void onPostExecute(Boolean result) {
+			String message;
+			if (result) {
+				message = "Shouting succeeded";
+			} else {
+				message = "Shouting failed";
+			}
+			progressdialog.dismiss();
+			Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+			((ActivityWithUpdate)parent).DoUpdate();    
+	    }
+    
+    }
+    
     
     public class Marker extends AsyncTask<Object,Void,Boolean> {
 		Activity parent;
@@ -215,7 +303,7 @@ public class TraktAPI {
 					}					
 				}
 			}
-			return null;
+			return false;
 		}
 		
 		@Override
