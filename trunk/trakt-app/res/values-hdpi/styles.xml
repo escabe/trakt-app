@@ -28,7 +28,7 @@
 
     <style name="HeaderStyle" parent="@MyListSeparator"></style>
     <style parent="@android:style/Widget.ExpandableListView" name="EpisodeList">
-		<item name="android:groupIndicator">@android:id/empty</item>
+		<item name="android:groupIndicator">@android:color/transparent</item>
     </style>
     <dimen name="PosterSmallWidth">56px</dimen>
     <dimen name="PosterSmallHeight">82px</dimen>
